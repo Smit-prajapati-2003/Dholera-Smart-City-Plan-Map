@@ -3,27 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dholera Smart City — Master Plan</title>
+<title>Dholera SIR — Focused Master Plan Image</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Exo+2:wght@300;400;600&display=swap" rel="stylesheet">
 <style>
   :root {
     --bg: #040d1a;
-    --panel: #07152a;
     --border: #0e2a4a;
     --accent: #00c8ff;
     --accent2: #00ff9d;
-    --gold: #f5b942;
     --text: #cde4f5;
     --muted: #4a7a9b;
-    --industrial: rgba(255,140,0,0.55);
-    --residential: rgba(0,200,100,0.45);
-    --commercial: rgba(0,180,255,0.45);
-    --greenzone: rgba(50,200,80,0.35);
-    --infra: rgba(255,80,80,0.45);
-    --activation: rgba(255,215,0,0.30);
-    --water: rgba(30,120,255,0.35);
   }
   * { margin:0; padding:0; box-sizing:border-box; }
   body {
@@ -36,7 +27,7 @@
     flex-direction: column;
   }
 
-  /* HEADER */
+  /* HEADER (kept for branding) */
   header {
     background: linear-gradient(90deg, #040d1a 0%, #071e3d 50%, #040d1a 100%);
     border-bottom: 1px solid var(--border);
@@ -118,164 +109,20 @@
   }
   @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(0.85)} }
 
-  /* MAIN LAYOUT */
+  /* MAIN LAYOUT (simplified, no sidebar) */
   .main {
     flex: 1;
     display: flex;
     overflow: hidden;
   }
 
-  /* SIDEBAR */
-  .sidebar {
-    width: 290px;
-    background: var(--panel);
-    border-right: 1px solid var(--border);
+  /* MAP CONTAINER */
+  .map-wrapper {
+    flex: 1;
+    position: relative;
     display: flex;
     flex-direction: column;
-    overflow-y: auto;
-    flex-shrink: 0;
-    z-index: 500;
   }
-  .sidebar::-webkit-scrollbar { width: 4px; }
-  .sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
-
-  .sidebar-section {
-    border-bottom: 1px solid var(--border);
-    padding: 16px;
-  }
-  .section-title {
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 2.5px;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 12px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .section-title::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: linear-gradient(90deg, var(--border), transparent);
-  }
-
-  /* MAP LAYERS */
-  .layer-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 7px 8px;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background .15s;
-    margin-bottom: 3px;
-  }
-  .layer-item:hover { background: rgba(0,200,255,0.05); }
-  .layer-item input[type=checkbox] { display:none; }
-  .layer-swatch {
-    width: 14px; height: 14px;
-    border-radius: 2px;
-    flex-shrink: 0;
-    border: 1px solid rgba(255,255,255,0.2);
-  }
-  .layer-label {
-    font-size: 13px;
-    font-weight: 400;
-    color: var(--text);
-    flex: 1;
-  }
-  .layer-toggle {
-    width: 28px; height: 16px;
-    background: var(--border);
-    border-radius: 8px;
-    position: relative;
-    transition: background .2s;
-    flex-shrink: 0;
-  }
-  .layer-toggle.active { background: var(--accent); }
-  .layer-toggle::after {
-    content: '';
-    position: absolute;
-    top: 2px; left: 2px;
-    width: 12px; height: 12px;
-    border-radius: 50%;
-    background: #fff;
-    transition: transform .2s;
-  }
-  .layer-toggle.active::after { transform: translateX(12px); }
-
-  /* BASE MAP SELECTOR */
-  .basemap-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 6px;
-  }
-  .basemap-btn {
-    padding: 8px 6px;
-    background: transparent;
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    color: var(--muted);
-    font-family: 'Exo 2', sans-serif;
-    font-size: 11px;
-    cursor: pointer;
-    text-align: center;
-    transition: all .2s;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-  .basemap-btn:hover, .basemap-btn.active {
-    border-color: var(--accent);
-    color: var(--accent);
-    background: rgba(0,200,255,0.06);
-  }
-
-  /* STATS */
-  .stat-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
-  }
-  .stat-box {
-    background: rgba(0,200,255,0.04);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 10px 8px;
-  }
-  .stat-val {
-    font-family: 'Space Mono', monospace;
-    font-size: 16px;
-    font-weight: 700;
-    color: var(--accent);
-    line-height: 1.2;
-  }
-  .stat-label {
-    font-size: 10px;
-    color: var(--muted);
-    margin-top: 3px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-
-  /* LEGEND */
-  .legend-item {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 4px 0;
-    font-size: 12px;
-    color: var(--muted);
-  }
-  .legend-dot {
-    width: 10px; height: 10px;
-    border-radius: 2px;
-    flex-shrink: 0;
-  }
-
-  /* MAP CONTAINER */
   #map {
     flex: 1;
     background: #0a1628;
@@ -288,7 +135,7 @@
     overflow: hidden;
   }
   .leaflet-control-zoom a {
-    background: var(--panel) !important;
+    background: #07152a !important; /* Panel color */
     color: var(--accent) !important;
     border-color: var(--border) !important;
     font-size: 16px !important;
@@ -300,14 +147,6 @@
     font-size: 9px !important;
   }
   .leaflet-control-attribution a { color: var(--accent) !important; }
-  .leaflet-popup-content-wrapper {
-    background: var(--panel) !important;
-    border: 1px solid var(--accent) !important;
-    border-radius: 4px !important;
-    color: var(--text) !important;
-    box-shadow: 0 0 20px rgba(0,200,255,0.2) !important;
-  }
-  .leaflet-popup-tip { background: var(--panel) !important; }
 
   /* COORDINATES BAR */
   .coords-bar {
@@ -326,48 +165,6 @@
   }
   .coords-bar span { color: var(--accent2); }
 
-  /* INFO PANEL */
-  .info-panel {
-    position: absolute;
-    top: 12px; right: 12px;
-    background: rgba(7,21,42,0.92);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 14px 16px;
-    z-index: 900;
-    max-width: 220px;
-    backdrop-filter: blur(8px);
-    display: none;
-  }
-  .info-panel.visible { display: block; }
-  .info-panel-title {
-    font-family: 'Rajdhani', sans-serif;
-    font-weight: 700;
-    font-size: 15px;
-    color: var(--accent);
-    margin-bottom: 6px;
-    letter-spacing: 1px;
-  }
-  .info-panel-close {
-    position: absolute;
-    top: 8px; right: 8px;
-    width: 18px; height: 18px;
-    cursor: pointer;
-    color: var(--muted);
-    font-size: 14px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 3px;
-  }
-  .info-panel-close:hover { color: var(--accent); }
-
-  .map-wrapper {
-    flex: 1;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-  }
 </style>
 </head>
 <body>
@@ -377,139 +174,26 @@
     <div class="logo-icon"></div>
     <div>
       <div class="logo-text">Dholera <span>SIR</span></div>
-      <div class="logo-sub">Smart City Master Plan</div>
+      <div class="logo-sub">Master Plan Image Overlay</div>
     </div>
   </div>
   <div class="header-tags">
     <div class="pulse-dot"></div>
-    <div class="tag tag-green">DMIC Corridor</div>
+    <div class="tag tag-green">Focused Image Layer</div>
     <div class="tag tag-blue">Gujarat, India</div>
   </div>
 </header>
 
 <div class="main">
-  <aside class="sidebar">
-
-    <div class="sidebar-section">
-      <div class="section-title">Project Stats</div>
-      <div class="stat-grid">
-        <div class="stat-box">
-          <div class="stat-val">920</div>
-          <div class="stat-label">Area (km²)</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-val">2M+</div>
-          <div class="stat-label">Population</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-val">6</div>
-          <div class="stat-label">Activation Areas</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-val">2047</div>
-          <div class="stat-label">Target Year</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="sidebar-section">
-      <div class="section-title">Base Map</div>
-      <div class="basemap-grid">
-        <button class="basemap-btn active" onclick="switchBase('osm',this)">Street</button>
-        <button class="basemap-btn" onclick="switchBase('satellite',this)">Satellite</button>
-        <button class="basemap-btn" onclick="switchBase('topo',this)">Topo</button>
-        <button class="basemap-btn" onclick="switchBase('dark',this)">Dark</button>
-      </div>
-    </div>
-
-    <div class="sidebar-section">
-      <div class="section-title">Plan Layers</div>
-
-      <div class="layer-item" onclick="toggleLayer('masterplan')">
-        <div class="layer-swatch" style="background:rgba(255,255,255,0.5);border-color:#fff"></div>
-        <span class="layer-label">Master Plan Image</span>
-        <div class="layer-toggle active" id="tog-masterplan"></div>
-      </div>
-      <div class="layer-item" onclick="toggleLayer('boundary')">
-        <div class="layer-swatch" style="background:rgba(0,200,255,0.6);border-color:#00c8ff"></div>
-        <span class="layer-label">SIR Boundary</span>
-        <div class="layer-toggle active" id="tog-boundary"></div>
-      </div>
-      <div class="layer-item" onclick="toggleLayer('industrial')">
-        <div class="layer-swatch" style="background:rgba(255,140,0,0.7);border-color:#ff8c00"></div>
-        <span class="layer-label">Industrial Zone</span>
-        <div class="layer-toggle active" id="tog-industrial"></div>
-      </div>
-      <div class="layer-item" onclick="toggleLayer('residential')">
-        <div class="layer-swatch" style="background:rgba(0,200,100,0.7);border-color:#00c864"></div>
-        <span class="layer-label">Residential Zone</span>
-        <div class="layer-toggle active" id="tog-residential"></div>
-      </div>
-      <div class="layer-item" onclick="toggleLayer('commercial')">
-        <div class="layer-swatch" style="background:rgba(0,180,255,0.7);border-color:#00b4ff"></div>
-        <span class="layer-label">Commercial Zone</span>
-        <div class="layer-toggle active" id="tog-commercial"></div>
-      </div>
-      <div class="layer-item" onclick="toggleLayer('greenzone')">
-        <div class="layer-swatch" style="background:rgba(50,200,80,0.7);border-color:#32c850"></div>
-        <span class="layer-label">Green / Open Space</span>
-        <div class="layer-toggle active" id="tog-greenzone"></div>
-      </div>
-      <div class="layer-item" onclick="toggleLayer('infra')">
-        <div class="layer-swatch" style="background:rgba(255,80,80,0.7);border-color:#ff5050"></div>
-        <span class="layer-label">Infrastructure</span>
-        <div class="layer-toggle active" id="tog-infra"></div>
-      </div>
-      <div class="layer-item" onclick="toggleLayer('activation')">
-        <div class="layer-swatch" style="background:rgba(255,215,0,0.7);border-color:#ffd700"></div>
-        <span class="layer-label">Activation Areas</span>
-        <div class="layer-toggle active" id="tog-activation"></div>
-      </div>
-      <div class="layer-item" onclick="toggleLayer('water')">
-        <div class="layer-swatch" style="background:rgba(30,120,255,0.7);border-color:#1e78ff"></div>
-        <span class="layer-label">Water Bodies</span>
-        <div class="layer-toggle active" id="tog-water"></div>
-      </div>
-    </div>
-
-    <div class="sidebar-section">
-      <div class="section-title">Legend</div>
-      <div class="legend-item"><div class="legend-dot" style="background:#ff8c00"></div>Industrial &amp; Logistics</div>
-      <div class="legend-item"><div class="legend-dot" style="background:#00c864"></div>Residential Clusters</div>
-      <div class="legend-item"><div class="legend-dot" style="background:#00b4ff"></div>Commercial / CBD</div>
-      <div class="legend-item"><div class="legend-dot" style="background:#32c850"></div>Eco / Green Zones</div>
-      <div class="legend-item"><div class="legend-dot" style="background:#ff5050"></div>Road / Rail / Infra</div>
-      <div class="legend-item"><div class="legend-dot" style="background:#ffd700"></div>Phase 1 Activation</div>
-      <div class="legend-item"><div class="legend-dot" style="background:#1e78ff"></div>Gulf of Khambhat</div>
-    </div>
-
-    <div class="sidebar-section">
-      <div class="section-title">About</div>
-      <p style="font-size:12px;color:var(--muted);line-height:1.6">
-        Dholera Special Investment Region (SIR) is India's first greenfield smart city on the DMIC corridor. 
-        Planned across 920 km² in Gujarat, it features world-class infrastructure, renewable energy zones, 
-        and integrated urban planning.
-      </p>
-    </div>
-
-  </aside>
-
   <div class="map-wrapper">
     <div id="map"></div>
     <div class="coords-bar" id="coords">Lat: — &nbsp; Lng: —</div>
-
-    <div class="info-panel" id="infoPanel">
-      <div class="info-panel-close" onclick="document.getElementById('infoPanel').classList.remove('visible')">✕</div>
-      <div class="info-panel-title" id="infoPanelTitle">Zone Info</div>
-      <div id="infoPanelBody" style="font-size:12px;color:var(--muted);line-height:1.6"></div>
-    </div>
   </div>
 </div>
 
 <script>
 // ---- DHOLERA APPROXIMATE COORDINATES ----
-// Dholera SIR center ~22.25°N, 72.18°E
-// Total area ~920 km², roughly 45km x 25km
+// Center ~22.25°N, 72.18°E
 
 // --- MAP INIT ---
 const map = L.map('map', {
@@ -518,266 +202,39 @@ const map = L.map('map', {
   zoomControl: true
 });
 
-// Base tile layers
-const baseLayers = {
-  osm: L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-    maxZoom: 19
-  }),
-  satellite: L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-    attribution: '© Esri World Imagery',
-    maxZoom: 19
-  }),
-  topo: L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
-    attribution: '© OpenTopoMap',
-    maxZoom: 17
-  }),
-  dark: L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+// Single default base tile layer (Dark Mode for aesthetics)
+L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
     attribution: '© <a href="https://carto.com/">CARTO</a>',
     maxZoom: 19
-  })
-};
-baseLayers.osm.addTo(map);
+}).addTo(map);
 
-function switchBase(name, btn) {
-  document.querySelectorAll('.basemap-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  Object.values(baseLayers).forEach(l => map.removeLayer(l));
-  baseLayers[name].addTo(map);
-}
-
-// ---- ZONE GeoJSON DATA (approximate based on Dholera SIR master plan) ----
-
-const geoData = {
-
-  boundary: {
-    type: "Feature",
-    properties: { name: "Dholera SIR Boundary", zone: "boundary" },
-    geometry: {
-      type: "Polygon",
-      coordinates: [[
-        [71.85, 22.05], [72.00, 22.00], [72.18, 21.98], [72.40, 22.02],
-        [72.55, 22.12], [72.60, 22.25], [72.55, 22.42], [72.40, 22.52],
-        [72.20, 22.55], [72.00, 22.52], [71.90, 22.45], [71.82, 22.32],
-        [71.82, 22.18], [71.85, 22.05]
-      ]]
-    }
-  },
-
-  industrial: [
-    {
-      type: "Feature",
-      properties: { name: "Industrial Zone – North", desc: "Heavy & Light Manufacturing, Logistics Hub, ABCD Industrial estate. Adjacent to Expressway & DMIC rail freight." },
-      geometry: {
-        type: "Polygon", coordinates: [[
-          [72.10, 22.38], [72.35, 22.38], [72.38, 22.28], [72.32, 22.22],
-          [72.12, 22.24], [72.08, 22.32], [72.10, 22.38]
-        ]]
-      }
-    },
-    {
-      type: "Feature",
-      properties: { name: "Industrial Zone – South", desc: "Special Economic Zone (SEZ), export processing, petrochemical & pharma cluster near the coast." },
-      geometry: {
-        type: "Polygon", coordinates: [[
-          [72.00, 22.08], [72.20, 22.06], [72.22, 22.16], [72.05, 22.18],
-          [71.98, 22.14], [72.00, 22.08]
-        ]]
-      }
-    }
-  ],
-
-  residential: [
-    {
-      type: "Feature",
-      properties: { name: "Residential Cluster – Central", desc: "Mixed density housing, township sector with schools, hospitals & community spaces. ~3 Lakh residents." },
-      geometry: {
-        type: "Polygon", coordinates: [[
-          [72.10, 22.24], [72.32, 22.22], [72.30, 22.15], [72.25, 22.10],
-          [72.12, 22.10], [72.08, 22.18], [72.10, 22.24]
-        ]]
-      }
-    },
-    {
-      type: "Feature",
-      properties: { name: "Residential Cluster – West", desc: "Eco-integrated township, low density villas & apartments. Near GIFT City corridor." },
-      geometry: {
-        type: "Polygon", coordinates: [[
-          [71.92, 22.28], [72.05, 22.26], [72.06, 22.18], [71.96, 22.16],
-          [71.88, 22.20], [71.90, 22.28], [71.92, 22.28]
-        ]]
-      }
-    }
-  ],
-
-  commercial: [
-    {
-      type: "Feature",
-      properties: { name: "Central Business District (CBD)", desc: "Financial hub, corporate offices, smart retail. Modeled as Dholera's Times Square with 24/7 mixed-use high-rises." },
-      geometry: {
-        type: "Polygon", coordinates: [[
-          [72.15, 22.28], [72.25, 22.27], [72.26, 22.22], [72.15, 22.22],
-          [72.13, 22.25], [72.15, 22.28]
-        ]]
-      }
-    }
-  ],
-
-  greenzone: [
-    {
-      type: "Feature",
-      properties: { name: "Eco & Green Zone – North", desc: "Urban forest, mangrove conservation, biodiversity corridor. Part of Gujarat's green belt initiative." },
-      geometry: {
-        type: "Polygon", coordinates: [[
-          [72.08, 22.42], [72.25, 22.44], [72.28, 22.38], [72.10, 22.38],
-          [72.06, 22.40], [72.08, 22.42]
-        ]]
-      }
-    }
-  ],
-
-  infra: [
-    {
-      type: "Feature",
-      properties: { name: "Dholera Expressway (SH-6)", desc: "8-lane expressway connecting Ahmedabad to Dholera (~100km). Backbone of city connectivity." },
-      geometry: {
-        type: "LineString", coordinates: [
-          [72.05, 22.52], [72.08, 22.45], [72.10, 22.38],
-          [72.12, 22.30], [72.15, 22.22], [72.16, 22.10]
-        ]
-      }
-    }
-  ],
-
-  activation: [
-    {
-      type: "Feature",
-      properties: { name: "Activation Area 1 (AA1) — Phase 1", desc: "First phase of development. Pilot smart city services, residential & commercial nucleus. Development ongoing." },
-      geometry: {
-        type: "Polygon", coordinates: [[
-          [72.12, 22.30], [72.22, 22.30], [72.24, 22.22],
-          [72.14, 22.21], [72.11, 22.26], [72.12, 22.30]
-        ]]
-      }
-    }
-  ],
-
-  water: [
-    {
-      type: "Feature",
-      properties: { name: "Gulf of Khambhat (Coastline)", desc: "Arabian Sea inlet. Tidal range up to 11m. Key for port development, desalination & marine logistics." },
-      geometry: {
-        type: "Polygon", coordinates: [[
-          [71.85, 22.04], [72.55, 22.04], [72.55, 21.90],
-          [71.85, 21.90], [71.85, 22.04]
-        ]]
-      }
-    }
-  ]
-};
-
-// ---- STYLE FUNCTIONS ----
-const styles = {
-  boundary: { color: '#00c8ff', weight: 2.5, fillColor: 'transparent', fillOpacity: 0, dashArray: '8 4', opacity: 0.8 },
-  industrial: { color: '#ff8c00', weight: 1.5, fillColor: '#ff8c00', fillOpacity: 0.35 },
-  residential: { color: '#00c864', weight: 1.5, fillColor: '#00c864', fillOpacity: 0.3 },
-  commercial: { color: '#00b4ff', weight: 1.5, fillColor: '#00b4ff', fillOpacity: 0.3 },
-  greenzone: { color: '#32c850', weight: 1.5, fillColor: '#32c850', fillOpacity: 0.3 },
-  infra: { color: '#ff5050', weight: 3, fillColor: '#ff5050', fillOpacity: 0.35 },
-  activation: { color: '#ffd700', weight: 2, fillColor: '#ffd700', fillOpacity: 0.2, dashArray: '6 3' },
-  water: { color: '#1e78ff', weight: 2, fillColor: '#1e78ff', fillOpacity: 0.25 }
-};
-
-// ---- BUILD LAYERS ----
-const layerGroups = {};
 
 // ==========================================
-// NEW: ADD MASTER PLAN IMAGE LAYER
+// MASTER PLAN IMAGE LAYER (Simplified & Focused)
 // ==========================================
-// 1. Set your image bounds (Top-Left, Bottom-Right)
+// 1. **CRITICAL:** Set YOUR precise image bounds (Top-Left corner, Bottom-Right corner)
+// Replace these placeholders with the coordinates for YOUR image's corners!
 const imageBounds = [
-    [22.60, 71.80], // Top-Left corner
-    [21.90, 72.65]  // Bottom-Right corner
+    [22.60, 71.80], // Placeholder Top-Left corner
+    [21.90, 72.65]  // Placeholder Bottom-Right corner
 ];
 
-// 2. Add image to the layerGroups object so the toggle logic handles it
-layerGroups.masterplan = L.imageOverlay('public/dholera-plan.png', imageBounds, {
-    opacity: 0.5,       // 50% transparency!
-    interactive: false  // False allows you to click the colored zones "through" the image
-});
+// 2. Add image overlay with 50% transparency, visible by default
+L.imageOverlay('public/dholera-plan.png', imageBounds, {
+    opacity: 0.5,       // 50% transparency
+    interactive: false  // Keep as static overlay, non-clickable
+}).addTo(map);
+
+// Fit map view to the image bounds for immediate focus
+map.fitBounds(imageBounds);
 // ==========================================
 
-
-function buildLayer(key, data) {
-  const features = Array.isArray(data) ? { type: "FeatureCollection", features: data } : data;
-  return L.geoJSON(features, {
-    style: () => styles[key],
-    onEachFeature: (feature, layer) => {
-      layer.on('click', () => {
-        const p = feature.properties;
-        const panel = document.getElementById('infoPanel');
-        document.getElementById('infoPanelTitle').textContent = p.name;
-        document.getElementById('infoPanelBody').innerHTML = p.desc || '';
-        panel.classList.add('visible');
-      });
-      layer.on('mouseover', function(e) {
-        if (key !== 'boundary') {
-          this.setStyle({ fillOpacity: styles[key].fillOpacity * 1.6, weight: (styles[key].weight || 1.5) + 1 });
-        }
-        const tooltip = `<b style="font-family:Rajdhani,sans-serif;font-size:14px;letter-spacing:1px">${feature.properties.name}</b>`;
-        layer.bindTooltip(tooltip, { sticky: true, opacity: 0.95 }).openTooltip(e.latlng);
-      });
-      layer.on('mouseout', function() {
-        this.setStyle(styles[key]);
-        layer.closeTooltip();
-      });
-    },
-    pointToLayer: (feature, latlng) => {
-      return L.circleMarker(latlng, { radius: 8, ...styles[key] });
-    }
-  });
-}
-
-// Initialize all Vector layer groups
-layerGroups.boundary  = buildLayer('boundary', geoData.boundary);
-layerGroups.industrial = buildLayer('industrial', geoData.industrial);
-layerGroups.residential = buildLayer('residential', geoData.residential);
-layerGroups.commercial = buildLayer('commercial', geoData.commercial);
-layerGroups.greenzone  = buildLayer('greenzone', geoData.greenzone);
-layerGroups.infra      = buildLayer('infra', geoData.infra);
-layerGroups.activation = buildLayer('activation', geoData.activation);
-layerGroups.water      = buildLayer('water', geoData.water);
-
-// Add all to map (this now loops through your image AND your vector layers)
-Object.values(layerGroups).forEach(lg => lg.addTo(map));
-
-// ---- TOGGLE LOGIC ----
-const layerState = {};
-Object.keys(layerGroups).forEach(k => layerState[k] = true);
-
-function toggleLayer(key) {
-  layerState[key] = !layerState[key];
-  const tog = document.getElementById('tog-' + key);
-  if (layerState[key]) {
-    layerGroups[key].addTo(map);
-    tog.classList.add('active');
-  } else {
-    map.removeLayer(layerGroups[key]);
-    tog.classList.remove('active');
-  }
-}
 
 // ---- COORDINATES DISPLAY ----
 map.on('mousemove', (e) => {
   document.getElementById('coords').innerHTML =
     `Lat: <span>${e.latlng.lat.toFixed(4)}</span> &nbsp; Lng: <span>${e.latlng.lng.toFixed(4)}</span>`;
 });
-
-// Fit view to boundary
-map.fitBounds([
-  [21.90, 71.80],
-  [22.60, 72.65]
-]);
 </script>
 </body>
 </html>
