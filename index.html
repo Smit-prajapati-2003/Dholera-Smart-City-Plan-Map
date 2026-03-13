@@ -388,7 +388,6 @@
 </header>
 
 <div class="main">
-  <!-- SIDEBAR -->
   <aside class="sidebar">
 
     <div class="sidebar-section">
@@ -426,6 +425,11 @@
     <div class="sidebar-section">
       <div class="section-title">Plan Layers</div>
 
+      <div class="layer-item" onclick="toggleLayer('masterplan')">
+        <div class="layer-swatch" style="background:rgba(255,255,255,0.5);border-color:#fff"></div>
+        <span class="layer-label">Master Plan Image</span>
+        <div class="layer-toggle active" id="tog-masterplan"></div>
+      </div>
       <div class="layer-item" onclick="toggleLayer('boundary')">
         <div class="layer-swatch" style="background:rgba(0,200,255,0.6);border-color:#00c8ff"></div>
         <span class="layer-label">SIR Boundary</span>
@@ -490,7 +494,6 @@
 
   </aside>
 
-  <!-- MAP -->
   <div class="map-wrapper">
     <div id="map"></div>
     <div class="coords-bar" id="coords">Lat: — &nbsp; Lng: —</div>
@@ -617,16 +620,6 @@ const geoData = {
           [72.13, 22.25], [72.15, 22.28]
         ]]
       }
-    },
-    {
-      type: "Feature",
-      properties: { name: "Commercial Strip – East", desc: "Retail corridor, hospitality, convention centre & entertainment zone." },
-      geometry: {
-        type: "Polygon", coordinates: [[
-          [72.38, 22.20], [72.50, 22.19], [72.50, 22.13], [72.38, 22.13],
-          [72.36, 22.16], [72.38, 22.20]
-        ]]
-      }
     }
   ],
 
@@ -638,16 +631,6 @@ const geoData = {
         type: "Polygon", coordinates: [[
           [72.08, 22.42], [72.25, 22.44], [72.28, 22.38], [72.10, 22.38],
           [72.06, 22.40], [72.08, 22.42]
-        ]]
-      }
-    },
-    {
-      type: "Feature",
-      properties: { name: "Wetland / Buffer Zone", desc: "Protected wetland buffer on the Gulf of Khambhat coast. Flamingo habitat & tidal flats." },
-      geometry: {
-        type: "Polygon", coordinates: [[
-          [72.20, 22.04], [72.40, 22.04], [72.42, 22.10], [72.22, 22.08],
-          [72.18, 22.06], [72.20, 22.04]
         ]]
       }
     }
@@ -663,26 +646,6 @@ const geoData = {
           [72.12, 22.30], [72.15, 22.22], [72.16, 22.10]
         ]
       }
-    },
-    {
-      type: "Feature",
-      properties: { name: "DMIC Rail Freight Corridor", desc: "Dedicated Freight Corridor linking Dholera to Delhi-Mumbai industrial spine." },
-      geometry: {
-        type: "LineString", coordinates: [
-          [71.90, 22.52], [72.00, 22.45], [72.08, 22.38],
-          [72.12, 22.30], [72.18, 22.20], [72.25, 22.08]
-        ]
-      }
-    },
-    {
-      type: "Feature",
-      properties: { name: "Dholera International Airport", desc: "Greenfield international airport under construction. ~10 km² footprint, first commercial flights planned by 2026." },
-      geometry: {
-        type: "Polygon", coordinates: [[
-          [72.08, 22.32], [72.16, 22.32], [72.17, 22.27],
-          [72.08, 22.27], [72.07, 22.30], [72.08, 22.32]
-        ]]
-      }
     }
   ],
 
@@ -694,26 +657,6 @@ const geoData = {
         type: "Polygon", coordinates: [[
           [72.12, 22.30], [72.22, 22.30], [72.24, 22.22],
           [72.14, 22.21], [72.11, 22.26], [72.12, 22.30]
-        ]]
-      }
-    },
-    {
-      type: "Feature",
-      properties: { name: "Activation Area 2 (AA2)", desc: "Phase 2 expansion with integrated industrial, residential mix and renewable energy park." },
-      geometry: {
-        type: "Polygon", coordinates: [[
-          [72.24, 22.30], [72.35, 22.30], [72.36, 22.22],
-          [72.24, 22.22], [72.22, 22.26], [72.24, 22.30]
-        ]]
-      }
-    },
-    {
-      type: "Feature",
-      properties: { name: "Activation Area 3 (AA3)", desc: "Western township expansion. Solar power integration, IT park and educational institutions." },
-      geometry: {
-        type: "Polygon", coordinates: [[
-          [71.95, 22.28], [72.05, 22.28], [72.06, 22.18],
-          [71.96, 22.17], [71.93, 22.22], [71.95, 22.28]
         ]]
       }
     }
@@ -728,16 +671,6 @@ const geoData = {
           [71.85, 22.04], [72.55, 22.04], [72.55, 21.90],
           [71.85, 21.90], [71.85, 22.04]
         ]]
-      }
-    },
-    {
-      type: "Feature",
-      properties: { name: "Watana / Kharod River", desc: "Seasonal river feeding into the Gulf. Part of city's stormwater management plan." },
-      geometry: {
-        type: "LineString", coordinates: [
-          [72.20, 22.50], [72.18, 22.40], [72.16, 22.28],
-          [72.18, 22.15], [72.20, 22.06]
-        ]
       }
     }
   ]
@@ -757,6 +690,23 @@ const styles = {
 
 // ---- BUILD LAYERS ----
 const layerGroups = {};
+
+// ==========================================
+// NEW: ADD MASTER PLAN IMAGE LAYER
+// ==========================================
+// 1. Set your image bounds (Top-Left, Bottom-Right)
+const imageBounds = [
+    [22.60, 71.80], // Top-Left corner
+    [21.90, 72.65]  // Bottom-Right corner
+];
+
+// 2. Add image to the layerGroups object so the toggle logic handles it
+layerGroups.masterplan = L.imageOverlay('public/dholera-plan.png', imageBounds, {
+    opacity: 0.5,       // 50% transparency!
+    interactive: false  // False allows you to click the colored zones "through" the image
+});
+// ==========================================
+
 
 function buildLayer(key, data) {
   const features = Array.isArray(data) ? { type: "FeatureCollection", features: data } : data;
@@ -788,7 +738,7 @@ function buildLayer(key, data) {
   });
 }
 
-// Initialize all layer groups
+// Initialize all Vector layer groups
 layerGroups.boundary  = buildLayer('boundary', geoData.boundary);
 layerGroups.industrial = buildLayer('industrial', geoData.industrial);
 layerGroups.residential = buildLayer('residential', geoData.residential);
@@ -798,7 +748,7 @@ layerGroups.infra      = buildLayer('infra', geoData.infra);
 layerGroups.activation = buildLayer('activation', geoData.activation);
 layerGroups.water      = buildLayer('water', geoData.water);
 
-// Add all to map
+// Add all to map (this now loops through your image AND your vector layers)
 Object.values(layerGroups).forEach(lg => lg.addTo(map));
 
 // ---- TOGGLE LOGIC ----
