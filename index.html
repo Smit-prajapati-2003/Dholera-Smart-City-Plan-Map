@@ -9,176 +9,180 @@
 <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Exo+2:wght@300;400;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #040d1a;
-    --panel: #07152a;
-    --border: #0e2a4a;
-    --accent: #00c8ff;
-    --accent2: #00ff9d;
-    --text: #cde4f5;
-    --muted: #4a7a9b;
+    --bg:#040d1a; --panel:#07152a; --border:#0e2a4a;
+    --accent:#00c8ff; --accent2:#00ff9d; --text:#cde4f5; --muted:#4a7a9b;
   }
-  * { margin:0; padding:0; box-sizing:border-box; }
-  html, body {
-    width:100%; height:100%;
-    background:var(--bg);
-    font-family:'Exo 2',sans-serif;
-    color:var(--text);
-    overflow:hidden;
-    display:flex; flex-direction:column;
-  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html,body{width:100%;height:100%;background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--text);overflow:hidden;display:flex;flex-direction:column;}
 
-  /* ── HEADER ── */
-  header {
-    background:linear-gradient(90deg,#040d1a 0%,#071e3d 50%,#040d1a 100%);
-    border-bottom:1px solid var(--border);
-    padding:0 24px; height:54px; min-height:54px;
-    display:flex; align-items:center; justify-content:space-between;
-    position:relative; z-index:1000;
-  }
-  header::after {
-    content:''; position:absolute; bottom:0; left:0; right:0; height:1px;
-    background:linear-gradient(90deg,transparent,var(--accent),var(--accent2),var(--accent),transparent);
-    opacity:.5;
-  }
-  .logo { display:flex; align-items:center; gap:10px; }
-  .logo-icon {
-    width:32px; height:32px; border:2px solid var(--accent); border-radius:5px;
-    display:grid; place-items:center; font-size:18px; color:var(--accent);
-  }
-  .logo-title { font-family:'Rajdhani',sans-serif; font-weight:700; font-size:20px; letter-spacing:2px; color:#fff; text-transform:uppercase; }
-  .logo-title span { color:var(--accent); }
-  .logo-sub { font-family:'Space Mono',monospace; font-size:9px; color:var(--muted); letter-spacing:1.5px; text-transform:uppercase; margin-top:1px; }
-  .header-right { display:flex; align-items:center; gap:10px; }
-  .tag { font-family:'Space Mono',monospace; font-size:10px; padding:3px 9px; border-radius:2px; letter-spacing:1px; text-transform:uppercase; background:rgba(0,200,255,.1); border:1px solid var(--accent); color:var(--accent); }
-  .pulse-dot { width:7px; height:7px; border-radius:50%; background:var(--accent2); box-shadow:0 0 8px var(--accent2); animation:pulse 2s infinite; }
-  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+  /* HEADER */
+  header{background:linear-gradient(90deg,#040d1a 0%,#071e3d 50%,#040d1a 100%);border-bottom:1px solid var(--border);padding:0 24px;height:54px;min-height:54px;display:flex;align-items:center;justify-content:space-between;position:relative;z-index:1000;}
+  header::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--accent),var(--accent2),var(--accent),transparent);opacity:.5;}
+  .logo{display:flex;align-items:center;gap:10px;}
+  .logo-icon{width:32px;height:32px;border:2px solid var(--accent);border-radius:5px;display:grid;place-items:center;font-size:18px;color:var(--accent);}
+  .logo-title{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:20px;letter-spacing:2px;color:#fff;text-transform:uppercase;}
+  .logo-title span{color:var(--accent);}
+  .logo-sub{font-family:'Space Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-top:1px;}
+  .header-right{display:flex;align-items:center;gap:10px;}
+  .tag{font-family:'Space Mono',monospace;font-size:10px;padding:3px 9px;border-radius:2px;letter-spacing:1px;text-transform:uppercase;background:rgba(0,200,255,.1);border:1px solid var(--accent);color:var(--accent);}
+  .pulse-dot{width:7px;height:7px;border-radius:50%;background:var(--accent2);box-shadow:0 0 8px var(--accent2);animation:pulse 2s infinite;}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
 
-  /* ── LAYOUT ── */
-  .main { flex:1; display:flex; overflow:hidden; min-height:0; }
+  /* LAYOUT */
+  .main{flex:1;display:flex;overflow:hidden;min-height:0;}
 
-  /* ── SIDEBAR ── */
-  .sidebar {
-    width:270px; min-width:270px;
-    background:var(--panel); border-right:1px solid var(--border);
-    display:flex; flex-direction:column; overflow-y:auto; z-index:500;
-  }
-  .sidebar::-webkit-scrollbar { width:4px; }
-  .sidebar::-webkit-scrollbar-thumb { background:var(--border); border-radius:2px; }
+  /* SIDEBAR */
+  .sidebar{width:268px;min-width:268px;background:var(--panel);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto;z-index:500;}
+  .sidebar::-webkit-scrollbar{width:4px;}
+  .sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
+  .s-section{padding:16px;border-bottom:1px solid var(--border);}
+  .s-title{font-family:'Rajdhani',sans-serif;font-size:11px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;color:var(--accent);margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+  .s-title::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--border),transparent);}
 
-  .s-section { padding:16px; border-bottom:1px solid var(--border); }
-  .s-title {
-    font-family:'Rajdhani',sans-serif; font-size:11px; font-weight:600;
-    letter-spacing:2.5px; text-transform:uppercase; color:var(--accent);
-    margin-bottom:12px; display:flex; align-items:center; gap:8px;
-  }
-  .s-title::after { content:''; flex:1; height:1px; background:linear-gradient(90deg,var(--border),transparent); }
+  /* BASEMAP */
+  .basemap-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;}
+  .bm-btn{padding:8px 4px;background:transparent;border:1px solid var(--border);border-radius:4px;color:var(--muted);font-family:'Exo 2',sans-serif;font-size:11px;cursor:pointer;text-transform:uppercase;letter-spacing:.5px;transition:all .15s;}
+  .bm-btn:hover,.bm-btn.active{border-color:var(--accent);color:var(--accent);background:rgba(0,200,255,.06);}
 
-  /* ── BASE MAP BUTTONS ── */
-  .basemap-grid { display:grid; grid-template-columns:1fr 1fr; gap:6px; }
-  .bm-btn {
-    padding:8px 4px; background:transparent; border:1px solid var(--border);
-    border-radius:4px; color:var(--muted); font-family:'Exo 2',sans-serif;
-    font-size:11px; cursor:pointer; text-transform:uppercase; letter-spacing:.5px; transition:all .15s;
-  }
-  .bm-btn:hover,.bm-btn.active { border-color:var(--accent); color:var(--accent); background:rgba(0,200,255,.06); }
+  /* UPLOAD */
+  .upload-zone{border:2px dashed var(--border);border-radius:6px;padding:20px 12px;text-align:center;cursor:pointer;transition:all .2s;position:relative;background:rgba(0,200,255,.02);}
+  .upload-zone:hover,.upload-zone.drag-over{border-color:var(--accent);background:rgba(0,200,255,.06);}
+  .upload-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+  .upload-icon{font-size:28px;margin-bottom:8px;}
+  .upload-title{font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:600;color:var(--text);letter-spacing:1px;}
+  .upload-sub{font-size:11px;color:var(--muted);margin-top:4px;}
 
-  /* ── UPLOAD ZONE ── */
-  .upload-zone {
-    border:2px dashed var(--border);
-    border-radius:6px; padding:20px 12px;
-    text-align:center; cursor:pointer;
-    transition:all .2s; position:relative;
-    background:rgba(0,200,255,.02);
-  }
-  .upload-zone:hover, .upload-zone.drag-over {
-    border-color:var(--accent);
-    background:rgba(0,200,255,.06);
-  }
-  .upload-zone input[type=file] {
-    position:absolute; inset:0; opacity:0; cursor:pointer; width:100%; height:100%;
-  }
-  .upload-icon { font-size:28px; margin-bottom:8px; }
-  .upload-title { font-family:'Rajdhani',sans-serif; font-size:14px; font-weight:600; color:var(--text); letter-spacing:1px; }
-  .upload-sub { font-size:11px; color:var(--muted); margin-top:4px; }
+  /* PREVIEW */
+  .img-preview{display:none;border-radius:4px;overflow:hidden;border:1px solid var(--border);margin-bottom:12px;position:relative;}
+  .img-preview img{width:100%;height:80px;object-fit:cover;display:block;}
+  .img-preview-label{position:absolute;bottom:0;left:0;right:0;background:rgba(4,13,26,.85);padding:4px 8px;font-size:10px;color:var(--accent2);font-family:'Space Mono',monospace;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .remove-btn{position:absolute;top:5px;right:5px;width:20px;height:20px;border-radius:3px;background:rgba(255,80,80,.8);border:none;color:#fff;font-size:12px;cursor:pointer;display:grid;place-items:center;}
 
-  /* ── IMAGE PREVIEW ── */
-  .img-preview {
+  /* CONTROLS */
+  .overlay-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px;}
+  .overlay-label{font-size:13px;color:var(--text);}
+  .toggle-switch{width:40px;height:22px;background:var(--border);border-radius:11px;position:relative;cursor:pointer;transition:background .2s;flex-shrink:0;}
+  .toggle-switch.on{background:var(--accent);}
+  .toggle-switch::after{content:'';position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:#fff;transition:transform .2s;}
+  .toggle-switch.on::after{transform:translateX(18px);}
+  .slider-label{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:8px;}
+  .slider-label span{color:var(--accent);font-family:'Space Mono',monospace;font-size:11px;}
+  input[type=range]{-webkit-appearance:none;width:100%;height:4px;background:var(--border);border-radius:2px;outline:none;cursor:pointer;}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:var(--accent);box-shadow:0 0 6px var(--accent);cursor:pointer;}
+
+  /* INFO ROWS */
+  .info-row{display:flex;justify-content:space-between;align-items:center;padding:4px 0;font-size:11px;}
+  .info-key{color:var(--muted);font-family:'Space Mono',monospace;}
+  .info-val{color:var(--accent);font-family:'Space Mono',monospace;}
+
+  /* RESET BTN */
+  .reset-btn{width:100%;padding:7px;background:transparent;border:1px solid var(--border);border-radius:3px;color:var(--muted);font-family:'Rajdhani',sans-serif;font-weight:600;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:all .15s;margin-top:8px;}
+  .reset-btn:hover{border-color:var(--accent);color:var(--accent);}
+
+  .about-text{font-size:12px;color:var(--muted);line-height:1.6;}
+
+  /* MAP */
+  .map-wrapper{flex:1;position:relative;display:flex;flex-direction:column;min-width:0;min-height:0;}
+  #map{flex:1;width:100%;min-height:0;}
+
+  /* PLAN OVERLAY DIV — sits inside map container */
+  #planOverlay{
+    position:absolute;
+    z-index:400;
     display:none;
-    border-radius:4px; overflow:hidden;
+    cursor:move;
+    transform-origin:50% 50%;
+    /* dashed border when unlocked */
+    outline: 2px dashed rgba(0,200,255,0.6);
+    outline-offset: 0px;
+  }
+  #planOverlay.locked{cursor:default;outline:none;}
+  #planOverlay img{width:100%;height:100%;display:block;pointer-events:none;user-select:none;-webkit-user-drag:none;}
+
+  /* RESIZE HANDLES */
+  .rh{
+    position:absolute;width:14px;height:14px;
+    background:var(--accent);border:2.5px solid #fff;
+    border-radius:50%;z-index:2;
+    transition:opacity .15s, transform .15s;
+    box-shadow:0 0 6px rgba(0,200,255,.6);
+  }
+  .rh:hover{transform:scale(1.3);}
+  .rh.nw{top:-7px;left:-7px;cursor:nw-resize;}
+  .rh.ne{top:-7px;right:-7px;cursor:ne-resize;}
+  .rh.sw{bottom:-7px;left:-7px;cursor:sw-resize;}
+  .rh.se{bottom:-7px;right:-7px;cursor:se-resize;}
+  .rh.n{top:-7px;left:50%;transform:translateX(-50%);cursor:n-resize;}
+  .rh.n:hover{transform:translateX(-50%) scale(1.3);}
+  .rh.s{bottom:-7px;left:50%;transform:translateX(-50%);cursor:s-resize;}
+  .rh.s:hover{transform:translateX(-50%) scale(1.3);}
+  .rh.e{right:-7px;top:50%;transform:translateY(-50%);cursor:e-resize;}
+  .rh.e:hover{transform:translateY(-50%) scale(1.3);}
+  .rh.w{left:-7px;top:50%;transform:translateY(-50%);cursor:w-resize;}
+  .rh.w:hover{transform:translateY(-50%) scale(1.3);}
+
+  /* ROTATE HANDLE */
+  .rh.rot{
+    top:-38px;left:50%;transform:translateX(-50%);
+    cursor:crosshair;
+    background:var(--accent2);
+    box-shadow:0 0 6px rgba(0,255,157,.7);
+    width:16px;height:16px;
+  }
+  .rh.rot:hover{transform:translateX(-50%) scale(1.3);}
+  .rot-line{position:absolute;top:-30px;left:50%;transform:translateX(-50%);width:2px;height:24px;background:rgba(0,255,157,.5);pointer-events:none;}
+
+  /* Hide all handles when locked */
+  #planOverlay.locked .rh,
+  #planOverlay.locked .rot-line{display:none;}
+
+  /* LOCK BUTTON */
+  #lockBtn{
+    position:absolute;
+    bottom:22px;right:22px;
+    z-index:1000;
+    padding:10px 20px;
+    border-radius:6px;
+    font-family:'Rajdhani',sans-serif;font-weight:700;font-size:15px;
+    letter-spacing:2px;text-transform:uppercase;
+    cursor:pointer;display:none;
+    transition:all .2s;
+    backdrop-filter:blur(8px);
+  }
+  #lockBtn.unlocked{background:rgba(0,200,255,.12);border:1.5px solid var(--accent);color:var(--accent);}
+  #lockBtn.unlocked:hover{background:rgba(0,200,255,.22);}
+  #lockBtn.locked{background:rgba(0,255,157,.12);border:1.5px solid var(--accent2);color:var(--accent2);}
+  #lockBtn.locked:hover{background:rgba(0,255,157,.22);}
+
+  /* ROTATION INDICATOR */
+  #rotIndicator{
+    position:absolute;top:14px;right:14px;
+    z-index:1000;display:none;
+    background:rgba(7,21,42,.88);
     border:1px solid var(--border);
-    margin-bottom:12px; position:relative;
-  }
-  .img-preview img { width:100%; height:80px; object-fit:cover; display:block; }
-  .img-preview-label {
-    position:absolute; bottom:0; left:0; right:0;
-    background:rgba(4,13,26,.85); padding:4px 8px;
-    font-size:10px; color:var(--accent2); font-family:'Space Mono',monospace;
-    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
-  }
-  .remove-btn {
-    position:absolute; top:5px; right:5px;
-    width:20px; height:20px; border-radius:3px;
-    background:rgba(255,80,80,.8); border:none;
-    color:#fff; font-size:12px; cursor:pointer;
-    display:grid; place-items:center; line-height:1;
+    border-radius:4px;padding:5px 10px;
+    font-family:'Space Mono',monospace;font-size:11px;
+    color:var(--accent2);pointer-events:none;
+    backdrop-filter:blur(4px);
   }
 
-  /* ── OVERLAY CONTROLS ── */
-  .overlay-row { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:14px; }
-  .overlay-label { font-size:13px; color:var(--text); }
-  .toggle-switch { width:40px; height:22px; background:var(--border); border-radius:11px; position:relative; cursor:pointer; transition:background .2s; flex-shrink:0; }
-  .toggle-switch.on { background:var(--accent); }
-  .toggle-switch::after { content:''; position:absolute; top:3px; left:3px; width:16px; height:16px; border-radius:50%; background:#fff; transition:transform .2s; }
-  .toggle-switch.on::after { transform:translateX(18px); }
+  /* EMPTY STATE */
+  #emptyState{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(4,13,26,.7);z-index:500;pointer-events:none;backdrop-filter:blur(2px);}
+  #emptyState.hidden{display:none;}
+  .empty-icon{font-size:48px;margin-bottom:16px;opacity:.4;}
+  .empty-title{font-family:'Rajdhani',sans-serif;font-size:22px;font-weight:700;letter-spacing:2px;color:var(--muted);margin-bottom:8px;}
+  .empty-sub{font-size:13px;color:var(--muted);opacity:.7;text-align:center;}
 
-  .slider-label { display:flex; justify-content:space-between; font-size:12px; color:var(--muted); margin-bottom:8px; }
-  .slider-label span { color:var(--accent); font-family:'Space Mono',monospace; font-size:11px; }
-  input[type=range] { -webkit-appearance:none; width:100%; height:4px; background:var(--border); border-radius:2px; outline:none; cursor:pointer; }
-  input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; width:14px; height:14px; border-radius:50%; background:var(--accent); box-shadow:0 0 6px var(--accent); cursor:pointer; }
+  /* COORDS */
+  .coords-bar{position:absolute;bottom:0;right:0;background:rgba(4,13,26,.88);border-top:1px solid var(--border);border-left:1px solid var(--border);padding:4px 12px;font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);z-index:1000;pointer-events:none;}
+  .coords-bar span{color:var(--accent2);}
 
-  /* ── BOUNDS ── */
-  .bounds-grid { display:grid; grid-template-columns:1fr 1fr; gap:6px; }
-  .bound-field label { display:block; font-size:10px; color:var(--muted); margin-bottom:3px; text-transform:uppercase; letter-spacing:.5px; }
-  .bound-field input { width:100%; padding:5px 8px; background:#040d1a; border:1px solid var(--border); border-radius:3px; color:var(--text); font-family:'Space Mono',monospace; font-size:11px; outline:none; transition:border-color .15s; }
-  .bound-field input:focus { border-color:var(--accent); }
-  .apply-btn { margin-top:10px; width:100%; padding:8px; background:rgba(0,200,255,.08); border:1px solid var(--accent); border-radius:3px; color:var(--accent); font-family:'Rajdhani',sans-serif; font-weight:600; font-size:13px; letter-spacing:1.5px; text-transform:uppercase; cursor:pointer; transition:background .15s; }
-  .apply-btn:hover { background:rgba(0,200,255,.16); }
-
-  /* ── NO IMAGE STATE ── */
-  .no-image-msg { font-size:11px; color:var(--muted); line-height:1.5; display:none; }
-  .no-image-msg.visible { display:block; }
-
-  .about-text { font-size:12px; color:var(--muted); line-height:1.6; }
-
-  /* ── MAP ── */
-  .map-wrapper { flex:1; position:relative; display:flex; flex-direction:column; min-width:0; min-height:0; }
-  #map { flex:1; width:100%; min-height:0; }
-
-  /* ── EMPTY STATE OVERLAY ── */
-  #emptyState {
-    position:absolute; inset:0;
-    display:flex; flex-direction:column; align-items:center; justify-content:center;
-    background:rgba(4,13,26,.7); z-index:500; pointer-events:none;
-    backdrop-filter:blur(2px);
-  }
-  #emptyState.hidden { display:none; }
-  .empty-icon { font-size:48px; margin-bottom:16px; opacity:.4; }
-  .empty-title { font-family:'Rajdhani',sans-serif; font-size:22px; font-weight:700; letter-spacing:2px; color:var(--muted); margin-bottom:8px; }
-  .empty-sub { font-size:13px; color:var(--muted); opacity:.7; }
-
-  .coords-bar {
-    position:absolute; bottom:0; right:0;
-    background:rgba(4,13,26,.88); border-top:1px solid var(--border); border-left:1px solid var(--border);
-    padding:4px 12px; font-family:'Space Mono',monospace; font-size:10px; color:var(--muted); z-index:1000; pointer-events:none;
-  }
-  .coords-bar span { color:var(--accent2); }
-
-  /* ── LEAFLET OVERRIDES ── */
-  .leaflet-control-zoom { border:1px solid var(--border)!important; border-radius:4px!important; overflow:hidden; }
-  .leaflet-control-zoom a { background:var(--panel)!important; color:var(--accent)!important; border-color:var(--border)!important; }
-  .leaflet-control-zoom a:hover { background:var(--border)!important; }
-  .leaflet-control-attribution { background:rgba(4,13,26,.85)!important; color:var(--muted)!important; font-size:9px!important; }
-  .leaflet-control-attribution a { color:var(--accent)!important; }
+  /* LEAFLET */
+  .leaflet-control-zoom{border:1px solid var(--border)!important;border-radius:4px!important;overflow:hidden;}
+  .leaflet-control-zoom a{background:var(--panel)!important;color:var(--accent)!important;border-color:var(--border)!important;}
+  .leaflet-control-zoom a:hover{background:var(--border)!important;}
+  .leaflet-control-attribution{background:rgba(4,13,26,.85)!important;color:var(--muted)!important;font-size:9px!important;}
+  .leaflet-control-attribution a{color:var(--accent)!important;}
 </style>
 </head>
 <body>
@@ -200,7 +204,6 @@
 <div class="main">
   <aside class="sidebar">
 
-    <!-- BASE MAP -->
     <div class="s-section">
       <div class="s-title">Base Map</div>
       <div class="basemap-grid">
@@ -211,53 +214,41 @@
       </div>
     </div>
 
-    <!-- UPLOAD -->
     <div class="s-section">
       <div class="s-title">Plan Image</div>
-
-      <!-- Preview (shown after upload) -->
       <div class="img-preview" id="imgPreview">
-        <img id="previewImg" src="" alt="Plan preview">
-        <div class="img-preview-label" id="previewLabel">dholera-plan.png</div>
-        <button class="remove-btn" onclick="removeImage()" title="Remove">✕</button>
+        <img id="previewImg" src="" alt="preview">
+        <div class="img-preview-label" id="previewLabel"></div>
+        <button class="remove-btn" onclick="removeImage()">✕</button>
       </div>
-
-      <!-- Upload zone -->
       <div class="upload-zone" id="uploadZone">
         <input type="file" accept="image/*" id="fileInput" onchange="handleFile(this.files[0])">
         <div class="upload-icon">🗺️</div>
         <div class="upload-title">Upload Plan Image</div>
-        <div class="upload-sub">Click or drag & drop<br>PNG, JPG, WebP supported</div>
+        <div class="upload-sub">Click or drag & drop<br>PNG · JPG · WebP</div>
       </div>
     </div>
 
-    <!-- OVERLAY CONTROLS (hidden until image loaded) -->
     <div class="s-section" id="overlayControls" style="display:none">
       <div class="s-title">Overlay</div>
-
       <div class="overlay-row">
         <span class="overlay-label">Show on Map</span>
         <div class="toggle-switch on" id="overlayToggle" onclick="toggleOverlay()"></div>
       </div>
-
       <div class="slider-label">Opacity <span id="opacityVal">80%</span></div>
       <input type="range" min="0" max="100" value="80" id="opacitySlider" oninput="updateOpacity(this.value)">
     </div>
 
-    <!-- BOUNDS -->
-    <div class="s-section" id="boundsSection" style="display:none">
-      <div class="s-title">Image Bounds</div>
-      <p style="font-size:11px;color:var(--muted);margin-bottom:10px;line-height:1.5">Fine-tune to align the image over the map.</p>
-      <div class="bounds-grid">
-        <div class="bound-field"><label>South Lat</label><input type="number" id="bSouth" value="21.90" step="0.001"></div>
-        <div class="bound-field"><label>North Lat</label><input type="number" id="bNorth" value="22.60" step="0.001"></div>
-        <div class="bound-field"><label>West Lng</label><input type="number" id="bWest" value="71.80" step="0.001"></div>
-        <div class="bound-field"><label>East Lng</label><input type="number" id="bEast" value="72.65" step="0.001"></div>
-      </div>
-      <button class="apply-btn" onclick="applyBounds()">↻ Apply Bounds</button>
+    <div class="s-section" id="adjustInfo" style="display:none">
+      <div class="s-title">Current Position</div>
+      <div class="info-row"><span class="info-key">North</span><span class="info-val" id="infoN">—</span></div>
+      <div class="info-row"><span class="info-key">South</span><span class="info-val" id="infoS">—</span></div>
+      <div class="info-row"><span class="info-key">West</span><span class="info-val" id="infoW">—</span></div>
+      <div class="info-row"><span class="info-key">East</span><span class="info-val" id="infoE">—</span></div>
+      <div class="info-row"><span class="info-key">Rotation</span><span class="info-val" id="infoR">0°</span></div>
+      <button class="reset-btn" onclick="resetTransform()">↺ Reset Position</button>
     </div>
 
-    <!-- ABOUT -->
     <div class="s-section">
       <div class="s-title">About</div>
       <p class="about-text">Dholera SIR is India's first greenfield smart city, planned across ~920 km² on the Delhi–Mumbai Industrial Corridor in Gujarat.</p>
@@ -265,7 +256,7 @@
 
   </aside>
 
-  <div class="map-wrapper">
+  <div class="map-wrapper" id="mapWrapper">
     <div id="map"></div>
 
     <!-- EMPTY STATE -->
@@ -275,141 +266,333 @@
       <div class="empty-sub">Upload the Dholera Master Plan image<br>from the sidebar to overlay it on the map</div>
     </div>
 
+    <!-- LOCK BUTTON -->
+    <button id="lockBtn" class="unlocked" onclick="toggleLock()">🔓 Lock</button>
+
+    <!-- ROTATION INDICATOR -->
+    <div id="rotIndicator">↻ 0°</div>
+
     <div class="coords-bar" id="coords">Lat: — &nbsp; Lng: —</div>
   </div>
 </div>
 
 <script>
-  let planBounds = [[21.90, 71.80], [22.60, 72.65]];
-  let planOverlay = null;
-  let overlayVisible = true;
-  let currentImageUrl = null;
+// ─── STATE ───────────────────────────────────────────────────────────────────
+const S = {
+  loaded: false, locked: false, visible: true,
+  north: 22.60, south: 21.90, west: 71.80, east: 72.65,
+  rotation: 0, opacity: 0.80, imageUrl: null
+};
 
-  // ── MAP INIT ──────────────────────────────────────────────────────────────
-  const map = L.map('map', { center: [22.25, 72.18], zoom: 11 });
-  setTimeout(() => map.invalidateSize(), 300);
+// ─── MAP ─────────────────────────────────────────────────────────────────────
+const map = L.map('map', { center: [22.25, 72.18], zoom: 11 });
+setTimeout(() => map.invalidateSize(), 300);
 
-  // ── BASE LAYERS ───────────────────────────────────────────────────────────
-  const baseLayers = {
-    osm: L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors', maxZoom: 19
-    }),
-    satellite: L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-      attribution: '© Esri World Imagery', maxZoom: 19
-    }),
-    topo: L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
-      attribution: '© OpenTopoMap', maxZoom: 17
-    }),
-    dark: L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-      attribution: '© CARTO', maxZoom: 19
-    })
+const baseLayers = {
+  osm: L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors', maxZoom:19 }),
+  satellite: L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { attribution:'© Esri', maxZoom:19 }),
+  topo: L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', { attribution:'© OpenTopoMap', maxZoom:17 }),
+  dark: L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', { attribution:'© CARTO', maxZoom:19 })
+};
+baseLayers.osm.addTo(map);
+map.fitBounds([[S.south, S.west],[S.north, S.east]]);
+
+function switchBase(name, btn) {
+  document.querySelectorAll('.bm-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  Object.values(baseLayers).forEach(l => map.removeLayer(l));
+  baseLayers[name].addTo(map);
+}
+
+// ─── OVERLAY DIV ─────────────────────────────────────────────────────────────
+// Build overlay div inside the map container
+const mapContainer = map.getContainer();
+
+const overlay = document.createElement('div');
+overlay.id = 'planOverlay';
+overlay.innerHTML = `
+  <div class="rot-line"></div>
+  <img id="overlayImg" draggable="false">
+  <div class="rh rot"   data-handle="rot"></div>
+  <div class="rh nw"    data-handle="nw"></div>
+  <div class="rh ne"    data-handle="ne"></div>
+  <div class="rh sw"    data-handle="sw"></div>
+  <div class="rh se"    data-handle="se"></div>
+  <div class="rh n"     data-handle="n"></div>
+  <div class="rh s"     data-handle="s"></div>
+  <div class="rh e"     data-handle="e"></div>
+  <div class="rh w"     data-handle="w"></div>
+`;
+mapContainer.appendChild(overlay);
+
+// Also move the other absolute elements into mapContainer
+const lockBtn       = document.getElementById('lockBtn');
+const rotIndicator  = document.getElementById('rotIndicator');
+const emptyState    = document.getElementById('emptyState');
+const coordsBar     = document.getElementById('coords');
+mapContainer.appendChild(lockBtn);
+mapContainer.appendChild(rotIndicator);
+mapContainer.appendChild(emptyState);
+mapContainer.appendChild(coordsBar);
+
+// Ensure map container is relative
+mapContainer.style.position = 'relative';
+mapContainer.style.flex = '1';
+mapContainer.style.minHeight = '0';
+
+// ─── UPDATE OVERLAY POSITION ─────────────────────────────────────────────────
+function updateOverlayPosition() {
+  if (!S.loaded) return;
+  const nw = map.latLngToContainerPoint([S.north, S.west]);
+  const se = map.latLngToContainerPoint([S.south, S.east]);
+  const w  = se.x - nw.x;
+  const h  = se.y - nw.y;
+
+  overlay.style.left   = nw.x + 'px';
+  overlay.style.top    = nw.y + 'px';
+  overlay.style.width  = Math.max(w, 10) + 'px';
+  overlay.style.height = Math.max(h, 10) + 'px';
+  overlay.style.transform = `rotate(${S.rotation}deg)`;
+  overlay.style.opacity = S.visible ? S.opacity : 0;
+
+  // Sync info panel
+  document.getElementById('infoN').textContent = S.north.toFixed(4);
+  document.getElementById('infoS').textContent = S.south.toFixed(4);
+  document.getElementById('infoW').textContent = S.west.toFixed(4);
+  document.getElementById('infoE').textContent = S.east.toFixed(4);
+  document.getElementById('infoR').textContent = Math.round(S.rotation) + '°';
+  rotIndicator.textContent = '↻ ' + Math.round(S.rotation) + '°';
+}
+
+map.on('zoom move zoomend moveend', updateOverlayPosition);
+
+// ─── FILE UPLOAD ─────────────────────────────────────────────────────────────
+function handleFile(file) {
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => loadImageOverlay(e.target.result, file.name);
+  reader.readAsDataURL(file);
+}
+
+function loadImageOverlay(url, filename) {
+  S.imageUrl = url;
+  S.loaded = true;
+  S.locked = false;
+  S.rotation = 0;
+  S.north = 22.60; S.south = 21.90; S.west = 71.80; S.east = 72.65;
+
+  document.getElementById('overlayImg').src = url;
+  document.getElementById('previewImg').src = url;
+  document.getElementById('previewLabel').textContent = filename || 'plan.png';
+  document.getElementById('imgPreview').style.display = 'block';
+  document.getElementById('uploadZone').style.display = 'none';
+  document.getElementById('overlayControls').style.display = 'block';
+  document.getElementById('adjustInfo').style.display = 'block';
+
+  overlay.style.display = 'block';
+  overlay.classList.remove('locked');
+
+  lockBtn.style.display = 'block';
+  lockBtn.className = 'unlocked';
+  lockBtn.textContent = '🔓 Lock';
+
+  rotIndicator.style.display = 'block';
+  emptyState.classList.add('hidden');
+
+  map.fitBounds([[S.south, S.west],[S.north, S.east]]);
+  setTimeout(updateOverlayPosition, 100);
+}
+
+function removeImage() {
+  S.loaded = false; S.imageUrl = null;
+  overlay.style.display = 'none';
+  lockBtn.style.display = 'none';
+  rotIndicator.style.display = 'none';
+  document.getElementById('imgPreview').style.display = 'none';
+  document.getElementById('uploadZone').style.display = 'block';
+  document.getElementById('overlayControls').style.display = 'none';
+  document.getElementById('adjustInfo').style.display = 'none';
+  document.getElementById('fileInput').value = '';
+  emptyState.classList.remove('hidden');
+}
+
+// ─── DRAG OVERLAY ────────────────────────────────────────────────────────────
+overlay.addEventListener('mousedown', e => {
+  if (S.locked) return;
+  if (e.target.dataset.handle) return; // handled separately
+  e.preventDefault(); e.stopPropagation();
+  map.dragging.disable();
+
+  const rect = mapContainer.getBoundingClientRect();
+  const startN = S.north, startS = S.south, startW = S.west, startE = S.east;
+  const startX = e.clientX, startY = e.clientY;
+
+  function onMove(e) {
+    const p0 = map.containerPointToLatLng([startX - rect.left, startY - rect.top]);
+    const p1 = map.containerPointToLatLng([e.clientX - rect.left, e.clientY - rect.top]);
+    const dLat = p1.lat - p0.lat;
+    const dLng = p1.lng - p0.lng;
+    S.north = startN + dLat; S.south = startS + dLat;
+    S.west  = startW + dLng; S.east  = startE + dLng;
+    updateOverlayPosition();
+  }
+  function onUp() {
+    document.removeEventListener('mousemove', onMove);
+    document.removeEventListener('mouseup', onUp);
+    map.dragging.enable();
+  }
+  document.addEventListener('mousemove', onMove);
+  document.addEventListener('mouseup', onUp);
+});
+
+// ─── RESIZE & ROTATE HANDLES ─────────────────────────────────────────────────
+overlay.querySelectorAll('.rh').forEach(handle => {
+  handle.addEventListener('mousedown', e => {
+    if (S.locked) return;
+    e.preventDefault(); e.stopPropagation();
+    map.dragging.disable();
+    const type = e.target.dataset.handle;
+    const rect = mapContainer.getBoundingClientRect();
+
+    if (type === 'rot') {
+      // Rotation: angle from center of overlay to mouse
+      startRotate(e, rect);
+    } else {
+      startResize(e, type, rect);
+    }
+  });
+});
+
+function startResize(e, corner, rect) {
+  // Anchor = opposite corner stays fixed
+  const anchors = {
+    nw: ()=>({ lat: S.south, lng: S.east }),
+    ne: ()=>({ lat: S.south, lng: S.west }),
+    sw: ()=>({ lat: S.north, lng: S.east }),
+    se: ()=>({ lat: S.north, lng: S.west }),
+    n:  ()=>({ lat: S.south, lng: null   }),
+    s:  ()=>({ lat: S.north, lng: null   }),
+    e:  ()=>({ lat: null,    lng: S.west }),
+    w:  ()=>({ lat: null,    lng: S.east })
   };
-  baseLayers.osm.addTo(map);
-  map.fitBounds(planBounds);
+  const anchor = anchors[corner]();
 
-  function switchBase(name, btn) {
-    document.querySelectorAll('.bm-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    Object.values(baseLayers).forEach(l => map.removeLayer(l));
-    baseLayers[name].addTo(map);
+  function onMove(e) {
+    const ll = map.containerPointToLatLng([e.clientX - rect.left, e.clientY - rect.top]);
+    const MIN = 0.005; // minimum size in degrees
+    if (corner === 'nw') {
+      S.north = Math.max(ll.lat, anchor.lat + MIN);
+      S.west  = Math.min(ll.lng, anchor.lng - MIN);
+      S.south = anchor.lat; S.east = anchor.lng;
+    } else if (corner === 'ne') {
+      S.north = Math.max(ll.lat, anchor.lat + MIN);
+      S.east  = Math.max(ll.lng, anchor.lng + MIN);
+      S.south = anchor.lat; S.west = anchor.lng;
+    } else if (corner === 'sw') {
+      S.south = Math.min(ll.lat, anchor.lat - MIN);
+      S.west  = Math.min(ll.lng, anchor.lng - MIN);
+      S.north = anchor.lat; S.east = anchor.lng;
+    } else if (corner === 'se') {
+      S.south = Math.min(ll.lat, anchor.lat - MIN);
+      S.east  = Math.max(ll.lng, anchor.lng + MIN);
+      S.north = anchor.lat; S.west = anchor.lng;
+    } else if (corner === 'n') {
+      S.north = Math.max(ll.lat, anchor.lat + MIN);
+      S.south = anchor.lat;
+    } else if (corner === 's') {
+      S.south = Math.min(ll.lat, anchor.lat - MIN);
+      S.north = anchor.lat;
+    } else if (corner === 'e') {
+      S.east = Math.max(ll.lng, anchor.lng + MIN);
+      S.west = anchor.lng;
+    } else if (corner === 'w') {
+      S.west = Math.min(ll.lng, anchor.lng - MIN);
+      S.east = anchor.lng;
+    }
+    updateOverlayPosition();
   }
-
-  // ── FILE UPLOAD ───────────────────────────────────────────────────────────
-  function handleFile(file) {
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = function(e) {
-      currentImageUrl = e.target.result;
-      setImageOverlay(currentImageUrl, file.name);
-    };
-    reader.readAsDataURL(file);
+  function onUp() {
+    document.removeEventListener('mousemove', onMove);
+    document.removeEventListener('mouseup', onUp);
+    map.dragging.enable();
   }
+  document.addEventListener('mousemove', onMove);
+  document.addEventListener('mouseup', onUp);
+}
 
-  function setImageOverlay(url, filename) {
-    // Remove old overlay
-    if (planOverlay) map.removeLayer(planOverlay);
+function startRotate(e, rect) {
+  const nw = map.latLngToContainerPoint([S.north, S.west]);
+  const se = map.latLngToContainerPoint([S.south, S.east]);
+  // Center in page coords
+  const cx = rect.left + (nw.x + se.x) / 2;
+  const cy = rect.top  + (nw.y + se.y) / 2;
 
-    // Add new overlay
-    planOverlay = L.imageOverlay(url, planBounds, { opacity: 0.80, interactive: false });
-    planOverlay.addTo(map);
-    overlayVisible = true;
-
-    // Show preview
-    document.getElementById('previewImg').src = url;
-    document.getElementById('previewLabel').textContent = filename || 'plan.png';
-    document.getElementById('imgPreview').style.display = 'block';
-
-    // Hide upload zone, show controls
-    document.getElementById('uploadZone').style.display = 'none';
-    document.getElementById('overlayControls').style.display = 'block';
-    document.getElementById('boundsSection').style.display = 'block';
-    document.getElementById('overlayToggle').classList.add('on');
-    document.getElementById('opacitySlider').value = 80;
-    document.getElementById('opacityVal').textContent = '80%';
-
-    // Hide empty state
-    document.getElementById('emptyState').classList.add('hidden');
-
-    map.fitBounds(planBounds);
+  function onMove(e) {
+    const dx = e.clientX - cx;
+    const dy = e.clientY - cy;
+    S.rotation = Math.atan2(dx, -dy) * 180 / Math.PI;
+    updateOverlayPosition();
   }
-
-  function removeImage() {
-    if (planOverlay) { map.removeLayer(planOverlay); planOverlay = null; }
-    currentImageUrl = null;
-    document.getElementById('previewImg').src = '';
-    document.getElementById('imgPreview').style.display = 'none';
-    document.getElementById('uploadZone').style.display = 'block';
-    document.getElementById('overlayControls').style.display = 'none';
-    document.getElementById('boundsSection').style.display = 'none';
-    document.getElementById('emptyState').classList.remove('hidden');
-    document.getElementById('fileInput').value = '';
+  function onUp() {
+    document.removeEventListener('mousemove', onMove);
+    document.removeEventListener('mouseup', onUp);
+    map.dragging.enable();
   }
+  document.addEventListener('mousemove', onMove);
+  document.addEventListener('mouseup', onUp);
+}
 
-  // ── DRAG & DROP ───────────────────────────────────────────────────────────
-  const uploadZone = document.getElementById('uploadZone');
-  uploadZone.addEventListener('dragover', e => { e.preventDefault(); uploadZone.classList.add('drag-over'); });
-  uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('drag-over'));
-  uploadZone.addEventListener('drop', e => {
-    e.preventDefault();
-    uploadZone.classList.remove('drag-over');
-    const file = e.dataTransfer.files[0];
-    if (file && file.type.startsWith('image/')) handleFile(file);
-  });
-
-  // ── TOGGLE ────────────────────────────────────────────────────────────────
-  function toggleOverlay() {
-    if (!planOverlay) return;
-    overlayVisible = !overlayVisible;
-    overlayVisible ? planOverlay.addTo(map) : map.removeLayer(planOverlay);
-    document.getElementById('overlayToggle').classList.toggle('on', overlayVisible);
+// ─── LOCK / UNLOCK ───────────────────────────────────────────────────────────
+function toggleLock() {
+  S.locked = !S.locked;
+  if (S.locked) {
+    overlay.classList.add('locked');
+    overlay.style.cursor = 'default';
+    lockBtn.className = 'locked';
+    lockBtn.textContent = '🔒 Locked';
+  } else {
+    overlay.classList.remove('locked');
+    overlay.style.cursor = 'move';
+    lockBtn.className = 'unlocked';
+    lockBtn.textContent = '🔓 Lock';
   }
+}
 
-  // ── OPACITY ───────────────────────────────────────────────────────────────
-  function updateOpacity(val) {
-    document.getElementById('opacityVal').textContent = val + '%';
-    if (planOverlay) planOverlay.setOpacity(val / 100);
-  }
+// ─── TOGGLE VISIBILITY ───────────────────────────────────────────────────────
+function toggleOverlay() {
+  S.visible = !S.visible;
+  document.getElementById('overlayToggle').classList.toggle('on', S.visible);
+  updateOverlayPosition();
+}
 
-  // ── BOUNDS ────────────────────────────────────────────────────────────────
-  function applyBounds() {
-    const s = parseFloat(document.getElementById('bSouth').value);
-    const n = parseFloat(document.getElementById('bNorth').value);
-    const w = parseFloat(document.getElementById('bWest').value);
-    const e = parseFloat(document.getElementById('bEast').value);
-    if ([s,n,w,e].some(isNaN) || !currentImageUrl) return;
-    planBounds = [[s, w], [n, e]];
-    const opacity = parseInt(document.getElementById('opacitySlider').value) / 100;
-    if (planOverlay) map.removeLayer(planOverlay);
-    planOverlay = L.imageOverlay(currentImageUrl, planBounds, { opacity, interactive: false });
-    if (overlayVisible) planOverlay.addTo(map);
-    map.fitBounds(planBounds);
-  }
+// ─── OPACITY ─────────────────────────────────────────────────────────────────
+function updateOpacity(val) {
+  S.opacity = val / 100;
+  document.getElementById('opacityVal').textContent = val + '%';
+  updateOverlayPosition();
+}
 
-  // ── COORDS ────────────────────────────────────────────────────────────────
-  map.on('mousemove', e => {
-    document.getElementById('coords').innerHTML =
-      `Lat: <span>${e.latlng.lat.toFixed(5)}</span> &nbsp; Lng: <span>${e.latlng.lng.toFixed(5)}</span>`;
-  });
+// ─── RESET ───────────────────────────────────────────────────────────────────
+function resetTransform() {
+  S.north = 22.60; S.south = 21.90; S.west = 71.80; S.east = 72.65; S.rotation = 0;
+  map.fitBounds([[S.south, S.west],[S.north, S.east]]);
+  setTimeout(updateOverlayPosition, 200);
+}
+
+// ─── DRAG & DROP UPLOAD ──────────────────────────────────────────────────────
+const uploadZone = document.getElementById('uploadZone');
+uploadZone.addEventListener('dragover', e => { e.preventDefault(); uploadZone.classList.add('drag-over'); });
+uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('drag-over'));
+uploadZone.addEventListener('drop', e => {
+  e.preventDefault(); uploadZone.classList.remove('drag-over');
+  const file = e.dataTransfer.files[0];
+  if (file && file.type.startsWith('image/')) handleFile(file);
+});
+
+// ─── COORDS ──────────────────────────────────────────────────────────────────
+map.on('mousemove', e => {
+  coordsBar.innerHTML = `Lat: <span>${e.latlng.lat.toFixed(5)}</span> &nbsp; Lng: <span>${e.latlng.lng.toFixed(5)}</span>`;
+});
 </script>
 </body>
 </html>
