@@ -19,186 +19,166 @@
   }
   * { margin:0; padding:0; box-sizing:border-box; }
   html, body {
-    width: 100%; height: 100%;
-    background: var(--bg);
-    font-family: 'Exo 2', sans-serif;
-    color: var(--text);
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
+    width:100%; height:100%;
+    background:var(--bg);
+    font-family:'Exo 2',sans-serif;
+    color:var(--text);
+    overflow:hidden;
+    display:flex; flex-direction:column;
   }
+
+  /* ── HEADER ── */
   header {
-    background: linear-gradient(90deg, #040d1a 0%, #071e3d 50%, #040d1a 100%);
-    border-bottom: 1px solid var(--border);
-    padding: 0 24px;
-    height: 54px;
-    min-height: 54px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    position: relative;
-    z-index: 1000;
+    background:linear-gradient(90deg,#040d1a 0%,#071e3d 50%,#040d1a 100%);
+    border-bottom:1px solid var(--border);
+    padding:0 24px; height:54px; min-height:54px;
+    display:flex; align-items:center; justify-content:space-between;
+    position:relative; z-index:1000;
   }
   header::after {
-    content: '';
-    position: absolute;
-    bottom: 0; left: 0; right: 0; height: 1px;
-    background: linear-gradient(90deg, transparent, var(--accent), var(--accent2), var(--accent), transparent);
-    opacity: 0.5;
+    content:''; position:absolute; bottom:0; left:0; right:0; height:1px;
+    background:linear-gradient(90deg,transparent,var(--accent),var(--accent2),var(--accent),transparent);
+    opacity:.5;
   }
-  .logo { display: flex; align-items: center; gap: 10px; }
+  .logo { display:flex; align-items:center; gap:10px; }
   .logo-icon {
-    width: 32px; height: 32px;
-    border: 2px solid var(--accent); border-radius: 5px;
-    display: grid; place-items: center;
-    font-size: 18px; color: var(--accent);
+    width:32px; height:32px; border:2px solid var(--accent); border-radius:5px;
+    display:grid; place-items:center; font-size:18px; color:var(--accent);
   }
-  .logo-title {
-    font-family: 'Rajdhani', sans-serif;
-    font-weight: 700; font-size: 20px;
-    letter-spacing: 2px; color: #fff; text-transform: uppercase;
-  }
-  .logo-title span { color: var(--accent); }
-  .logo-sub {
-    font-family: 'Space Mono', monospace;
-    font-size: 9px; color: var(--muted);
-    letter-spacing: 1.5px; text-transform: uppercase; margin-top: 1px;
-  }
-  .header-right { display: flex; align-items: center; gap: 10px; }
-  .tag {
-    font-family: 'Space Mono', monospace;
-    font-size: 10px; padding: 3px 9px; border-radius: 2px;
-    letter-spacing: 1px; text-transform: uppercase;
-    background: rgba(0,200,255,0.1); border: 1px solid var(--accent); color: var(--accent);
-  }
-  .pulse-dot {
-    width: 7px; height: 7px; border-radius: 50%;
-    background: var(--accent2); box-shadow: 0 0 8px var(--accent2);
-    animation: pulse 2s infinite;
-  }
+  .logo-title { font-family:'Rajdhani',sans-serif; font-weight:700; font-size:20px; letter-spacing:2px; color:#fff; text-transform:uppercase; }
+  .logo-title span { color:var(--accent); }
+  .logo-sub { font-family:'Space Mono',monospace; font-size:9px; color:var(--muted); letter-spacing:1.5px; text-transform:uppercase; margin-top:1px; }
+  .header-right { display:flex; align-items:center; gap:10px; }
+  .tag { font-family:'Space Mono',monospace; font-size:10px; padding:3px 9px; border-radius:2px; letter-spacing:1px; text-transform:uppercase; background:rgba(0,200,255,.1); border:1px solid var(--accent); color:var(--accent); }
+  .pulse-dot { width:7px; height:7px; border-radius:50%; background:var(--accent2); box-shadow:0 0 8px var(--accent2); animation:pulse 2s infinite; }
   @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
 
-  .main {
-    flex: 1;
-    display: flex;
-    overflow: hidden;
-    min-height: 0; /* important for flex children */
-  }
+  /* ── LAYOUT ── */
+  .main { flex:1; display:flex; overflow:hidden; min-height:0; }
 
+  /* ── SIDEBAR ── */
   .sidebar {
-    width: 260px; min-width: 260px;
-    background: var(--panel);
-    border-right: 1px solid var(--border);
-    display: flex; flex-direction: column;
-    overflow-y: auto; z-index: 500;
+    width:270px; min-width:270px;
+    background:var(--panel); border-right:1px solid var(--border);
+    display:flex; flex-direction:column; overflow-y:auto; z-index:500;
   }
-  .sidebar::-webkit-scrollbar { width: 4px; }
-  .sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+  .sidebar::-webkit-scrollbar { width:4px; }
+  .sidebar::-webkit-scrollbar-thumb { background:var(--border); border-radius:2px; }
 
-  .s-section { padding: 16px; border-bottom: 1px solid var(--border); }
+  .s-section { padding:16px; border-bottom:1px solid var(--border); }
   .s-title {
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 11px; font-weight: 600;
-    letter-spacing: 2.5px; text-transform: uppercase;
-    color: var(--accent); margin-bottom: 12px;
-    display: flex; align-items: center; gap: 8px;
+    font-family:'Rajdhani',sans-serif; font-size:11px; font-weight:600;
+    letter-spacing:2.5px; text-transform:uppercase; color:var(--accent);
+    margin-bottom:12px; display:flex; align-items:center; gap:8px;
   }
-  .s-title::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, var(--border), transparent); }
+  .s-title::after { content:''; flex:1; height:1px; background:linear-gradient(90deg,var(--border),transparent); }
 
-  .basemap-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+  /* ── BASE MAP BUTTONS ── */
+  .basemap-grid { display:grid; grid-template-columns:1fr 1fr; gap:6px; }
   .bm-btn {
-    padding: 8px 4px; background: transparent;
-    border: 1px solid var(--border); border-radius: 4px;
-    color: var(--muted); font-family: 'Exo 2', sans-serif;
-    font-size: 11px; cursor: pointer;
-    text-transform: uppercase; letter-spacing: 0.5px; transition: all .15s;
+    padding:8px 4px; background:transparent; border:1px solid var(--border);
+    border-radius:4px; color:var(--muted); font-family:'Exo 2',sans-serif;
+    font-size:11px; cursor:pointer; text-transform:uppercase; letter-spacing:.5px; transition:all .15s;
   }
-  .bm-btn:hover, .bm-btn.active { border-color: var(--accent); color: var(--accent); background: rgba(0,200,255,0.06); }
+  .bm-btn:hover,.bm-btn.active { border-color:var(--accent); color:var(--accent); background:rgba(0,200,255,.06); }
 
-  .overlay-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 14px; }
-  .overlay-label { font-size: 13px; color: var(--text); }
-  .toggle-switch {
-    width: 40px; height: 22px; background: var(--border);
-    border-radius: 11px; position: relative; cursor: pointer;
-    transition: background .2s; flex-shrink: 0;
+  /* ── UPLOAD ZONE ── */
+  .upload-zone {
+    border:2px dashed var(--border);
+    border-radius:6px; padding:20px 12px;
+    text-align:center; cursor:pointer;
+    transition:all .2s; position:relative;
+    background:rgba(0,200,255,.02);
   }
-  .toggle-switch.on { background: var(--accent); }
-  .toggle-switch::after {
-    content: ''; position: absolute; top: 3px; left: 3px;
-    width: 16px; height: 16px; border-radius: 50%; background: #fff; transition: transform .2s;
+  .upload-zone:hover, .upload-zone.drag-over {
+    border-color:var(--accent);
+    background:rgba(0,200,255,.06);
   }
-  .toggle-switch.on::after { transform: translateX(18px); }
+  .upload-zone input[type=file] {
+    position:absolute; inset:0; opacity:0; cursor:pointer; width:100%; height:100%;
+  }
+  .upload-icon { font-size:28px; margin-bottom:8px; }
+  .upload-title { font-family:'Rajdhani',sans-serif; font-size:14px; font-weight:600; color:var(--text); letter-spacing:1px; }
+  .upload-sub { font-size:11px; color:var(--muted); margin-top:4px; }
 
-  .slider-label { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); margin-bottom: 8px; }
-  .slider-label span { color: var(--accent); font-family: 'Space Mono', monospace; font-size: 11px; }
-  input[type=range] {
-    -webkit-appearance: none; width: 100%; height: 4px;
-    background: var(--border); border-radius: 2px; outline: none; cursor: pointer;
+  /* ── IMAGE PREVIEW ── */
+  .img-preview {
+    display:none;
+    border-radius:4px; overflow:hidden;
+    border:1px solid var(--border);
+    margin-bottom:12px; position:relative;
   }
-  input[type=range]::-webkit-slider-thumb {
-    -webkit-appearance: none; width: 14px; height: 14px;
-    border-radius: 50%; background: var(--accent); box-shadow: 0 0 6px var(--accent); cursor: pointer;
+  .img-preview img { width:100%; height:80px; object-fit:cover; display:block; }
+  .img-preview-label {
+    position:absolute; bottom:0; left:0; right:0;
+    background:rgba(4,13,26,.85); padding:4px 8px;
+    font-size:10px; color:var(--accent2); font-family:'Space Mono',monospace;
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  }
+  .remove-btn {
+    position:absolute; top:5px; right:5px;
+    width:20px; height:20px; border-radius:3px;
+    background:rgba(255,80,80,.8); border:none;
+    color:#fff; font-size:12px; cursor:pointer;
+    display:grid; place-items:center; line-height:1;
   }
 
-  .bounds-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
-  .bound-field label { display: block; font-size: 10px; color: var(--muted); margin-bottom: 3px; text-transform: uppercase; letter-spacing: 0.5px; }
-  .bound-field input {
-    width: 100%; padding: 5px 8px; background: #040d1a;
-    border: 1px solid var(--border); border-radius: 3px; color: var(--text);
-    font-family: 'Space Mono', monospace; font-size: 11px; outline: none; transition: border-color .15s;
-  }
-  .bound-field input:focus { border-color: var(--accent); }
-  .apply-btn {
-    margin-top: 10px; width: 100%; padding: 8px;
-    background: rgba(0,200,255,0.08); border: 1px solid var(--accent);
-    border-radius: 3px; color: var(--accent); font-family: 'Rajdhani', sans-serif;
-    font-weight: 600; font-size: 13px; letter-spacing: 1.5px; text-transform: uppercase;
-    cursor: pointer; transition: background .15s;
-  }
-  .apply-btn:hover { background: rgba(0,200,255,0.16); }
-  .about-text { font-size: 12px; color: var(--muted); line-height: 1.6; }
+  /* ── OVERLAY CONTROLS ── */
+  .overlay-row { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:14px; }
+  .overlay-label { font-size:13px; color:var(--text); }
+  .toggle-switch { width:40px; height:22px; background:var(--border); border-radius:11px; position:relative; cursor:pointer; transition:background .2s; flex-shrink:0; }
+  .toggle-switch.on { background:var(--accent); }
+  .toggle-switch::after { content:''; position:absolute; top:3px; left:3px; width:16px; height:16px; border-radius:50%; background:#fff; transition:transform .2s; }
+  .toggle-switch.on::after { transform:translateX(18px); }
 
-  /* MAP WRAPPER — must fill remaining space */
-  .map-wrapper {
-    flex: 1;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    min-width: 0;
-    min-height: 0;
+  .slider-label { display:flex; justify-content:space-between; font-size:12px; color:var(--muted); margin-bottom:8px; }
+  .slider-label span { color:var(--accent); font-family:'Space Mono',monospace; font-size:11px; }
+  input[type=range] { -webkit-appearance:none; width:100%; height:4px; background:var(--border); border-radius:2px; outline:none; cursor:pointer; }
+  input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; width:14px; height:14px; border-radius:50%; background:var(--accent); box-shadow:0 0 6px var(--accent); cursor:pointer; }
+
+  /* ── BOUNDS ── */
+  .bounds-grid { display:grid; grid-template-columns:1fr 1fr; gap:6px; }
+  .bound-field label { display:block; font-size:10px; color:var(--muted); margin-bottom:3px; text-transform:uppercase; letter-spacing:.5px; }
+  .bound-field input { width:100%; padding:5px 8px; background:#040d1a; border:1px solid var(--border); border-radius:3px; color:var(--text); font-family:'Space Mono',monospace; font-size:11px; outline:none; transition:border-color .15s; }
+  .bound-field input:focus { border-color:var(--accent); }
+  .apply-btn { margin-top:10px; width:100%; padding:8px; background:rgba(0,200,255,.08); border:1px solid var(--accent); border-radius:3px; color:var(--accent); font-family:'Rajdhani',sans-serif; font-weight:600; font-size:13px; letter-spacing:1.5px; text-transform:uppercase; cursor:pointer; transition:background .15s; }
+  .apply-btn:hover { background:rgba(0,200,255,.16); }
+
+  /* ── NO IMAGE STATE ── */
+  .no-image-msg { font-size:11px; color:var(--muted); line-height:1.5; display:none; }
+  .no-image-msg.visible { display:block; }
+
+  .about-text { font-size:12px; color:var(--muted); line-height:1.6; }
+
+  /* ── MAP ── */
+  .map-wrapper { flex:1; position:relative; display:flex; flex-direction:column; min-width:0; min-height:0; }
+  #map { flex:1; width:100%; min-height:0; }
+
+  /* ── EMPTY STATE OVERLAY ── */
+  #emptyState {
+    position:absolute; inset:0;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    background:rgba(4,13,26,.7); z-index:500; pointer-events:none;
+    backdrop-filter:blur(2px);
   }
-  #map {
-    flex: 1;
-    width: 100%;
-    min-height: 0;
-  }
+  #emptyState.hidden { display:none; }
+  .empty-icon { font-size:48px; margin-bottom:16px; opacity:.4; }
+  .empty-title { font-family:'Rajdhani',sans-serif; font-size:22px; font-weight:700; letter-spacing:2px; color:var(--muted); margin-bottom:8px; }
+  .empty-sub { font-size:13px; color:var(--muted); opacity:.7; }
 
   .coords-bar {
-    position: absolute; bottom: 0; right: 0;
-    background: rgba(4,13,26,0.88);
-    border-top: 1px solid var(--border); border-left: 1px solid var(--border);
-    padding: 4px 12px; font-family: 'Space Mono', monospace; font-size: 10px;
-    color: var(--muted); z-index: 1000; pointer-events: none;
+    position:absolute; bottom:0; right:0;
+    background:rgba(4,13,26,.88); border-top:1px solid var(--border); border-left:1px solid var(--border);
+    padding:4px 12px; font-family:'Space Mono',monospace; font-size:10px; color:var(--muted); z-index:1000; pointer-events:none;
   }
-  .coords-bar span { color: var(--accent2); }
+  .coords-bar span { color:var(--accent2); }
 
-  .img-status {
-    display: flex; align-items: center; gap: 8px;
-    margin-top: 12px; padding: 8px 10px; border-radius: 3px;
-    font-size: 11px; line-height: 1.4;
-    background: rgba(0,200,255,0.05); border: 1px solid var(--border); color: var(--muted);
-  }
-  .img-status.ok   { background: rgba(0,255,157,0.06); border-color: rgba(0,255,157,0.3); color: var(--accent2); }
-  .img-status.fail { background: rgba(255,80,80,0.06); border-color: rgba(255,80,80,0.3); color: #ff7070; }
-  .status-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; background: var(--muted); }
-  .img-status.ok .status-dot   { background: var(--accent2); box-shadow: 0 0 6px var(--accent2); }
-  .img-status.fail .status-dot { background: #ff7070; }
-
-  .leaflet-control-zoom { border: 1px solid var(--border) !important; border-radius: 4px !important; overflow: hidden; }
-  .leaflet-control-zoom a { background: var(--panel) !important; color: var(--accent) !important; border-color: var(--border) !important; }
-  .leaflet-control-zoom a:hover { background: var(--border) !important; }
-  .leaflet-control-attribution { background: rgba(4,13,26,0.85) !important; color: var(--muted) !important; font-size: 9px !important; }
-  .leaflet-control-attribution a { color: var(--accent) !important; }
+  /* ── LEAFLET OVERRIDES ── */
+  .leaflet-control-zoom { border:1px solid var(--border)!important; border-radius:4px!important; overflow:hidden; }
+  .leaflet-control-zoom a { background:var(--panel)!important; color:var(--accent)!important; border-color:var(--border)!important; }
+  .leaflet-control-zoom a:hover { background:var(--border)!important; }
+  .leaflet-control-attribution { background:rgba(4,13,26,.85)!important; color:var(--muted)!important; font-size:9px!important; }
+  .leaflet-control-attribution a { color:var(--accent)!important; }
 </style>
 </head>
 <body>
@@ -220,6 +200,7 @@
 <div class="main">
   <aside class="sidebar">
 
+    <!-- BASE MAP -->
     <div class="s-section">
       <div class="s-title">Base Map</div>
       <div class="basemap-grid">
@@ -230,31 +211,53 @@
       </div>
     </div>
 
+    <!-- UPLOAD -->
     <div class="s-section">
-      <div class="s-title">Plan Overlay</div>
-      <div class="overlay-row">
-        <span class="overlay-label">Master Plan Image</span>
-        <div class="toggle-switch on" id="overlayToggle" onclick="toggleOverlay()"></div>
+      <div class="s-title">Plan Image</div>
+
+      <!-- Preview (shown after upload) -->
+      <div class="img-preview" id="imgPreview">
+        <img id="previewImg" src="" alt="Plan preview">
+        <div class="img-preview-label" id="previewLabel">dholera-plan.png</div>
+        <button class="remove-btn" onclick="removeImage()" title="Remove">✕</button>
       </div>
-      <div class="slider-label">Opacity <span id="opacityVal">80%</span></div>
-      <input type="range" min="0" max="100" value="80" id="opacitySlider" oninput="updateOpacity(this.value)">
-      <div class="img-status" id="imgStatus">
-        <div class="status-dot"></div><span>Checking image…</span>
+
+      <!-- Upload zone -->
+      <div class="upload-zone" id="uploadZone">
+        <input type="file" accept="image/*" id="fileInput" onchange="handleFile(this.files[0])">
+        <div class="upload-icon">🗺️</div>
+        <div class="upload-title">Upload Plan Image</div>
+        <div class="upload-sub">Click or drag & drop<br>PNG, JPG, WebP supported</div>
       </div>
     </div>
 
-    <div class="s-section">
+    <!-- OVERLAY CONTROLS (hidden until image loaded) -->
+    <div class="s-section" id="overlayControls" style="display:none">
+      <div class="s-title">Overlay</div>
+
+      <div class="overlay-row">
+        <span class="overlay-label">Show on Map</span>
+        <div class="toggle-switch on" id="overlayToggle" onclick="toggleOverlay()"></div>
+      </div>
+
+      <div class="slider-label">Opacity <span id="opacityVal">80%</span></div>
+      <input type="range" min="0" max="100" value="80" id="opacitySlider" oninput="updateOpacity(this.value)">
+    </div>
+
+    <!-- BOUNDS -->
+    <div class="s-section" id="boundsSection" style="display:none">
       <div class="s-title">Image Bounds</div>
-      <p style="font-size:11px;color:var(--muted);margin-bottom:10px;line-height:1.5">Adjust to align the plan image precisely over the map.</p>
+      <p style="font-size:11px;color:var(--muted);margin-bottom:10px;line-height:1.5">Fine-tune to align the image over the map.</p>
       <div class="bounds-grid">
-        <div class="bound-field"><label>South Lat</label><input type="number" id="bSouth" value="21.90" step="0.01"></div>
-        <div class="bound-field"><label>North Lat</label><input type="number" id="bNorth" value="22.60" step="0.01"></div>
-        <div class="bound-field"><label>West Lng</label><input type="number" id="bWest" value="71.80" step="0.01"></div>
-        <div class="bound-field"><label>East Lng</label><input type="number" id="bEast" value="72.65" step="0.01"></div>
+        <div class="bound-field"><label>South Lat</label><input type="number" id="bSouth" value="21.90" step="0.001"></div>
+        <div class="bound-field"><label>North Lat</label><input type="number" id="bNorth" value="22.60" step="0.001"></div>
+        <div class="bound-field"><label>West Lng</label><input type="number" id="bWest" value="71.80" step="0.001"></div>
+        <div class="bound-field"><label>East Lng</label><input type="number" id="bEast" value="72.65" step="0.001"></div>
       </div>
       <button class="apply-btn" onclick="applyBounds()">↻ Apply Bounds</button>
     </div>
 
+    <!-- ABOUT -->
     <div class="s-section">
       <div class="s-title">About</div>
       <p class="about-text">Dholera SIR is India's first greenfield smart city, planned across ~920 km² on the Delhi–Mumbai Industrial Corridor in Gujarat.</p>
@@ -264,108 +267,149 @@
 
   <div class="map-wrapper">
     <div id="map"></div>
+
+    <!-- EMPTY STATE -->
+    <div id="emptyState">
+      <div class="empty-icon">🗺️</div>
+      <div class="empty-title">Upload Your Plan</div>
+      <div class="empty-sub">Upload the Dholera Master Plan image<br>from the sidebar to overlay it on the map</div>
+    </div>
+
     <div class="coords-bar" id="coords">Lat: — &nbsp; Lng: —</div>
   </div>
 </div>
 
 <script>
-  // ─── IMAGE PATH ────────────────────────────────────────────────────────────
-  // Your file is at: /public/dholera-plan.png in the repo
-  // Vercel serves it at: /public/dholera-plan.png (plain static site)
-  const PLAN_IMAGE_URL = "/dholera-plan.png";
-
   let planBounds = [[21.90, 71.80], [22.60, 72.65]];
+  let planOverlay = null;
+  let overlayVisible = true;
+  let currentImageUrl = null;
 
-  // ─── MAP INIT (after DOM is ready) ─────────────────────────────────────────
-  window.addEventListener('load', function () {
+  // ── MAP INIT ──────────────────────────────────────────────────────────────
+  const map = L.map('map', { center: [22.25, 72.18], zoom: 11 });
+  setTimeout(() => map.invalidateSize(), 300);
 
-    const map = L.map('map', {
-      center: [22.25, 72.18],
-      zoom: 11,
-      preferCanvas: true
-    });
+  // ── BASE LAYERS ───────────────────────────────────────────────────────────
+  const baseLayers = {
+    osm: L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors', maxZoom: 19
+    }),
+    satellite: L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+      attribution: '© Esri World Imagery', maxZoom: 19
+    }),
+    topo: L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenTopoMap', maxZoom: 17
+    }),
+    dark: L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+      attribution: '© CARTO', maxZoom: 19
+    })
+  };
+  baseLayers.osm.addTo(map);
+  map.fitBounds(planBounds);
 
-    // Force Leaflet to recalculate size after render
-    setTimeout(() => map.invalidateSize(), 200);
+  function switchBase(name, btn) {
+    document.querySelectorAll('.bm-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    Object.values(baseLayers).forEach(l => map.removeLayer(l));
+    baseLayers[name].addTo(map);
+  }
 
-    // ─── BASE LAYERS ──────────────────────────────────────────────────────────
-    const baseLayers = {
-      osm: L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors', maxZoom: 19
-      }),
-      satellite: L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-        attribution: '© Esri World Imagery', maxZoom: 19
-      }),
-      topo: L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
-        attribution: '© OpenTopoMap', maxZoom: 17
-      }),
-      dark: L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-        attribution: '© CARTO', maxZoom: 19
-      })
+  // ── FILE UPLOAD ───────────────────────────────────────────────────────────
+  function handleFile(file) {
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      currentImageUrl = e.target.result;
+      setImageOverlay(currentImageUrl, file.name);
     };
-    baseLayers.osm.addTo(map);
+    reader.readAsDataURL(file);
+  }
 
-    window.switchBase = function(name, btn) {
-      document.querySelectorAll('.bm-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      Object.values(baseLayers).forEach(l => map.removeLayer(l));
-      baseLayers[name].addTo(map);
-    };
+  function setImageOverlay(url, filename) {
+    // Remove old overlay
+    if (planOverlay) map.removeLayer(planOverlay);
 
-    // ─── IMAGE OVERLAY ────────────────────────────────────────────────────────
-    let planOverlay = L.imageOverlay(PLAN_IMAGE_URL, planBounds, { opacity: 0.80, interactive: false }).addTo(map);
+    // Add new overlay
+    planOverlay = L.imageOverlay(url, planBounds, { opacity: 0.80, interactive: false });
+    planOverlay.addTo(map);
+    overlayVisible = true;
 
-    // Check if image loads
-    const statusEl = document.getElementById('imgStatus');
-    const testImg = new Image();
-    testImg.onload = () => {
-      statusEl.className = 'img-status ok';
-      statusEl.innerHTML = '<div class="status-dot"></div><span>Image loaded ✓</span>';
-    };
-    testImg.onerror = () => {
-      statusEl.className = 'img-status fail';
-      statusEl.innerHTML = '<div class="status-dot"></div><span>Not found at <code>' + PLAN_IMAGE_URL + '</code></span>';
-    };
-    testImg.src = PLAN_IMAGE_URL + '?t=' + Date.now();
+    // Show preview
+    document.getElementById('previewImg').src = url;
+    document.getElementById('previewLabel').textContent = filename || 'plan.png';
+    document.getElementById('imgPreview').style.display = 'block';
+
+    // Hide upload zone, show controls
+    document.getElementById('uploadZone').style.display = 'none';
+    document.getElementById('overlayControls').style.display = 'block';
+    document.getElementById('boundsSection').style.display = 'block';
+    document.getElementById('overlayToggle').classList.add('on');
+    document.getElementById('opacitySlider').value = 80;
+    document.getElementById('opacityVal').textContent = '80%';
+
+    // Hide empty state
+    document.getElementById('emptyState').classList.add('hidden');
 
     map.fitBounds(planBounds);
+  }
 
-    // ─── TOGGLE ───────────────────────────────────────────────────────────────
-    let overlayVisible = true;
-    window.toggleOverlay = function() {
-      overlayVisible = !overlayVisible;
-      overlayVisible ? planOverlay.addTo(map) : map.removeLayer(planOverlay);
-      document.getElementById('overlayToggle').classList.toggle('on', overlayVisible);
-    };
+  function removeImage() {
+    if (planOverlay) { map.removeLayer(planOverlay); planOverlay = null; }
+    currentImageUrl = null;
+    document.getElementById('previewImg').src = '';
+    document.getElementById('imgPreview').style.display = 'none';
+    document.getElementById('uploadZone').style.display = 'block';
+    document.getElementById('overlayControls').style.display = 'none';
+    document.getElementById('boundsSection').style.display = 'none';
+    document.getElementById('emptyState').classList.remove('hidden');
+    document.getElementById('fileInput').value = '';
+  }
 
-    // ─── OPACITY ──────────────────────────────────────────────────────────────
-    window.updateOpacity = function(val) {
-      document.getElementById('opacityVal').textContent = val + '%';
-      planOverlay.setOpacity(val / 100);
-    };
+  // ── DRAG & DROP ───────────────────────────────────────────────────────────
+  const uploadZone = document.getElementById('uploadZone');
+  uploadZone.addEventListener('dragover', e => { e.preventDefault(); uploadZone.classList.add('drag-over'); });
+  uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('drag-over'));
+  uploadZone.addEventListener('drop', e => {
+    e.preventDefault();
+    uploadZone.classList.remove('drag-over');
+    const file = e.dataTransfer.files[0];
+    if (file && file.type.startsWith('image/')) handleFile(file);
+  });
 
-    // ─── BOUNDS ───────────────────────────────────────────────────────────────
-    window.applyBounds = function() {
-      const s = parseFloat(document.getElementById('bSouth').value);
-      const n = parseFloat(document.getElementById('bNorth').value);
-      const w = parseFloat(document.getElementById('bWest').value);
-      const e = parseFloat(document.getElementById('bEast').value);
-      if ([s,n,w,e].some(isNaN)) return;
-      planBounds = [[s, w], [n, e]];
-      const opacity = parseInt(document.getElementById('opacitySlider').value) / 100;
-      map.removeLayer(planOverlay);
-      planOverlay = L.imageOverlay(PLAN_IMAGE_URL, planBounds, { opacity, interactive: false });
-      if (overlayVisible) planOverlay.addTo(map);
-      map.fitBounds(planBounds);
-    };
+  // ── TOGGLE ────────────────────────────────────────────────────────────────
+  function toggleOverlay() {
+    if (!planOverlay) return;
+    overlayVisible = !overlayVisible;
+    overlayVisible ? planOverlay.addTo(map) : map.removeLayer(planOverlay);
+    document.getElementById('overlayToggle').classList.toggle('on', overlayVisible);
+  }
 
-    // ─── COORDS ───────────────────────────────────────────────────────────────
-    map.on('mousemove', (e) => {
-      document.getElementById('coords').innerHTML =
-        `Lat: <span>${e.latlng.lat.toFixed(5)}</span> &nbsp; Lng: <span>${e.latlng.lng.toFixed(5)}</span>`;
-    });
+  // ── OPACITY ───────────────────────────────────────────────────────────────
+  function updateOpacity(val) {
+    document.getElementById('opacityVal').textContent = val + '%';
+    if (planOverlay) planOverlay.setOpacity(val / 100);
+  }
 
-  }); // end window.load
+  // ── BOUNDS ────────────────────────────────────────────────────────────────
+  function applyBounds() {
+    const s = parseFloat(document.getElementById('bSouth').value);
+    const n = parseFloat(document.getElementById('bNorth').value);
+    const w = parseFloat(document.getElementById('bWest').value);
+    const e = parseFloat(document.getElementById('bEast').value);
+    if ([s,n,w,e].some(isNaN) || !currentImageUrl) return;
+    planBounds = [[s, w], [n, e]];
+    const opacity = parseInt(document.getElementById('opacitySlider').value) / 100;
+    if (planOverlay) map.removeLayer(planOverlay);
+    planOverlay = L.imageOverlay(currentImageUrl, planBounds, { opacity, interactive: false });
+    if (overlayVisible) planOverlay.addTo(map);
+    map.fitBounds(planBounds);
+  }
+
+  // ── COORDS ────────────────────────────────────────────────────────────────
+  map.on('mousemove', e => {
+    document.getElementById('coords').innerHTML =
+      `Lat: <span>${e.latlng.lat.toFixed(5)}</span> &nbsp; Lng: <span>${e.latlng.lng.toFixed(5)}</span>`;
+  });
 </script>
 </body>
 </html>
