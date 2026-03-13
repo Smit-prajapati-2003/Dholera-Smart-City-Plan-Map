@@ -212,13 +212,19 @@
   }
   .coords-bar span { color: var(--accent2); }
 
-  .img-warning {
-    display: none; margin-top: 10px; padding: 8px 10px;
-    background: rgba(255,200,0,0.07);
-    border: 1px solid rgba(255,200,0,0.3);
-    border-radius: 3px;
-    font-size: 11px; color: #f5b942; line-height: 1.5;
+  .img-status {
+    display: flex; align-items: center; gap: 8px;
+    margin-top: 12px; padding: 8px 10px;
+    border-radius: 3px; font-size: 11px; line-height: 1.4;
+    background: rgba(0,200,255,0.05);
+    border: 1px solid var(--border);
+    color: var(--muted);
   }
+  .img-status.ok   { background: rgba(0,255,157,0.06); border-color: rgba(0,255,157,0.3); color: var(--accent2); }
+  .img-status.fail { background: rgba(255,80,80,0.06); border-color: rgba(255,80,80,0.3); color: #ff7070; }
+  .status-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; background: var(--muted); }
+  .img-status.ok   .status-dot { background: var(--accent2); box-shadow: 0 0 6px var(--accent2); }
+  .img-status.fail .status-dot { background: #ff7070; }
 
   .leaflet-control-zoom { border: 1px solid var(--border) !important; border-radius: 4px !important; overflow: hidden; }
   .leaflet-control-zoom a { background: var(--panel) !important; color: var(--accent) !important; border-color: var(--border) !important; }
@@ -244,7 +250,6 @@
 </header>
 
 <div class="main">
-
   <aside class="sidebar">
 
     <div class="s-section">
@@ -270,8 +275,9 @@
       </div>
       <input type="range" min="0" max="100" value="80" id="opacitySlider" oninput="updateOpacity(this.value)">
 
-      <div class="img-warning" id="imgWarning">
-        ⚠ Image not loading. Update <code>PLAN_IMAGE_URL</code> in the script with your GitHub raw image URL.
+      <div class="img-status" id="imgStatus">
+        <div class="status-dot"></div>
+        <span>Checking image…</span>
       </div>
     </div>
 
@@ -304,8 +310,8 @@
     <div class="s-section">
       <div class="s-title">About</div>
       <p class="about-text">
-        Dholera SIR is India's first greenfield smart city, planned across ~920 km² on the 
-        Delhi–Mumbai Industrial Corridor in Gujarat. This viewer overlays the official Master 
+        Dholera SIR is India's first greenfield smart city, planned across ~920 km² on the
+        Delhi–Mumbai Industrial Corridor in Gujarat. This viewer overlays the official Master
         Plan on a live map for spatial reference.
       </p>
     </div>
@@ -316,90 +322,94 @@
     <div id="map"></div>
     <div class="coords-bar" id="coords">Lat: — &nbsp; Lng: —</div>
   </div>
-
 </div>
 
 <script>
-// ============================================================
-//  👇 REPLACE with your GitHub raw image URL:
-//  https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/public/dholera-plan.png
-// ============================================================
-const PLAN_IMAGE_URL = "https://raw.githubusercontent.com/Smit-prajapati-2003/Dholera-Smart-City-Plan-Map/main/public/dholera-plan.png";
+  // Image is in /public/dholera-plan.png in the repo.
+  // Vercel serves /public/ at the root, so the URL is simply /dholera-plan.png
+  const PLAN_IMAGE_URL = "/dholera-plan.png";
 
-let planBounds = [[21.90, 71.80], [22.60, 72.65]];
+  let planBounds = [[21.90, 71.80], [22.60, 72.65]];
 
-// MAP INIT
-const map = L.map('map', { center: [22.25, 72.18], zoom: 11 });
+  // MAP
+  const map = L.map('map', { center: [22.25, 72.18], zoom: 11 });
 
-// BASE LAYERS
-const baseLayers = {
-  osm: L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors', maxZoom: 19
-  }),
-  satellite: L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-    attribution: '© Esri World Imagery', maxZoom: 19
-  }),
-  topo: L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
-    attribution: '© OpenTopoMap', maxZoom: 17
-  }),
-  dark: L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-    attribution: '© CARTO', maxZoom: 19
-  })
-};
-baseLayers.osm.addTo(map);
+  // BASE LAYERS
+  const baseLayers = {
+    osm: L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors', maxZoom: 19
+    }),
+    satellite: L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+      attribution: '© Esri World Imagery', maxZoom: 19
+    }),
+    topo: L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenTopoMap', maxZoom: 17
+    }),
+    dark: L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+      attribution: '© CARTO', maxZoom: 19
+    })
+  };
+  baseLayers.osm.addTo(map);
 
-function switchBase(name, btn) {
-  document.querySelectorAll('.bm-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  Object.values(baseLayers).forEach(l => map.removeLayer(l));
-  baseLayers[name].addTo(map);
-}
+  function switchBase(name, btn) {
+    document.querySelectorAll('.bm-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    Object.values(baseLayers).forEach(l => map.removeLayer(l));
+    baseLayers[name].addTo(map);
+  }
 
-// IMAGE OVERLAY
-let planOverlay = L.imageOverlay(PLAN_IMAGE_URL, planBounds, { opacity: 0.80, interactive: false }).addTo(map);
+  // IMAGE OVERLAY
+  let planOverlay = L.imageOverlay(PLAN_IMAGE_URL, planBounds, { opacity: 0.80, interactive: false }).addTo(map);
 
-// Detect load failure
-const testImg = new Image();
-testImg.onerror = () => document.getElementById('imgWarning').style.display = 'block';
-testImg.src = PLAN_IMAGE_URL;
+  // Check image status
+  const statusEl = document.getElementById('imgStatus');
+  const testImg = new Image();
+  testImg.onload = () => {
+    statusEl.className = 'img-status ok';
+    statusEl.innerHTML = '<div class="status-dot"></div><span>Image loaded successfully</span>';
+  };
+  testImg.onerror = () => {
+    statusEl.className = 'img-status fail';
+    statusEl.innerHTML = '<div class="status-dot"></div><span>Image not found at <code>/dholera-plan.png</code>. Make sure the file is in your <code>public/</code> folder and redeployed.</span>';
+  };
+  testImg.src = PLAN_IMAGE_URL + '?t=' + Date.now();
 
-map.fitBounds(planBounds);
-
-// TOGGLE
-let overlayVisible = true;
-function toggleOverlay() {
-  overlayVisible = !overlayVisible;
-  const tog = document.getElementById('overlayToggle');
-  overlayVisible ? planOverlay.addTo(map) : map.removeLayer(planOverlay);
-  tog.classList.toggle('on', overlayVisible);
-}
-
-// OPACITY
-function updateOpacity(val) {
-  document.getElementById('opacityVal').textContent = val + '%';
-  planOverlay.setOpacity(val / 100);
-}
-
-// BOUNDS
-function applyBounds() {
-  const s = parseFloat(document.getElementById('bSouth').value);
-  const n = parseFloat(document.getElementById('bNorth').value);
-  const w = parseFloat(document.getElementById('bWest').value);
-  const e = parseFloat(document.getElementById('bEast').value);
-  if ([s,n,w,e].some(isNaN)) return;
-  planBounds = [[s, w], [n, e]];
-  const opacity = parseInt(document.getElementById('opacitySlider').value) / 100;
-  map.removeLayer(planOverlay);
-  planOverlay = L.imageOverlay(PLAN_IMAGE_URL, planBounds, { opacity, interactive: false });
-  if (overlayVisible) planOverlay.addTo(map);
   map.fitBounds(planBounds);
-}
 
-// COORDS
-map.on('mousemove', (e) => {
-  document.getElementById('coords').innerHTML =
-    `Lat: <span>${e.latlng.lat.toFixed(5)}</span> &nbsp; Lng: <span>${e.latlng.lng.toFixed(5)}</span>`;
-});
+  // TOGGLE
+  let overlayVisible = true;
+  function toggleOverlay() {
+    overlayVisible = !overlayVisible;
+    overlayVisible ? planOverlay.addTo(map) : map.removeLayer(planOverlay);
+    document.getElementById('overlayToggle').classList.toggle('on', overlayVisible);
+  }
+
+  // OPACITY
+  function updateOpacity(val) {
+    document.getElementById('opacityVal').textContent = val + '%';
+    planOverlay.setOpacity(val / 100);
+  }
+
+  // BOUNDS
+  function applyBounds() {
+    const s = parseFloat(document.getElementById('bSouth').value);
+    const n = parseFloat(document.getElementById('bNorth').value);
+    const w = parseFloat(document.getElementById('bWest').value);
+    const e = parseFloat(document.getElementById('bEast').value);
+    if ([s,n,w,e].some(isNaN)) return;
+    planBounds = [[s, w], [n, e]];
+    const opacity = parseInt(document.getElementById('opacitySlider').value) / 100;
+    map.removeLayer(planOverlay);
+    planOverlay = L.imageOverlay(PLAN_IMAGE_URL, planBounds, { opacity, interactive: false });
+    if (overlayVisible) planOverlay.addTo(map);
+    map.fitBounds(planBounds);
+  }
+
+  // COORDS
+  map.on('mousemove', (e) => {
+    document.getElementById('coords').innerHTML =
+      `Lat: <span>${e.latlng.lat.toFixed(5)}</span> &nbsp; Lng: <span>${e.latlng.lng.toFixed(5)}</span>`;
+  });
 </script>
 </body>
 </html>
