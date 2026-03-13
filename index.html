@@ -3,12 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dholera Smart City Plan Map</title>
+    <title>Dholera Smart City Plan</title>
     
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     
     <style>
-        /* Make the map take up the full screen */
         body { margin: 0; padding: 0; }
         #map { width: 100vw; height: 100vh; }
     </style>
@@ -19,37 +18,45 @@
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
-        // 3. Initialize the map centered on Dholera, Gujarat
-        // Coordinates for Dholera: ~ 22.248 Latitude, 72.195 Longitude
+        // 1. Initialize the map
         const map = L.map('map').setView([22.248, 72.195], 11);
 
-        // 4. Add the OpenStreetMap base layer
+        // 2. Add OpenStreetMap base layer
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19,
             attribution: '© OpenStreetMap contributors'
         }).addTo(map);
 
-        // 5. Add the Dholera Smart City Plan Image Overlay
-        // REPLACE THIS with a link to your high-resolution Dholera Master Plan PNG/JPG
-        // Tip: Use a PNG with a transparent background for the best look!
-        const imageUrl = 'public/dholera-plan.png'; // Placeholder
+        // 3. The updated path to your image in the public folder
+        const imageUrl = 'public/dholera-plan.png'; 
 
-        // 6. Define the geographical boundaries of your image
-        // You must align these with the corners of the real Dholera SIR map.
-        // Format: [[Top-Left Latitude, Top-Left Longitude], [Bottom-Right Lat, Bottom-Right Lon]]
+        // 4. Image boundary coordinates (You will tweak these!)
         const imageBounds = [
-            [22.380, 72.050], // Approximate North-West boundary
-            [22.100, 72.350]  // Approximate South-East boundary
+            [22.380, 72.050], // Top-Left corner
+            [22.100, 72.350]  // Bottom-Right corner
         ];
 
-        // 7. Overlay the image onto the map
-        const dholeraPlanLayer = L.imageOverlay(imageUrl, imageBounds, {
-            opacity: 0.7,      // 0.7 means 70% visible, so you can see the real streets underneath
-            interactive: true  // Set to true if you want to add click events later
+        // 5. Add the image to the map
+        L.imageOverlay(imageUrl, imageBounds, {
+            opacity: 0.7, // 70% opacity so you can see roads underneath
+            interactive: true 
         }).addTo(map);
 
-        // Optional: Make the map automatically zoom to fit the exact boundaries of your image overlay
         map.fitBounds(imageBounds);
+
+        // ==========================================
+        // CALIBRATION HELPER TOOL
+        // Click anywhere on the map to see the coordinates!
+        // ==========================================
+        map.on('click', function(e) {
+            const lat = e.latlng.lat.toFixed(4);
+            const lng = e.latlng.lng.toFixed(4);
+            
+            L.popup()
+                .setLatLng(e.latlng)
+                .setContent(`<b>Coordinates:</b><br>[${lat}, ${lng}]<br><br><i>Use these to update your imageBounds!</i>`)
+                .openOn(map);
+        });
 
     </script>
 </body>
