@@ -3,186 +3,165 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dholera Smart City — Master Plan</title>
+<title>Dholera Smart City — Live Data Map</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.heat/0.2.0/leaflet-heat.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Exo+2:wght@300;400;600&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg:#040d1a; --panel:#07152a; --border:#0e2a4a;
-    --accent:#00c8ff; --accent2:#00ff9d; --text:#cde4f5; --muted:#4a7a9b;
-  }
-  *{margin:0;padding:0;box-sizing:border-box;}
-  html,body{width:100%;height:100%;background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--text);overflow:hidden;display:flex;flex-direction:column;}
+:root{
+  --bg:#040d1a;--panel:#07152a;--border:#0e2a4a;
+  --accent:#00c8ff;--accent2:#00ff9d;--text:#cde4f5;--muted:#4a7a9b;
+  --warn:#f5b942;--danger:#ff5f5f;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:100%;height:100%;background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--text);overflow:hidden;display:flex;flex-direction:column;}
 
-  /* HEADER */
-  header{background:linear-gradient(90deg,#040d1a 0%,#071e3d 50%,#040d1a 100%);border-bottom:1px solid var(--border);padding:0 24px;height:54px;min-height:54px;display:flex;align-items:center;justify-content:space-between;position:relative;z-index:1000;}
-  header::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--accent),var(--accent2),var(--accent),transparent);opacity:.5;}
-  .logo{display:flex;align-items:center;gap:10px;}
-  .logo-icon{width:32px;height:32px;border:2px solid var(--accent);border-radius:5px;display:grid;place-items:center;font-size:18px;color:var(--accent);}
-  .logo-title{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:20px;letter-spacing:2px;color:#fff;text-transform:uppercase;}
-  .logo-title span{color:var(--accent);}
-  .logo-sub{font-family:'Space Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-top:1px;}
-  .header-right{display:flex;align-items:center;gap:10px;}
-  .tag{font-family:'Space Mono',monospace;font-size:10px;padding:3px 9px;border-radius:2px;letter-spacing:1px;text-transform:uppercase;background:rgba(0,200,255,.1);border:1px solid var(--accent);color:var(--accent);}
-  .pulse-dot{width:7px;height:7px;border-radius:50%;background:var(--accent2);box-shadow:0 0 8px var(--accent2);animation:pulse 2s infinite;}
-  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+/* ── HEADER ── */
+header{background:linear-gradient(90deg,#040d1a,#071e3d 50%,#040d1a);border-bottom:1px solid var(--border);padding:0 20px;height:52px;min-height:52px;display:flex;align-items:center;justify-content:space-between;position:relative;z-index:1000;}
+header::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--accent),var(--accent2),var(--accent),transparent);opacity:.5;}
+.logo{display:flex;align-items:center;gap:10px;}
+.logo-icon{width:30px;height:30px;border:2px solid var(--accent);border-radius:5px;display:grid;place-items:center;font-size:16px;color:var(--accent);}
+.logo-title{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:19px;letter-spacing:2px;color:#fff;text-transform:uppercase;}
+.logo-title span{color:var(--accent);}
+.logo-sub{font-family:'Space Mono',monospace;font-size:8px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-top:1px;}
+.header-right{display:flex;align-items:center;gap:8px;}
+.tag{font-family:'Space Mono',monospace;font-size:10px;padding:3px 8px;border-radius:2px;letter-spacing:1px;text-transform:uppercase;background:rgba(0,200,255,.1);border:1px solid var(--accent);color:var(--accent);}
+.live-badge{display:flex;align-items:center;gap:5px;font-family:'Space Mono',monospace;font-size:10px;padding:3px 8px;border-radius:2px;background:rgba(0,255,157,.08);border:1px solid var(--accent2);color:var(--accent2);}
+.pulse-dot{width:6px;height:6px;border-radius:50%;background:var(--accent2);box-shadow:0 0 6px var(--accent2);animation:pulse 2s infinite;flex-shrink:0;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 
-  /* LAYOUT */
-  .main{flex:1;display:flex;overflow:hidden;min-height:0;}
+/* ── LAYOUT ── */
+.main{flex:1;display:flex;overflow:hidden;min-height:0;}
 
-  /* SIDEBAR */
-  .sidebar{width:268px;min-width:268px;background:var(--panel);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto;z-index:500;}
-  .sidebar::-webkit-scrollbar{width:4px;}
-  .sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
-  .s-section{padding:16px;border-bottom:1px solid var(--border);}
-  .s-title{font-family:'Rajdhani',sans-serif;font-size:11px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;color:var(--accent);margin-bottom:12px;display:flex;align-items:center;gap:8px;}
-  .s-title::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--border),transparent);}
+/* ── SIDEBAR ── */
+.sidebar{width:275px;min-width:275px;background:var(--panel);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto;z-index:500;}
+.sidebar::-webkit-scrollbar{width:4px;}
+.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
+.s-section{padding:14px 16px;border-bottom:1px solid var(--border);}
+.s-title{font-family:'Rajdhani',sans-serif;font-size:11px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;color:var(--accent);margin-bottom:11px;display:flex;align-items:center;gap:8px;}
+.s-title::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--border),transparent);}
 
-  /* BASEMAP */
-  .basemap-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;}
-  .bm-btn{padding:8px 4px;background:transparent;border:1px solid var(--border);border-radius:4px;color:var(--muted);font-family:'Exo 2',sans-serif;font-size:11px;cursor:pointer;text-transform:uppercase;letter-spacing:.5px;transition:all .15s;}
-  .bm-btn:hover,.bm-btn.active{border-color:var(--accent);color:var(--accent);background:rgba(0,200,255,.06);}
+/* BASEMAP */
+.basemap-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px;}
+.bm-btn{padding:7px 4px;background:transparent;border:1px solid var(--border);border-radius:4px;color:var(--muted);font-family:'Exo 2',sans-serif;font-size:11px;cursor:pointer;text-transform:uppercase;letter-spacing:.5px;transition:all .15s;}
+.bm-btn:hover,.bm-btn.active{border-color:var(--accent);color:var(--accent);background:rgba(0,200,255,.06);}
 
-  /* UPLOAD */
-  .upload-zone{border:2px dashed var(--border);border-radius:6px;padding:20px 12px;text-align:center;cursor:pointer;transition:all .2s;position:relative;background:rgba(0,200,255,.02);}
-  .upload-zone:hover,.upload-zone.drag-over{border-color:var(--accent);background:rgba(0,200,255,.06);}
-  .upload-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
-  .upload-icon{font-size:28px;margin-bottom:8px;}
-  .upload-title{font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:600;color:var(--text);letter-spacing:1px;}
-  .upload-sub{font-size:11px;color:var(--muted);margin-top:4px;}
+/* UPLOAD */
+.upload-zone{border:2px dashed var(--border);border-radius:6px;padding:16px 10px;text-align:center;cursor:pointer;transition:all .2s;position:relative;background:rgba(0,200,255,.02);}
+.upload-zone:hover,.upload-zone.drag-over{border-color:var(--accent);background:rgba(0,200,255,.05);}
+.upload-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+.upload-icon{font-size:22px;margin-bottom:5px;}
+.upload-title{font-family:'Rajdhani',sans-serif;font-size:13px;font-weight:600;color:var(--text);letter-spacing:1px;}
+.upload-sub{font-size:10px;color:var(--muted);margin-top:3px;}
+.img-preview{display:none;border-radius:4px;overflow:hidden;border:1px solid var(--border);margin-bottom:10px;position:relative;}
+.img-preview img{width:100%;height:60px;object-fit:cover;display:block;}
+.img-preview-label{position:absolute;bottom:0;left:0;right:0;background:rgba(4,13,26,.85);padding:3px 8px;font-size:10px;color:var(--accent2);font-family:'Space Mono',monospace;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.remove-btn{position:absolute;top:4px;right:4px;width:18px;height:18px;border-radius:3px;background:rgba(255,80,80,.8);border:none;color:#fff;font-size:11px;cursor:pointer;display:grid;place-items:center;}
 
-  /* PREVIEW */
-  .img-preview{display:none;border-radius:4px;overflow:hidden;border:1px solid var(--border);margin-bottom:12px;position:relative;}
-  .img-preview img{width:100%;height:80px;object-fit:cover;display:block;}
-  .img-preview-label{position:absolute;bottom:0;left:0;right:0;background:rgba(4,13,26,.85);padding:4px 8px;font-size:10px;color:var(--accent2);font-family:'Space Mono',monospace;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-  .remove-btn{position:absolute;top:5px;right:5px;width:20px;height:20px;border-radius:3px;background:rgba(255,80,80,.8);border:none;color:#fff;font-size:12px;cursor:pointer;display:grid;place-items:center;}
+/* OVERLAY CONTROLS */
+.ctrl-row{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:9px;}
+.ctrl-label{font-size:12px;color:var(--text);}
+.toggle-switch{width:38px;height:20px;background:var(--border);border-radius:10px;position:relative;cursor:pointer;transition:background .2s;flex-shrink:0;}
+.toggle-switch.on{background:var(--accent);}
+.toggle-switch::after{content:'';position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:#fff;transition:transform .2s;}
+.toggle-switch.on::after{transform:translateX(18px);}
+.slider-label{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-bottom:6px;}
+.slider-label span{color:var(--accent);font-family:'Space Mono',monospace;font-size:10px;}
+input[type=range]{-webkit-appearance:none;width:100%;height:4px;background:var(--border);border-radius:2px;outline:none;cursor:pointer;}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:13px;height:13px;border-radius:50%;background:var(--accent);box-shadow:0 0 5px var(--accent);cursor:pointer;}
 
-  /* CONTROLS */
-  .overlay-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px;}
-  .overlay-label{font-size:13px;color:var(--text);}
-  .toggle-switch{width:40px;height:22px;background:var(--border);border-radius:11px;position:relative;cursor:pointer;transition:background .2s;flex-shrink:0;}
-  .toggle-switch.on{background:var(--accent);}
-  .toggle-switch::after{content:'';position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:#fff;transition:transform .2s;}
-  .toggle-switch.on::after{transform:translateX(18px);}
-  .slider-label{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:8px;}
-  .slider-label span{color:var(--accent);font-family:'Space Mono',monospace;font-size:11px;}
-  input[type=range]{-webkit-appearance:none;width:100%;height:4px;background:var(--border);border-radius:2px;outline:none;cursor:pointer;}
-  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:var(--accent);box-shadow:0 0 6px var(--accent);cursor:pointer;}
+/* ── LIVE DATA SECTION ── */
+.layer-card{background:rgba(0,200,255,.03);border:1px solid var(--border);border-radius:5px;padding:10px 11px;margin-bottom:8px;transition:border-color .15s;}
+.layer-card:hover{border-color:rgba(0,200,255,.2);}
+.layer-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;}
+.layer-name{font-family:'Rajdhani',sans-serif;font-size:13px;font-weight:600;letter-spacing:.8px;display:flex;align-items:center;gap:7px;}
+.layer-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;}
+.layer-count{font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);margin-top:2px;}
+.layer-toggle-sm{width:34px;height:18px;background:var(--border);border-radius:9px;position:relative;cursor:pointer;transition:background .2s;flex-shrink:0;}
+.layer-toggle-sm.on{background:var(--accent);}
+.layer-toggle-sm::after{content:'';position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;background:#fff;transition:transform .2s;}
+.layer-toggle-sm.on::after{transform:translateX(16px);}
 
-  /* INFO ROWS */
-  .info-row{display:flex;justify-content:space-between;align-items:center;padding:4px 0;font-size:11px;}
-  .info-key{color:var(--muted);font-family:'Space Mono',monospace;}
-  .info-val{color:var(--accent);font-family:'Space Mono',monospace;}
+/* INTENSITY PRESETS */
+.preset-row{display:flex;gap:5px;margin-top:8px;}
+.preset-btn{flex:1;padding:5px 3px;background:transparent;border:1px solid var(--border);border-radius:3px;color:var(--muted);font-size:10px;font-family:'Exo 2',sans-serif;cursor:pointer;text-transform:uppercase;letter-spacing:.5px;transition:all .15s;}
+.preset-btn:hover,.preset-btn.active{border-color:var(--accent);color:var(--accent);background:rgba(0,200,255,.06);}
 
-  /* RESET BTN */
-  .reset-btn{width:100%;padding:7px;background:transparent;border:1px solid var(--border);border-radius:3px;color:var(--muted);font-family:'Rajdhani',sans-serif;font-weight:600;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:all .15s;margin-top:8px;}
-  .reset-btn:hover{border-color:var(--accent);color:var(--accent);}
+/* FETCH STATUS */
+.fetch-status{display:flex;align-items:center;gap:7px;padding:8px 10px;border-radius:4px;font-size:11px;font-family:'Space Mono',monospace;margin-bottom:8px;line-height:1.4;}
+.fetch-status.idle{background:rgba(0,200,255,.04);border:1px solid var(--border);color:var(--muted);}
+.fetch-status.loading{background:rgba(245,185,66,.06);border:1px solid rgba(245,185,66,.3);color:var(--warn);}
+.fetch-status.ok{background:rgba(0,255,157,.05);border:1px solid rgba(0,255,157,.25);color:var(--accent2);}
+.fetch-status.error{background:rgba(255,95,95,.05);border:1px solid rgba(255,95,95,.25);color:var(--danger);}
+.spin{animation:spin 1s linear infinite;display:inline-block;}
+@keyframes spin{to{transform:rotate(360deg)}}
 
-  .about-text{font-size:12px;color:var(--muted);line-height:1.6;}
+.refresh-btn{width:100%;padding:7px;background:rgba(0,200,255,.07);border:1px solid var(--accent);border-radius:3px;color:var(--accent);font-family:'Rajdhani',sans-serif;font-weight:600;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:background .15s;}
+.refresh-btn:hover{background:rgba(0,200,255,.15);}
+.refresh-btn:disabled{opacity:.4;cursor:not-allowed;}
 
-  /* MAP */
-  .map-wrapper{flex:1;position:relative;display:flex;flex-direction:column;min-width:0;min-height:0;}
-  #map{flex:1;width:100%;min-height:0;}
+/* LEGEND */
+.legend-grid{display:grid;gap:5px;}
+.legend-row{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--muted);}
+.legend-swatch{width:28px;height:8px;border-radius:2px;flex-shrink:0;}
 
-  /* PLAN OVERLAY DIV — sits inside map container */
-  #planOverlay{
-    position:absolute;
-    z-index:400;
-    display:none;
-    cursor:move;
-    transform-origin:50% 50%;
-    /* dashed border when unlocked */
-    outline: 2px dashed rgba(0,200,255,0.6);
-    outline-offset: 0px;
-  }
-  #planOverlay.locked{cursor:default;outline:none;}
-  #planOverlay img{width:100%;height:100%;display:block;pointer-events:none;user-select:none;-webkit-user-drag:none;}
+/* STATS */
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;}
+.stat-box{background:rgba(0,200,255,.04);border:1px solid var(--border);border-radius:4px;padding:8px;}
+.stat-val{font-family:'Space Mono',monospace;font-size:15px;font-weight:700;color:var(--accent);}
+.stat-label{font-size:9px;color:var(--muted);margin-top:2px;text-transform:uppercase;letter-spacing:.4px;}
 
-  /* RESIZE HANDLES */
-  .rh{
-    position:absolute;width:14px;height:14px;
-    background:var(--accent);border:2.5px solid #fff;
-    border-radius:50%;z-index:2;
-    transition:opacity .15s, transform .15s;
-    box-shadow:0 0 6px rgba(0,200,255,.6);
-  }
-  .rh:hover{transform:scale(1.3);}
-  .rh.nw{top:-7px;left:-7px;cursor:nw-resize;}
-  .rh.ne{top:-7px;right:-7px;cursor:ne-resize;}
-  .rh.sw{bottom:-7px;left:-7px;cursor:sw-resize;}
-  .rh.se{bottom:-7px;right:-7px;cursor:se-resize;}
-  .rh.n{top:-7px;left:50%;transform:translateX(-50%);cursor:n-resize;}
-  .rh.n:hover{transform:translateX(-50%) scale(1.3);}
-  .rh.s{bottom:-7px;left:50%;transform:translateX(-50%);cursor:s-resize;}
-  .rh.s:hover{transform:translateX(-50%) scale(1.3);}
-  .rh.e{right:-7px;top:50%;transform:translateY(-50%);cursor:e-resize;}
-  .rh.e:hover{transform:translateY(-50%) scale(1.3);}
-  .rh.w{left:-7px;top:50%;transform:translateY(-50%);cursor:w-resize;}
-  .rh.w:hover{transform:translateY(-50%) scale(1.3);}
+.about-text{font-size:11px;color:var(--muted);line-height:1.6;}
 
-  /* ROTATE HANDLE */
-  .rh.rot{
-    top:-38px;left:50%;transform:translateX(-50%);
-    cursor:crosshair;
-    background:var(--accent2);
-    box-shadow:0 0 6px rgba(0,255,157,.7);
-    width:16px;height:16px;
-  }
-  .rh.rot:hover{transform:translateX(-50%) scale(1.3);}
-  .rot-line{position:absolute;top:-30px;left:50%;transform:translateX(-50%);width:2px;height:24px;background:rgba(0,255,157,.5);pointer-events:none;}
+/* ── MAP ── */
+.map-wrapper{flex:1;position:relative;display:flex;flex-direction:column;min-width:0;min-height:0;}
+#map{flex:1;width:100%;min-height:0;}
 
-  /* Hide all handles when locked */
-  #planOverlay.locked .rh,
-  #planOverlay.locked .rot-line{display:none;}
+/* PLAN OVERLAY */
+#planOverlay{position:absolute;z-index:400;display:none;cursor:move;transform-origin:50% 50%;outline:2px dashed rgba(0,200,255,.5);outline-offset:0;}
+#planOverlay.locked{cursor:default;outline:none;}
+#planOverlay img{width:100%;height:100%;display:block;pointer-events:none;user-select:none;-webkit-user-drag:none;}
+.rh{position:absolute;width:13px;height:13px;background:var(--accent);border:2px solid #fff;border-radius:50%;z-index:2;box-shadow:0 0 6px rgba(0,200,255,.6);}
+.rh.nw{top:-6px;left:-6px;cursor:nw-resize;}.rh.ne{top:-6px;right:-6px;cursor:ne-resize;}
+.rh.sw{bottom:-6px;left:-6px;cursor:sw-resize;}.rh.se{bottom:-6px;right:-6px;cursor:se-resize;}
+.rh.n{top:-6px;left:50%;transform:translateX(-50%);cursor:n-resize;}
+.rh.s{bottom:-6px;left:50%;transform:translateX(-50%);cursor:s-resize;}
+.rh.e{right:-6px;top:50%;transform:translateY(-50%);cursor:e-resize;}
+.rh.w{left:-6px;top:50%;transform:translateY(-50%);cursor:w-resize;}
+.rh.rot{top:-36px;left:50%;transform:translateX(-50%);cursor:crosshair;background:var(--accent2);box-shadow:0 0 6px rgba(0,255,157,.7);width:14px;height:14px;}
+.rot-line{position:absolute;top:-28px;left:50%;transform:translateX(-50%);width:2px;height:22px;background:rgba(0,255,157,.4);pointer-events:none;}
+#planOverlay.locked .rh,#planOverlay.locked .rot-line{display:none;}
 
-  /* LOCK BUTTON */
-  #lockBtn{
-    position:absolute;
-    bottom:22px;right:22px;
-    z-index:1000;
-    padding:10px 20px;
-    border-radius:6px;
-    font-family:'Rajdhani',sans-serif;font-weight:700;font-size:15px;
-    letter-spacing:2px;text-transform:uppercase;
-    cursor:pointer;display:none;
-    transition:all .2s;
-    backdrop-filter:blur(8px);
-  }
-  #lockBtn.unlocked{background:rgba(0,200,255,.12);border:1.5px solid var(--accent);color:var(--accent);}
-  #lockBtn.unlocked:hover{background:rgba(0,200,255,.22);}
-  #lockBtn.locked{background:rgba(0,255,157,.12);border:1.5px solid var(--accent2);color:var(--accent2);}
-  #lockBtn.locked:hover{background:rgba(0,255,157,.22);}
+/* LOCK BTN */
+#lockBtn{position:absolute;bottom:44px;right:14px;z-index:1000;padding:8px 16px;border-radius:5px;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:13px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;display:none;transition:all .2s;backdrop-filter:blur(8px);}
+#lockBtn.unlocked{background:rgba(0,200,255,.12);border:1.5px solid var(--accent);color:var(--accent);}
+#lockBtn.locked{background:rgba(0,255,157,.12);border:1.5px solid var(--accent2);color:var(--accent2);}
 
-  /* ROTATION INDICATOR */
-  #rotIndicator{
-    position:absolute;top:14px;right:14px;
-    z-index:1000;display:none;
-    background:rgba(7,21,42,.88);
-    border:1px solid var(--border);
-    border-radius:4px;padding:5px 10px;
-    font-family:'Space Mono',monospace;font-size:11px;
-    color:var(--accent2);pointer-events:none;
-    backdrop-filter:blur(4px);
-  }
+/* DATA TOOLTIP */
+#dataTooltip{position:absolute;top:14px;right:14px;z-index:1000;background:rgba(7,21,42,.92);border:1px solid var(--border);border-radius:5px;padding:8px 12px;font-family:'Space Mono',monospace;font-size:10px;color:var(--text);pointer-events:none;backdrop-filter:blur(6px);min-width:160px;display:none;}
+#dataTooltip .tt-title{color:var(--accent);font-size:11px;margin-bottom:4px;font-family:'Rajdhani',sans-serif;font-weight:600;letter-spacing:1px;}
 
-  /* EMPTY STATE */
-  #emptyState{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(4,13,26,.7);z-index:500;pointer-events:none;backdrop-filter:blur(2px);}
-  #emptyState.hidden{display:none;}
-  .empty-icon{font-size:48px;margin-bottom:16px;opacity:.4;}
-  .empty-title{font-family:'Rajdhani',sans-serif;font-size:22px;font-weight:700;letter-spacing:2px;color:var(--muted);margin-bottom:8px;}
-  .empty-sub{font-size:13px;color:var(--muted);opacity:.7;text-align:center;}
+/* LAST UPDATED */
+#lastUpdated{position:absolute;top:14px;left:14px;z-index:1000;background:rgba(7,21,42,.88);border:1px solid var(--border);border-radius:4px;padding:5px 10px;font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);pointer-events:none;backdrop-filter:blur(4px);}
+#lastUpdated span{color:var(--accent2);}
 
-  /* COORDS */
-  .coords-bar{position:absolute;bottom:0;right:0;background:rgba(4,13,26,.88);border-top:1px solid var(--border);border-left:1px solid var(--border);padding:4px 12px;font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);z-index:1000;pointer-events:none;}
-  .coords-bar span{color:var(--accent2);}
+/* EMPTY STATE */
+#emptyState{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(4,13,26,.6);z-index:500;pointer-events:none;backdrop-filter:blur(2px);}
+#emptyState.hidden{display:none;}
+.empty-icon{font-size:44px;margin-bottom:14px;opacity:.4;}
+.empty-title{font-family:'Rajdhani',sans-serif;font-size:20px;font-weight:700;letter-spacing:2px;color:var(--muted);margin-bottom:6px;}
+.empty-sub{font-size:12px;color:var(--muted);opacity:.7;text-align:center;}
 
-  /* LEAFLET */
-  .leaflet-control-zoom{border:1px solid var(--border)!important;border-radius:4px!important;overflow:hidden;}
-  .leaflet-control-zoom a{background:var(--panel)!important;color:var(--accent)!important;border-color:var(--border)!important;}
-  .leaflet-control-zoom a:hover{background:var(--border)!important;}
-  .leaflet-control-attribution{background:rgba(4,13,26,.85)!important;color:var(--muted)!important;font-size:9px!important;}
-  .leaflet-control-attribution a{color:var(--accent)!important;}
+.coords-bar{position:absolute;bottom:0;right:0;background:rgba(4,13,26,.88);border-top:1px solid var(--border);border-left:1px solid var(--border);padding:4px 12px;font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);z-index:1000;pointer-events:none;}
+.coords-bar span{color:var(--accent2);}
+
+/* LEAFLET */
+.leaflet-control-zoom{border:1px solid var(--border)!important;border-radius:4px!important;overflow:hidden;}
+.leaflet-control-zoom a{background:var(--panel)!important;color:var(--accent)!important;border-color:var(--border)!important;}
+.leaflet-control-zoom a:hover{background:var(--border)!important;}
+.leaflet-control-attribution{background:rgba(4,13,26,.85)!important;color:var(--muted)!important;font-size:9px!important;}
+.leaflet-control-attribution a{color:var(--accent)!important;}
 </style>
 </head>
 <body>
@@ -192,406 +171,514 @@
     <div class="logo-icon">⬡</div>
     <div>
       <div class="logo-title">Dholera <span>SIR</span></div>
-      <div class="logo-sub">Smart City Master Plan</div>
+      <div class="logo-sub">Smart City Live Data Map</div>
     </div>
   </div>
   <div class="header-right">
-    <div class="pulse-dot"></div>
+    <div class="live-badge"><div class="pulse-dot"></div>LIVE OSM</div>
     <div class="tag">Gujarat · India</div>
   </div>
 </header>
 
 <div class="main">
-  <aside class="sidebar">
+<aside class="sidebar">
 
-    <div class="s-section">
-      <div class="s-title">Base Map</div>
-      <div class="basemap-grid">
-        <button class="bm-btn active" onclick="switchBase('osm',this)">Street</button>
-        <button class="bm-btn" onclick="switchBase('satellite',this)">Satellite</button>
-        <button class="bm-btn" onclick="switchBase('topo',this)">Topo</button>
-        <button class="bm-btn" onclick="switchBase('dark',this)">Dark</button>
-      </div>
+  <!-- BASEMAP -->
+  <div class="s-section">
+    <div class="s-title">Base Map</div>
+    <div class="basemap-grid">
+      <button class="bm-btn active" onclick="switchBase('osm',this)">Street</button>
+      <button class="bm-btn" onclick="switchBase('satellite',this)">Satellite</button>
+      <button class="bm-btn" onclick="switchBase('topo',this)">Topo</button>
+      <button class="bm-btn" onclick="switchBase('dark',this)">Dark</button>
     </div>
-
-    <div class="s-section">
-      <div class="s-title">Plan Image</div>
-      <div class="img-preview" id="imgPreview">
-        <img id="previewImg" src="" alt="preview">
-        <div class="img-preview-label" id="previewLabel"></div>
-        <button class="remove-btn" onclick="removeImage()">✕</button>
-      </div>
-      <div class="upload-zone" id="uploadZone">
-        <input type="file" accept="image/*" id="fileInput" onchange="handleFile(this.files[0])">
-        <div class="upload-icon">🗺️</div>
-        <div class="upload-title">Upload Plan Image</div>
-        <div class="upload-sub">Click or drag & drop<br>PNG · JPG · WebP</div>
-      </div>
-    </div>
-
-    <div class="s-section" id="overlayControls" style="display:none">
-      <div class="s-title">Overlay</div>
-      <div class="overlay-row">
-        <span class="overlay-label">Show on Map</span>
-        <div class="toggle-switch on" id="overlayToggle" onclick="toggleOverlay()"></div>
-      </div>
-      <div class="slider-label">Opacity <span id="opacityVal">80%</span></div>
-      <input type="range" min="0" max="100" value="80" id="opacitySlider" oninput="updateOpacity(this.value)">
-    </div>
-
-    <div class="s-section" id="adjustInfo" style="display:none">
-      <div class="s-title">Current Position</div>
-      <div class="info-row"><span class="info-key">North</span><span class="info-val" id="infoN">—</span></div>
-      <div class="info-row"><span class="info-key">South</span><span class="info-val" id="infoS">—</span></div>
-      <div class="info-row"><span class="info-key">West</span><span class="info-val" id="infoW">—</span></div>
-      <div class="info-row"><span class="info-key">East</span><span class="info-val" id="infoE">—</span></div>
-      <div class="info-row"><span class="info-key">Rotation</span><span class="info-val" id="infoR">0°</span></div>
-      <button class="reset-btn" onclick="resetTransform()">↺ Reset Position</button>
-    </div>
-
-    <div class="s-section">
-      <div class="s-title">About</div>
-      <p class="about-text">Dholera SIR is India's first greenfield smart city, planned across ~920 km² on the Delhi–Mumbai Industrial Corridor in Gujarat.</p>
-    </div>
-
-  </aside>
-
-  <div class="map-wrapper" id="mapWrapper">
-    <div id="map"></div>
-
-    <!-- EMPTY STATE -->
-    <div id="emptyState">
-      <div class="empty-icon">🗺️</div>
-      <div class="empty-title">Upload Your Plan</div>
-      <div class="empty-sub">Upload the Dholera Master Plan image<br>from the sidebar to overlay it on the map</div>
-    </div>
-
-    <!-- LOCK BUTTON -->
-    <button id="lockBtn" class="unlocked" onclick="toggleLock()">🔓 Lock</button>
-
-    <!-- ROTATION INDICATOR -->
-    <div id="rotIndicator">↻ 0°</div>
-
-    <div class="coords-bar" id="coords">Lat: — &nbsp; Lng: —</div>
   </div>
+
+  <!-- PLAN IMAGE -->
+  <div class="s-section">
+    <div class="s-title">Plan Image</div>
+    <div class="img-preview" id="imgPreview">
+      <img id="previewImg" src="" alt="preview">
+      <div class="img-preview-label" id="previewLabel"></div>
+      <button class="remove-btn" onclick="removeImage()">✕</button>
+    </div>
+    <div class="upload-zone" id="uploadZone">
+      <input type="file" accept="image/*" id="fileInput" onchange="handleFile(this.files[0])">
+      <div class="upload-icon">🗺️</div>
+      <div class="upload-title">Upload Plan Image</div>
+      <div class="upload-sub">Click or drag & drop</div>
+    </div>
+  </div>
+
+  <!-- PLAN CONTROLS -->
+  <div class="s-section" id="overlayControls" style="display:none">
+    <div class="s-title">Plan Overlay</div>
+    <div class="ctrl-row">
+      <span class="ctrl-label">Show Plan</span>
+      <div class="toggle-switch on" id="overlayToggle" onclick="togglePlan()"></div>
+    </div>
+    <div class="slider-label">Opacity <span id="opacityVal">60%</span></div>
+    <input type="range" min="0" max="100" value="60" id="opacitySlider" oninput="updateOpacity(this.value)">
+  </div>
+
+  <!-- LIVE DATA LAYERS -->
+  <div class="s-section">
+    <div class="s-title">Live OSM Layers</div>
+
+    <!-- fetch status -->
+    <div class="fetch-status idle" id="fetchStatus">
+      <span>⬡</span><span id="fetchMsg">Ready to fetch data</span>
+    </div>
+
+    <!-- CONSTRUCTION -->
+    <div class="layer-card">
+      <div class="layer-header">
+        <div class="layer-name">
+          <div class="layer-dot" style="background:#ff5f5f;box-shadow:0 0 5px #ff5f5f"></div>
+          Construction
+        </div>
+        <div class="layer-toggle-sm on" id="tog-construction" onclick="toggleHeat('construction')"></div>
+      </div>
+      <div class="layer-count" id="cnt-construction">— features</div>
+    </div>
+
+    <!-- INFRASTRUCTURE -->
+    <div class="layer-card">
+      <div class="layer-header">
+        <div class="layer-name">
+          <div class="layer-dot" style="background:#f5b942;box-shadow:0 0 5px #f5b942"></div>
+          Infrastructure
+        </div>
+        <div class="layer-toggle-sm on" id="tog-infrastructure" onclick="toggleHeat('infrastructure')"></div>
+      </div>
+      <div class="layer-count" id="cnt-infrastructure">— features</div>
+    </div>
+
+    <!-- LAND USE -->
+    <div class="layer-card">
+      <div class="layer-header">
+        <div class="layer-name">
+          <div class="layer-dot" style="background:#00c8ff;box-shadow:0 0 5px #00c8ff"></div>
+          Land Use / Zones
+        </div>
+        <div class="layer-toggle-sm on" id="tog-landuse" onclick="toggleHeat('landuse')"></div>
+      </div>
+      <div class="layer-count" id="cnt-landuse">— features</div>
+    </div>
+
+    <!-- intensity -->
+    <div style="margin-top:10px">
+      <div class="slider-label">Heatmap Intensity <span id="intensityVal">0.8</span></div>
+      <input type="range" min="1" max="10" value="8" id="intensitySlider" oninput="updateIntensity(this.value)">
+    </div>
+    <div class="preset-row">
+      <button class="preset-btn" onclick="setRadius(15)">Fine</button>
+      <button class="preset-btn active" onclick="setRadius(25)">Normal</button>
+      <button class="preset-btn" onclick="setRadius(40)">Broad</button>
+    </div>
+
+    <button class="refresh-btn" style="margin-top:10px" id="refreshBtn" onclick="fetchAllData()">↻ Refresh Live Data</button>
+  </div>
+
+  <!-- STATS -->
+  <div class="s-section" id="statsSection">
+    <div class="s-title">Data Stats</div>
+    <div class="stats-grid">
+      <div class="stat-box"><div class="stat-val" id="stat-total">0</div><div class="stat-label">Total Features</div></div>
+      <div class="stat-box"><div class="stat-val" id="stat-roads">0</div><div class="stat-label">Road Segments</div></div>
+      <div class="stat-box"><div class="stat-val" id="stat-zones">0</div><div class="stat-label">Land Zones</div></div>
+      <div class="stat-box"><div class="stat-val" id="stat-sites">0</div><div class="stat-label">Build Sites</div></div>
+    </div>
+  </div>
+
+  <!-- LEGEND -->
+  <div class="s-section">
+    <div class="s-title">Heatmap Legend</div>
+    <div class="legend-grid">
+      <div class="legend-row">
+        <div class="legend-swatch" style="background:linear-gradient(90deg,#0000ff,#00ffff,#00ff00,#ffff00,#ff0000)"></div>
+        Low → High Density
+      </div>
+      <div class="legend-row"><div class="layer-dot" style="background:#ff5f5f;width:9px;height:9px;border-radius:50%;flex-shrink:0;margin-right:-1px"></div>Active Construction</div>
+      <div class="legend-row"><div class="layer-dot" style="background:#f5b942;width:9px;height:9px;border-radius:50%;flex-shrink:0;margin-right:-1px"></div>Roads / Utilities</div>
+      <div class="legend-row"><div class="layer-dot" style="background:#00c8ff;width:9px;height:9px;border-radius:50%;flex-shrink:0;margin-right:-1px"></div>Land Zones</div>
+    </div>
+  </div>
+
+  <!-- ABOUT -->
+  <div class="s-section">
+    <div class="s-title">Data Source</div>
+    <p class="about-text">Live data fetched from <strong style="color:var(--accent)">OpenStreetMap</strong> via the Overpass API. OSM contributors map Dholera's roads, buildings, and land zones in real time. Data refreshes on demand.</p>
+  </div>
+
+</aside>
+
+<div class="map-wrapper" id="mapWrapper">
+  <div id="map"></div>
+
+  <!-- absolute overlays appended by JS into map container -->
+  <div id="emptyState">
+    <div class="empty-icon">📡</div>
+    <div class="empty-title">Fetching Live Data</div>
+    <div class="empty-sub">OSM data loads automatically<br>for the Dholera region</div>
+  </div>
+
+  <div id="lastUpdated">Updated: <span>—</span></div>
+  <div id="dataTooltip"><div class="tt-title" id="ttTitle">—</div><div id="ttBody"></div></div>
+  <button id="lockBtn" class="unlocked" onclick="toggleLock()">🔓 Lock</button>
+  <div class="coords-bar" id="coords">Lat: — &nbsp; Lng: —</div>
+</div>
 </div>
 
 <script>
-// ─── STATE ───────────────────────────────────────────────────────────────────
-const S = {
-  loaded: false, locked: false, visible: true,
-  north: 22.3634, south: 21.9787, west: 72.0092, east: 72.3759,
-  rotation: 1, opacity: 0.80, imageUrl: null
-};
+// ─── DHOLERA BBOX ─────────────────────────────────────────────────────────────
+const BBOX = { south:21.9787, west:72.0092, north:22.3634, east:72.3759 };
+const BBOX_STR = `${BBOX.south},${BBOX.west},${BBOX.north},${BBOX.east}`;
 
-// ─── MAP ─────────────────────────────────────────────────────────────────────
-const map = L.map('map', { center: [22.25, 72.18], zoom: 11 });
-setTimeout(() => map.invalidateSize(), 300);
+// ─── STATE ────────────────────────────────────────────────────────────────────
+const S = {
+  loaded:false, locked:false, visible:true,
+  north:22.3634, south:21.9787, west:72.0092, east:72.3759,
+  rotation:1, opacity:0.60, imageUrl:null
+};
+const heatState = { construction:true, infrastructure:true, landuse:true };
+const heatLayers = {};
+let heatRadius = 25;
+let heatIntensity = 0.8;
+let rawData = { construction:[], infrastructure:[], landuse:[] };
+
+// ─── MAP ──────────────────────────────────────────────────────────────────────
+const map = L.map('map',{center:[22.17,72.19],zoom:11});
+setTimeout(()=>map.invalidateSize(),300);
 
 const baseLayers = {
-  osm: L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors', maxZoom:19 }),
-  satellite: L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { attribution:'© Esri', maxZoom:19 }),
-  topo: L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', { attribution:'© OpenTopoMap', maxZoom:17 }),
-  dark: L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', { attribution:'© CARTO', maxZoom:19 })
+  osm:       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',maxZoom:19}),
+  satellite: L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{attribution:'© Esri',maxZoom:19}),
+  topo:      L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',{attribution:'© OpenTopoMap',maxZoom:17}),
+  dark:      L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{attribution:'© CARTO',maxZoom:19})
 };
 baseLayers.osm.addTo(map);
-map.fitBounds([[S.south, S.west],[S.north, S.east]]);
+map.fitBounds([[BBOX.south,BBOX.west],[BBOX.north,BBOX.east]]);
 
-function switchBase(name, btn) {
-  document.querySelectorAll('.bm-btn').forEach(b => b.classList.remove('active'));
+function switchBase(name,btn){
+  document.querySelectorAll('.bm-btn').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
-  Object.values(baseLayers).forEach(l => map.removeLayer(l));
+  Object.values(baseLayers).forEach(l=>map.removeLayer(l));
   baseLayers[name].addTo(map);
 }
 
-// ─── OVERLAY DIV ─────────────────────────────────────────────────────────────
-// Build overlay div inside the map container
-const mapContainer = map.getContainer();
+// ─── MOVE UI INTO MAP CONTAINER ───────────────────────────────────────────────
+const mc = map.getContainer();
+mc.style.position='relative'; mc.style.flex='1'; mc.style.minHeight='0';
+['emptyState','lastUpdated','dataTooltip','lockBtn','coords'].forEach(id=>{
+  mc.appendChild(document.getElementById(id));
+});
 
+// ─── PLAN OVERLAY ─────────────────────────────────────────────────────────────
 const overlay = document.createElement('div');
 overlay.id = 'planOverlay';
 overlay.innerHTML = `
   <div class="rot-line"></div>
   <img id="overlayImg" draggable="false">
-  <div class="rh rot"   data-handle="rot"></div>
-  <div class="rh nw"    data-handle="nw"></div>
-  <div class="rh ne"    data-handle="ne"></div>
-  <div class="rh sw"    data-handle="sw"></div>
-  <div class="rh se"    data-handle="se"></div>
-  <div class="rh n"     data-handle="n"></div>
-  <div class="rh s"     data-handle="s"></div>
-  <div class="rh e"     data-handle="e"></div>
-  <div class="rh w"     data-handle="w"></div>
+  <div class="rh rot" data-handle="rot"></div>
+  <div class="rh nw"  data-handle="nw"></div><div class="rh ne" data-handle="ne"></div>
+  <div class="rh sw"  data-handle="sw"></div><div class="rh se" data-handle="se"></div>
+  <div class="rh n"   data-handle="n"></div> <div class="rh s"  data-handle="s"></div>
+  <div class="rh e"   data-handle="e"></div> <div class="rh w"  data-handle="w"></div>
 `;
-mapContainer.appendChild(overlay);
+mc.appendChild(overlay);
 
-// Also move the other absolute elements into mapContainer
-const lockBtn       = document.getElementById('lockBtn');
-const rotIndicator  = document.getElementById('rotIndicator');
-const emptyState    = document.getElementById('emptyState');
-const coordsBar     = document.getElementById('coords');
-mapContainer.appendChild(lockBtn);
-mapContainer.appendChild(rotIndicator);
-mapContainer.appendChild(emptyState);
-mapContainer.appendChild(coordsBar);
-
-// Ensure map container is relative
-mapContainer.style.position = 'relative';
-mapContainer.style.flex = '1';
-mapContainer.style.minHeight = '0';
-
-// ─── UPDATE OVERLAY POSITION ─────────────────────────────────────────────────
-function updateOverlayPosition() {
-  if (!S.loaded) return;
-  const nw = map.latLngToContainerPoint([S.north, S.west]);
-  const se = map.latLngToContainerPoint([S.south, S.east]);
-  const w  = se.x - nw.x;
-  const h  = se.y - nw.y;
-
-  overlay.style.left   = nw.x + 'px';
-  overlay.style.top    = nw.y + 'px';
-  overlay.style.width  = Math.max(w, 10) + 'px';
-  overlay.style.height = Math.max(h, 10) + 'px';
+function updateOverlayPosition(){
+  if(!S.loaded) return;
+  const nw = map.latLngToContainerPoint([S.north,S.west]);
+  const se = map.latLngToContainerPoint([S.south,S.east]);
+  overlay.style.left   = nw.x+'px'; overlay.style.top    = nw.y+'px';
+  overlay.style.width  = Math.max(se.x-nw.x,10)+'px';
+  overlay.style.height = Math.max(se.y-nw.y,10)+'px';
   overlay.style.transform = `rotate(${S.rotation}deg)`;
-  overlay.style.opacity = S.visible ? S.opacity : 0;
-
-  // Sync info panel
-  document.getElementById('infoN').textContent = S.north.toFixed(4);
-  document.getElementById('infoS').textContent = S.south.toFixed(4);
-  document.getElementById('infoW').textContent = S.west.toFixed(4);
-  document.getElementById('infoE').textContent = S.east.toFixed(4);
-  document.getElementById('infoR').textContent = Math.round(S.rotation) + '°';
-  rotIndicator.textContent = '↻ ' + Math.round(S.rotation) + '°';
+  overlay.style.opacity   = S.visible ? S.opacity : 0;
 }
-
 map.on('zoom move zoomend moveend', updateOverlayPosition);
 
-// ─── FILE UPLOAD ─────────────────────────────────────────────────────────────
-function handleFile(file) {
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = e => loadImageOverlay(e.target.result, file.name);
-  reader.readAsDataURL(file);
-}
-
-function loadImageOverlay(url, filename) {
-  S.imageUrl = url;
-  S.loaded = true;
-  S.locked = false;
-  S.rotation = 1;
-  S.north = 22.3634; S.south = 21.9787; S.west = 72.0092; S.east = 72.3759;
-
-  document.getElementById('overlayImg').src = url;
-  document.getElementById('previewImg').src = url;
-  document.getElementById('previewLabel').textContent = filename || 'plan.png';
-  document.getElementById('imgPreview').style.display = 'block';
-  document.getElementById('uploadZone').style.display = 'none';
-  document.getElementById('overlayControls').style.display = 'block';
-  document.getElementById('adjustInfo').style.display = 'block';
-
-  overlay.style.display = 'block';
-  overlay.classList.remove('locked');
-
-  lockBtn.style.display = 'block';
-  lockBtn.className = 'unlocked';
-  lockBtn.textContent = '🔓 Lock';
-
-  rotIndicator.style.display = 'block';
-  emptyState.classList.add('hidden');
-
-  map.fitBounds([[S.south, S.west],[S.north, S.east]]);
-  setTimeout(updateOverlayPosition, 100);
-}
-
-function removeImage() {
-  S.loaded = false; S.imageUrl = null;
-  overlay.style.display = 'none';
-  lockBtn.style.display = 'none';
-  rotIndicator.style.display = 'none';
-  document.getElementById('imgPreview').style.display = 'none';
-  document.getElementById('uploadZone').style.display = 'block';
-  document.getElementById('overlayControls').style.display = 'none';
-  document.getElementById('adjustInfo').style.display = 'none';
-  document.getElementById('fileInput').value = '';
-  emptyState.classList.remove('hidden');
-}
-
-// ─── DRAG OVERLAY ────────────────────────────────────────────────────────────
-overlay.addEventListener('mousedown', e => {
-  if (S.locked) return;
-  if (e.target.dataset.handle) return; // handled separately
-  e.preventDefault(); e.stopPropagation();
-  map.dragging.disable();
-
-  const rect = mapContainer.getBoundingClientRect();
-  const startN = S.north, startS = S.south, startW = S.west, startE = S.east;
-  const startX = e.clientX, startY = e.clientY;
-
-  function onMove(e) {
-    const p0 = map.containerPointToLatLng([startX - rect.left, startY - rect.top]);
-    const p1 = map.containerPointToLatLng([e.clientX - rect.left, e.clientY - rect.top]);
-    const dLat = p1.lat - p0.lat;
-    const dLng = p1.lng - p0.lng;
-    S.north = startN + dLat; S.south = startS + dLat;
-    S.west  = startW + dLng; S.east  = startE + dLng;
+// drag move
+overlay.addEventListener('mousedown', e=>{
+  if(S.locked||e.target.dataset.handle) return;
+  e.preventDefault(); e.stopPropagation(); map.dragging.disable();
+  const rect=mc.getBoundingClientRect();
+  const [sN,sS,sW,sE]=[S.north,S.south,S.west,S.east];
+  const [sx,sy]=[e.clientX,e.clientY];
+  const move=e=>{
+    const p0=map.containerPointToLatLng([sx-rect.left,sy-rect.top]);
+    const p1=map.containerPointToLatLng([e.clientX-rect.left,e.clientY-rect.top]);
+    S.north=sN+(p1.lat-p0.lat); S.south=sS+(p1.lat-p0.lat);
+    S.west =sW+(p1.lng-p0.lng); S.east =sE+(p1.lng-p0.lng);
     updateOverlayPosition();
-  }
-  function onUp() {
-    document.removeEventListener('mousemove', onMove);
-    document.removeEventListener('mouseup', onUp);
-    map.dragging.enable();
-  }
-  document.addEventListener('mousemove', onMove);
-  document.addEventListener('mouseup', onUp);
+  };
+  const up=()=>{ document.removeEventListener('mousemove',move); document.removeEventListener('mouseup',up); map.dragging.enable(); };
+  document.addEventListener('mousemove',move); document.addEventListener('mouseup',up);
 });
 
-// ─── RESIZE & ROTATE HANDLES ─────────────────────────────────────────────────
-overlay.querySelectorAll('.rh').forEach(handle => {
-  handle.addEventListener('mousedown', e => {
-    if (S.locked) return;
-    e.preventDefault(); e.stopPropagation();
-    map.dragging.disable();
-    const type = e.target.dataset.handle;
-    const rect = mapContainer.getBoundingClientRect();
-
-    if (type === 'rot') {
-      // Rotation: angle from center of overlay to mouse
-      startRotate(e, rect);
+// resize / rotate handles
+overlay.querySelectorAll('.rh').forEach(h=>{
+  h.addEventListener('mousedown',e=>{
+    if(S.locked) return;
+    e.preventDefault(); e.stopPropagation(); map.dragging.disable();
+    const type=e.target.dataset.handle;
+    const rect=mc.getBoundingClientRect();
+    if(type==='rot'){
+      const nw=map.latLngToContainerPoint([S.north,S.west]);
+      const se=map.latLngToContainerPoint([S.south,S.east]);
+      const cx=rect.left+(nw.x+se.x)/2, cy=rect.top+(nw.y+se.y)/2;
+      const move=e=>{ S.rotation=Math.atan2(e.clientX-cx,-(e.clientY-cy))*180/Math.PI; updateOverlayPosition(); };
+      const up=()=>{ document.removeEventListener('mousemove',move); document.removeEventListener('mouseup',up); map.dragging.enable(); };
+      document.addEventListener('mousemove',move); document.addEventListener('mouseup',up);
     } else {
-      startResize(e, type, rect);
+      const MIN=0.004;
+      const anchors={
+        nw:()=>({lat:S.south,lng:S.east}), ne:()=>({lat:S.south,lng:S.west}),
+        sw:()=>({lat:S.north,lng:S.east}), se:()=>({lat:S.north,lng:S.west}),
+        n:()=>({lat:S.south,lng:null}),    s:()=>({lat:S.north,lng:null}),
+        e:()=>({lat:null,lng:S.west}),     w:()=>({lat:null,lng:S.east})
+      };
+      const anchor=anchors[type]();
+      const move=e=>{
+        const ll=map.containerPointToLatLng([e.clientX-rect.left,e.clientY-rect.top]);
+        if(type==='nw'){S.north=Math.max(ll.lat,anchor.lat+MIN);S.west=Math.min(ll.lng,anchor.lng-MIN);S.south=anchor.lat;S.east=anchor.lng;}
+        else if(type==='ne'){S.north=Math.max(ll.lat,anchor.lat+MIN);S.east=Math.max(ll.lng,anchor.lng+MIN);S.south=anchor.lat;S.west=anchor.lng;}
+        else if(type==='sw'){S.south=Math.min(ll.lat,anchor.lat-MIN);S.west=Math.min(ll.lng,anchor.lng-MIN);S.north=anchor.lat;S.east=anchor.lng;}
+        else if(type==='se'){S.south=Math.min(ll.lat,anchor.lat-MIN);S.east=Math.max(ll.lng,anchor.lng+MIN);S.north=anchor.lat;S.west=anchor.lng;}
+        else if(type==='n'){S.north=Math.max(ll.lat,anchor.lat+MIN);S.south=anchor.lat;}
+        else if(type==='s'){S.south=Math.min(ll.lat,anchor.lat-MIN);S.north=anchor.lat;}
+        else if(type==='e'){S.east=Math.max(ll.lng,anchor.lng+MIN);S.west=anchor.lng;}
+        else if(type==='w'){S.west=Math.min(ll.lng,anchor.lng-MIN);S.east=anchor.lng;}
+        updateOverlayPosition();
+      };
+      const up=()=>{ document.removeEventListener('mousemove',move); document.removeEventListener('mouseup',up); map.dragging.enable(); };
+      document.addEventListener('mousemove',move); document.addEventListener('mouseup',up);
     }
   });
 });
 
-function startResize(e, corner, rect) {
-  // Anchor = opposite corner stays fixed
-  const anchors = {
-    nw: ()=>({ lat: S.south, lng: S.east }),
-    ne: ()=>({ lat: S.south, lng: S.west }),
-    sw: ()=>({ lat: S.north, lng: S.east }),
-    se: ()=>({ lat: S.north, lng: S.west }),
-    n:  ()=>({ lat: S.south, lng: null   }),
-    s:  ()=>({ lat: S.north, lng: null   }),
-    e:  ()=>({ lat: null,    lng: S.west }),
-    w:  ()=>({ lat: null,    lng: S.east })
-  };
-  const anchor = anchors[corner]();
-
-  function onMove(e) {
-    const ll = map.containerPointToLatLng([e.clientX - rect.left, e.clientY - rect.top]);
-    const MIN = 0.005; // minimum size in degrees
-    if (corner === 'nw') {
-      S.north = Math.max(ll.lat, anchor.lat + MIN);
-      S.west  = Math.min(ll.lng, anchor.lng - MIN);
-      S.south = anchor.lat; S.east = anchor.lng;
-    } else if (corner === 'ne') {
-      S.north = Math.max(ll.lat, anchor.lat + MIN);
-      S.east  = Math.max(ll.lng, anchor.lng + MIN);
-      S.south = anchor.lat; S.west = anchor.lng;
-    } else if (corner === 'sw') {
-      S.south = Math.min(ll.lat, anchor.lat - MIN);
-      S.west  = Math.min(ll.lng, anchor.lng - MIN);
-      S.north = anchor.lat; S.east = anchor.lng;
-    } else if (corner === 'se') {
-      S.south = Math.min(ll.lat, anchor.lat - MIN);
-      S.east  = Math.max(ll.lng, anchor.lng + MIN);
-      S.north = anchor.lat; S.west = anchor.lng;
-    } else if (corner === 'n') {
-      S.north = Math.max(ll.lat, anchor.lat + MIN);
-      S.south = anchor.lat;
-    } else if (corner === 's') {
-      S.south = Math.min(ll.lat, anchor.lat - MIN);
-      S.north = anchor.lat;
-    } else if (corner === 'e') {
-      S.east = Math.max(ll.lng, anchor.lng + MIN);
-      S.west = anchor.lng;
-    } else if (corner === 'w') {
-      S.west = Math.min(ll.lng, anchor.lng - MIN);
-      S.east = anchor.lng;
-    }
-    updateOverlayPosition();
-  }
-  function onUp() {
-    document.removeEventListener('mousemove', onMove);
-    document.removeEventListener('mouseup', onUp);
-    map.dragging.enable();
-  }
-  document.addEventListener('mousemove', onMove);
-  document.addEventListener('mouseup', onUp);
+function toggleLock(){
+  S.locked=!S.locked;
+  overlay.classList.toggle('locked',S.locked);
+  overlay.style.cursor=S.locked?'default':'move';
+  const btn=document.getElementById('lockBtn');
+  btn.className=S.locked?'locked':'unlocked';
+  btn.textContent=S.locked?'🔒 Locked':'🔓 Lock';
 }
 
-function startRotate(e, rect) {
-  const nw = map.latLngToContainerPoint([S.north, S.west]);
-  const se = map.latLngToContainerPoint([S.south, S.east]);
-  // Center in page coords
-  const cx = rect.left + (nw.x + se.x) / 2;
-  const cy = rect.top  + (nw.y + se.y) / 2;
-
-  function onMove(e) {
-    const dx = e.clientX - cx;
-    const dy = e.clientY - cy;
-    S.rotation = Math.atan2(dx, -dy) * 180 / Math.PI;
-    updateOverlayPosition();
-  }
-  function onUp() {
-    document.removeEventListener('mousemove', onMove);
-    document.removeEventListener('mouseup', onUp);
-    map.dragging.enable();
-  }
-  document.addEventListener('mousemove', onMove);
-  document.addEventListener('mouseup', onUp);
-}
-
-// ─── LOCK / UNLOCK ───────────────────────────────────────────────────────────
-function toggleLock() {
-  S.locked = !S.locked;
-  if (S.locked) {
-    overlay.classList.add('locked');
-    overlay.style.cursor = 'default';
-    lockBtn.className = 'locked';
-    lockBtn.textContent = '🔒 Locked';
-  } else {
-    overlay.classList.remove('locked');
-    overlay.style.cursor = 'move';
-    lockBtn.className = 'unlocked';
-    lockBtn.textContent = '🔓 Lock';
-  }
-}
-
-// ─── TOGGLE VISIBILITY ───────────────────────────────────────────────────────
-function toggleOverlay() {
-  S.visible = !S.visible;
-  document.getElementById('overlayToggle').classList.toggle('on', S.visible);
+function togglePlan(){
+  S.visible=!S.visible;
+  document.getElementById('overlayToggle').classList.toggle('on',S.visible);
   updateOverlayPosition();
 }
 
-// ─── OPACITY ─────────────────────────────────────────────────────────────────
-function updateOpacity(val) {
-  S.opacity = val / 100;
-  document.getElementById('opacityVal').textContent = val + '%';
+function updateOpacity(val){
+  S.opacity=val/100;
+  document.getElementById('opacityVal').textContent=val+'%';
   updateOverlayPosition();
 }
 
-// ─── RESET ───────────────────────────────────────────────────────────────────
-function resetTransform() {
-  S.north = 22.3634; S.south = 21.9787; S.west = 72.0092; S.east = 72.3759; S.rotation = 1;
-  map.fitBounds([[S.south, S.west],[S.north, S.east]]);
-  setTimeout(updateOverlayPosition, 200);
+// ─── FILE UPLOAD ──────────────────────────────────────────────────────────────
+function handleFile(file){
+  if(!file) return;
+  const r=new FileReader();
+  r.onload=e=>loadPlanImage(e.target.result,file.name);
+  r.readAsDataURL(file);
 }
-
-// ─── DRAG & DROP UPLOAD ──────────────────────────────────────────────────────
-const uploadZone = document.getElementById('uploadZone');
-uploadZone.addEventListener('dragover', e => { e.preventDefault(); uploadZone.classList.add('drag-over'); });
-uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('drag-over'));
-uploadZone.addEventListener('drop', e => {
+function loadPlanImage(url,name){
+  S.imageUrl=url; S.loaded=true; S.locked=false; S.rotation=1;
+  S.north=22.3634; S.south=21.9787; S.west=72.0092; S.east=72.3759;
+  document.getElementById('overlayImg').src=url;
+  document.getElementById('previewImg').src=url;
+  document.getElementById('previewLabel').textContent=name||'plan.png';
+  document.getElementById('imgPreview').style.display='block';
+  document.getElementById('uploadZone').style.display='none';
+  document.getElementById('overlayControls').style.display='block';
+  overlay.style.display='block';
+  overlay.classList.remove('locked');
+  const lb=document.getElementById('lockBtn');
+  lb.style.display='block'; lb.className='unlocked'; lb.textContent='🔓 Lock';
+  document.getElementById('opacitySlider').value=60;
+  document.getElementById('opacityVal').textContent='60%';
+  map.fitBounds([[S.south,S.west],[S.north,S.east]]);
+  setTimeout(updateOverlayPosition,150);
+}
+function removeImage(){
+  S.loaded=false; S.imageUrl=null;
+  overlay.style.display='none';
+  document.getElementById('lockBtn').style.display='none';
+  document.getElementById('imgPreview').style.display='none';
+  document.getElementById('uploadZone').style.display='block';
+  document.getElementById('overlayControls').style.display='none';
+  document.getElementById('fileInput').value='';
+}
+const uploadZone=document.getElementById('uploadZone');
+uploadZone.addEventListener('dragover',e=>{e.preventDefault();uploadZone.classList.add('drag-over');});
+uploadZone.addEventListener('dragleave',()=>uploadZone.classList.remove('drag-over'));
+uploadZone.addEventListener('drop',e=>{
   e.preventDefault(); uploadZone.classList.remove('drag-over');
-  const file = e.dataTransfer.files[0];
-  if (file && file.type.startsWith('image/')) handleFile(file);
+  const f=e.dataTransfer.files[0];
+  if(f&&f.type.startsWith('image/')) handleFile(f);
 });
 
-// ─── COORDS ──────────────────────────────────────────────────────────────────
-map.on('mousemove', e => {
-  coordsBar.innerHTML = `Lat: <span>${e.latlng.lat.toFixed(5)}</span> &nbsp; Lng: <span>${e.latlng.lng.toFixed(5)}</span>`;
+// ─── OVERPASS QUERIES ─────────────────────────────────────────────────────────
+const QUERIES = {
+  construction: `[out:json][timeout:25];(node["building"="construction"](${BBOX_STR});way["building"="construction"](${BBOX_STR});node["landuse"="construction"](${BBOX_STR});way["landuse"="construction"](${BBOX_STR}););out center qt;`,
+  infrastructure: `[out:json][timeout:25];(way["highway"~"primary|secondary|tertiary|trunk|motorway"](${BBOX_STR});way["power"](${BBOX_STR});node["power"="tower"](${BBOX_STR});way["railway"](${BBOX_STR});way["aeroway"](${BBOX_STR}););out center qt;`,
+  landuse: `[out:json][timeout:25];(way["landuse"](${BBOX_STR});node["amenity"](${BBOX_STR});way["building"](${BBOX_STR}););out center qt;`
+};
+
+// ─── HEAT COLOURS ─────────────────────────────────────────────────────────────
+const HEAT_OPTS = {
+  construction:  { gradient:{0.2:'#330000',0.4:'#990000',0.6:'#cc2200',0.8:'#ff4400',1.0:'#ff8800'} },
+  infrastructure:{ gradient:{0.2:'#331a00',0.4:'#996600',0.6:'#cc9900',0.8:'#f5b942',1.0:'#ffee00'} },
+  landuse:       { gradient:{0.2:'#001833',0.4:'#004d80',0.6:'#0099cc',0.8:'#00c8ff',1.0:'#aaf0ff'} }
+};
+
+// ─── FETCH & RENDER ───────────────────────────────────────────────────────────
+function setStatus(type, msg){
+  const el=document.getElementById('fetchStatus');
+  el.className='fetch-status '+type;
+  document.getElementById('fetchMsg').textContent=msg;
+}
+
+const OVERPASS_MIRRORS = [
+  'https://overpass-api.de/api/interpreter',
+  'https://overpass.kumi.systems/api/interpreter',
+  'https://overpass.openstreetmap.ru/api/interpreter',
+];
+const CORS_PROXY = 'https://corsproxy.io/?';
+
+async function fetchLayer(name){
+  const body = 'data='+encodeURIComponent(QUERIES[name]);
+  const headers = {'Content-Type':'application/x-www-form-urlencoded'};
+  // Try direct mirrors first, then CORS proxy
+  const urls = [
+    ...OVERPASS_MIRRORS,
+    ...OVERPASS_MIRRORS.map(m => CORS_PROXY + encodeURIComponent(m))
+  ];
+  let lastErr;
+  for(const url of urls){
+    try{
+      const res = await fetch(url, { method:'POST', headers, body });
+      if(!res.ok) throw new Error('HTTP '+res.status);
+      const json = await res.json();
+      return json.elements || [];
+    } catch(e){ lastErr = e; }
+  }
+  throw lastErr;
+}
+
+function elementsToHeatPoints(elements){
+  return elements.map(e=>{
+    if(e.type==='node') return [e.lat,e.lon,1];
+    if(e.center)        return [e.center.lat,e.center.lon,1];
+    return null;
+  }).filter(Boolean);
+}
+
+function renderHeat(name, points){
+  if(heatLayers[name]) map.removeLayer(heatLayers[name]);
+  if(!points.length) return;
+  heatLayers[name] = L.heatLayer(points,{
+    radius: heatRadius,
+    blur: Math.round(heatRadius*0.8),
+    maxZoom:17,
+    max:1,
+    minOpacity:0.35,
+    ...HEAT_OPTS[name]
+  });
+  if(heatState[name]) heatLayers[name].addTo(map);
+}
+
+async function fetchAllData(){
+  const btn=document.getElementById('refreshBtn');
+  btn.disabled=true;
+  setStatus('loading','⟳ Fetching from Overpass API…');
+  document.getElementById('emptyState').classList.remove('hidden');
+  document.getElementById('emptyState').querySelector('.empty-title').textContent='Fetching Live Data';
+  document.getElementById('emptyState').querySelector('.empty-sub').textContent='Querying OpenStreetMap…';
+
+  let total=0, roads=0, zones=0, sites=0;
+
+  const layers = ['construction','infrastructure','landuse'];
+  for(const name of layers){
+    try {
+      setStatus('loading',`⟳ Loading ${name}…`);
+      const elements = await fetchLayer(name);
+      rawData[name]=elements;
+      const pts = elementsToHeatPoints(elements);
+      renderHeat(name, pts);
+
+      // update counts
+      document.getElementById('cnt-'+name).textContent = elements.length+' features';
+      total += elements.length;
+      if(name==='construction') sites=elements.length;
+      if(name==='infrastructure') roads=elements.length;
+      if(name==='landuse') zones=elements.length;
+    } catch(err){
+      document.getElementById('cnt-'+name).textContent = 'Error loading';
+      console.warn(name, err);
+    }
+  }
+
+  // stats
+  document.getElementById('stat-total').textContent = total;
+  document.getElementById('stat-roads').textContent = roads;
+  document.getElementById('stat-zones').textContent = zones;
+  document.getElementById('stat-sites').textContent = sites;
+
+  // timestamp
+  const now=new Date();
+  document.getElementById('lastUpdated').innerHTML =
+    `Updated: <span>${now.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'})} — ${now.toLocaleDateString('en-IN')}</span>`;
+
+  setStatus('ok','✓ Live data loaded from OSM');
+  document.getElementById('emptyState').classList.add('hidden');
+  btn.disabled=false;
+}
+
+// ─── TOGGLE HEAT LAYERS ───────────────────────────────────────────────────────
+function toggleHeat(name){
+  heatState[name]=!heatState[name];
+  document.getElementById('tog-'+name).classList.toggle('on',heatState[name]);
+  if(heatLayers[name]){
+    heatState[name] ? heatLayers[name].addTo(map) : map.removeLayer(heatLayers[name]);
+  }
+}
+
+// ─── INTENSITY & RADIUS ───────────────────────────────────────────────────────
+function updateIntensity(val){
+  heatIntensity=val/10;
+  document.getElementById('intensityVal').textContent=heatIntensity.toFixed(1);
+  Object.entries(heatLayers).forEach(([name,layer])=>{
+    if(layer) layer.setOptions({minOpacity:heatIntensity*0.4});
+  });
+}
+
+function setRadius(r){
+  heatRadius=r;
+  document.querySelectorAll('.preset-btn').forEach(b=>b.classList.remove('active'));
+  event.target.classList.add('active');
+  // re-render all with new radius
+  Object.keys(rawData).forEach(name=>{
+    if(rawData[name].length){
+      renderHeat(name, elementsToHeatPoints(rawData[name]));
+    }
+  });
+}
+
+// ─── COORDS ───────────────────────────────────────────────────────────────────
+map.on('mousemove',e=>{
+  document.getElementById('coords').innerHTML=
+    `Lat: <span>${e.latlng.lat.toFixed(5)}</span> &nbsp; Lng: <span>${e.latlng.lng.toFixed(5)}</span>`;
+});
+
+// ─── AUTO FETCH ON LOAD ───────────────────────────────────────────────────────
+window.addEventListener('load', ()=>{
+  setTimeout(fetchAllData, 800);
 });
 </script>
 </body>
