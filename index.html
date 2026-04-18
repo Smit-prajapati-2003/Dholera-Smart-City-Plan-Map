@@ -438,13 +438,14 @@ map.on('mousemove', e => {
 
 // ── AUTO-LOAD DEFAULT IMAGE ───────────────────────────────────────────────────
 window.addEventListener('DOMContentLoaded', () => {
-  // Give the map a tiny fraction of a second to initialize its bounds
-  setTimeout(() => {
-    // Load the image directly from your GitHub repo folder
-    loadPlanImage('dholera-plan.png', 'dholera-plan.png');
-  }, 200);
+  // Wait for the map to fully initialize first
+  map.whenReady(() => {
+    setTimeout(() => {
+      // Using './' ensures it looks in the exact same directory, helping Vercel/GitHub pages
+      loadPlanImage('./dholera-plan.png', 'Dholera Master Plan');
+    }, 500); // Slightly longer delay to ensure map tiles have rendered
+  });
 });
-
 </script>
 </body>
 </html>
