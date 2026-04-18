@@ -8,226 +8,222 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Exo+2:wght@300;400;600&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --bg:#040d1a;--panel:#07152a;--border:#0e2a4a;
-    --accent:#00c8ff;--accent2:#00ff9d;--text:#cde4f5;--muted:#4a7a9b;
-  }
-  *{margin:0;padding:0;box-sizing:border-box;}
-  html,body{width:100%;height:100%;background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--text);overflow:hidden;display:flex;flex-direction:column;}
+  :root{
+    --bg:#040d1a;--panel:#07152a;--border:#0e2a4a;
+    --accent:#00c8ff;--accent2:#00ff9d;--text:#cde4f5;--muted:#4a7a9b;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html,body{width:100%;height:100%;background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--text);overflow:hidden;display:flex;flex-direction:column;}
 
-  /* HEADER */
-  header{background:linear-gradient(90deg,#040d1a,#071e3d 50%,#040d1a);border-bottom:1px solid var(--border);padding:0 24px;height:54px;min-height:54px;display:flex;align-items:center;justify-content:space-between;position:relative;z-index:1000;}
-  header::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--accent),var(--accent2),var(--accent),transparent);opacity:.5;}
-  .logo{display:flex;align-items:center;gap:10px;}
-  .logo-icon{width:32px;height:32px;border:2px solid var(--accent);border-radius:5px;display:grid;place-items:center;font-size:18px;color:var(--accent);}
-  .logo-title{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:20px;letter-spacing:2px;color:#fff;text-transform:uppercase;}
-  .logo-title span{color:var(--accent);}
-  .logo-sub{font-family:'Space Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-top:1px;}
-  .header-right{display:flex;align-items:center;gap:10px;}
-  .tag{font-family:'Space Mono',monospace;font-size:10px;padding:3px 9px;border-radius:2px;letter-spacing:1px;text-transform:uppercase;background:rgba(0,200,255,.1);border:1px solid var(--accent);color:var(--accent);}
-  .pulse-dot{width:7px;height:7px;border-radius:50%;background:var(--accent2);box-shadow:0 0 8px var(--accent2);animation:pulse 2s infinite;}
-  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+  /* HEADER */
+  header{background:linear-gradient(90deg,#040d1a,#071e3d 50%,#040d1a);border-bottom:1px solid var(--border);padding:0 24px;height:54px;min-height:54px;display:flex;align-items:center;justify-content:space-between;position:relative;z-index:1000;}
+  header::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--accent),var(--accent2),var(--accent),transparent);opacity:.5;}
+  .logo{display:flex;align-items:center;gap:10px;}
+  .logo-icon{width:32px;height:32px;border:2px solid var(--accent);border-radius:5px;display:grid;place-items:center;font-size:18px;color:var(--accent);}
+  .logo-title{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:20px;letter-spacing:2px;color:#fff;text-transform:uppercase;}
+  .logo-title span{color:var(--accent);}
+  .logo-sub{font-family:'Space Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-top:1px;}
+  .header-right{display:flex;align-items:center;gap:10px;}
+  .tag{font-family:'Space Mono',monospace;font-size:10px;padding:3px 9px;border-radius:2px;letter-spacing:1px;text-transform:uppercase;background:rgba(0,200,255,.1);border:1px solid var(--accent);color:var(--accent);}
+  .pulse-dot{width:7px;height:7px;border-radius:50%;background:var(--accent2);box-shadow:0 0 8px var(--accent2);animation:pulse 2s infinite;}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
 
-  /* LAYOUT */
-  .main{flex:1;display:flex;overflow:hidden;min-height:0;}
+  /* LAYOUT */
+  .main{flex:1;display:flex;overflow:hidden;min-height:0;}
 
-  /* SIDEBAR */
-  .sidebar{width:268px;min-width:268px;background:var(--panel);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto;z-index:500;}
-  .sidebar::-webkit-scrollbar{width:4px;}
-  .sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
-  .s-section{padding:16px;border-bottom:1px solid var(--border);}
-  .s-title{font-family:'Rajdhani',sans-serif;font-size:11px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;color:var(--accent);margin-bottom:12px;display:flex;align-items:center;gap:8px;}
-  .s-title::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--border),transparent);}
+  /* SIDEBAR */
+  .sidebar{width:268px;min-width:268px;background:var(--panel);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto;z-index:500;}
+  .sidebar::-webkit-scrollbar{width:4px;}
+  .sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
+  .s-section{padding:16px;border-bottom:1px solid var(--border);}
+  .s-title{font-family:'Rajdhani',sans-serif;font-size:11px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;color:var(--accent);margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+  .s-title::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--border),transparent);}
 
-  /* BASEMAP */
-  .basemap-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;}
-  .bm-btn{padding:8px 4px;background:transparent;border:1px solid var(--border);border-radius:4px;color:var(--muted);font-family:'Exo 2',sans-serif;font-size:11px;cursor:pointer;text-transform:uppercase;letter-spacing:.5px;transition:all .15s;}
-  .bm-btn:hover,.bm-btn.active{border-color:var(--accent);color:var(--accent);background:rgba(0,200,255,.06);}
+  /* BASEMAP */
+  .basemap-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;}
+  .bm-btn{padding:8px 4px;background:transparent;border:1px solid var(--border);border-radius:4px;color:var(--muted);font-family:'Exo 2',sans-serif;font-size:11px;cursor:pointer;text-transform:uppercase;letter-spacing:.5px;transition:all .15s;}
+  .bm-btn:hover,.bm-btn.active{border-color:var(--accent);color:var(--accent);background:rgba(0,200,255,.06);}
 
-  /* PREVIEW */
-  .img-preview{display:none;border-radius:4px;overflow:hidden;border:1px solid var(--border);margin-bottom:10px;position:relative;}
-  .img-preview img{width:100%;height:80px;object-fit:cover;display:block;}
-  .img-preview-label{position:absolute;bottom:0;left:0;right:0;background:rgba(4,13,26,.85);padding:4px 8px;font-size:10px;color:var(--accent2);font-family:'Space Mono',monospace;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  /* UPLOAD */
+  .upload-zone{border:2px dashed var(--border);border-radius:6px;padding:20px 12px;text-align:center;cursor:pointer;transition:all .2s;position:relative;background:rgba(0,200,255,.02);}
+  .upload-zone:hover,.upload-zone.drag-over{border-color:var(--accent);background:rgba(0,200,255,.06);}
+  .upload-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+  .upload-icon{font-size:28px;margin-bottom:8px;}
+  .upload-title{font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:600;color:var(--text);letter-spacing:1px;}
+  .upload-sub{font-size:11px;color:var(--muted);margin-top:4px;}
 
-  /* STATUS BADGE */
-  .status-badge{display:flex;align-items:center;gap:7px;padding:8px 10px;border-radius:4px;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.5px;}
-  .status-badge.loading{background:rgba(0,200,255,.06);border:1px solid var(--border);color:var(--muted);}
-  .status-badge.ok{background:rgba(0,255,157,.06);border:1px solid rgba(0,255,157,.3);color:var(--accent2);}
-  .status-badge.err{background:rgba(255,80,80,.06);border:1px solid rgba(255,80,80,.3);color:#ff7070;}
-  .status-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
-  .status-badge.loading .status-dot{background:var(--muted);animation:pulse 1.2s infinite;}
-  .status-badge.ok .status-dot{background:var(--accent2);}
-  .status-badge.err .status-dot{background:#ff7070;}
+  /* PREVIEW */
+  .img-preview{display:none;border-radius:4px;overflow:hidden;border:1px solid var(--border);margin-bottom:12px;position:relative;}
+  .img-preview img{width:100%;height:80px;object-fit:cover;display:block;}
+  .img-preview-label{position:absolute;bottom:0;left:0;right:0;background:rgba(4,13,26,.85);padding:4px 8px;font-size:10px;color:var(--accent2);font-family:'Space Mono',monospace;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .remove-btn{position:absolute;top:5px;right:5px;width:20px;height:20px;border-radius:3px;background:rgba(255,80,80,.8);border:none;color:#fff;font-size:12px;cursor:pointer;display:grid;place-items:center;}
 
-  /* UPLOAD (fallback) */
-  .upload-zone{border:2px dashed var(--border);border-radius:6px;padding:14px 12px;text-align:center;cursor:pointer;transition:all .2s;position:relative;background:rgba(0,200,255,.02);margin-top:10px;}
-  .upload-zone:hover,.upload-zone.drag-over{border-color:var(--accent);background:rgba(0,200,255,.06);}
-  .upload-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
-  .upload-icon{font-size:20px;margin-bottom:5px;}
-  .upload-title{font-family:'Rajdhani',sans-serif;font-size:12px;font-weight:600;color:var(--muted);letter-spacing:1px;}
-  .upload-sub{font-size:10px;color:var(--muted);margin-top:2px;opacity:.6;}
+  /* CONTROLS */
+  .ctrl-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px;}
+  .ctrl-label{font-size:13px;color:var(--text);}
+  .toggle-switch{width:40px;height:22px;background:var(--border);border-radius:11px;position:relative;cursor:pointer;transition:background .2s;flex-shrink:0;}
+  .toggle-switch.on{background:var(--accent);}
+  .toggle-switch::after{content:'';position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:#fff;transition:transform .2s;}
+  .toggle-switch.on::after{transform:translateX(18px);}
+  .slider-label{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:8px;}
+  .slider-label span{color:var(--accent);font-family:'Space Mono',monospace;font-size:11px;}
+  input[type=range]{-webkit-appearance:none;width:100%;height:4px;background:var(--border);border-radius:2px;outline:none;cursor:pointer;}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:var(--accent);box-shadow:0 0 6px var(--accent);cursor:pointer;}
 
-  /* CONTROLS */
-  .ctrl-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px;}
-  .ctrl-label{font-size:13px;color:var(--text);}
-  .toggle-switch{width:40px;height:22px;background:var(--border);border-radius:11px;position:relative;cursor:pointer;transition:background .2s;flex-shrink:0;}
-  .toggle-switch.on{background:var(--accent);}
-  .toggle-switch::after{content:'';position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:#fff;transition:transform .2s;}
-  .toggle-switch.on::after{transform:translateX(18px);}
-  .slider-label{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:8px;}
-  .slider-label span{color:var(--accent);font-family:'Space Mono',monospace;font-size:11px;}
-  input[type=range]{-webkit-appearance:none;width:100%;height:4px;background:var(--border);border-radius:2px;outline:none;cursor:pointer;}
-  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:var(--accent);box-shadow:0 0 6px var(--accent);cursor:pointer;}
+  /* INFO ROWS */
+  .info-row{display:flex;justify-content:space-between;align-items:center;padding:4px 0;font-size:11px;}
+  .info-key{color:var(--muted);font-family:'Space Mono',monospace;}
+  .info-val{color:var(--accent);font-family:'Space Mono',monospace;}
+  .reset-btn{width:100%;padding:7px;background:transparent;border:1px solid var(--border);border-radius:3px;color:var(--muted);font-family:'Rajdhani',sans-serif;font-weight:600;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:all .15s;margin-top:8px;}
+  .reset-btn:hover{border-color:var(--accent);color:var(--accent);}
 
-  /* INFO ROWS */
-  .info-row{display:flex;justify-content:space-between;align-items:center;padding:4px 0;font-size:11px;}
-  .info-key{color:var(--muted);font-family:'Space Mono',monospace;}
-  .info-val{color:var(--accent);font-family:'Space Mono',monospace;}
-  .reset-btn{width:100%;padding:7px;background:transparent;border:1px solid var(--border);border-radius:3px;color:var(--muted);font-family:'Rajdhani',sans-serif;font-weight:600;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:all .15s;margin-top:8px;}
-  .reset-btn:hover{border-color:var(--accent);color:var(--accent);}
+  .about-text{font-size:12px;color:var(--muted);line-height:1.6;}
 
-  .about-text{font-size:12px;color:var(--muted);line-height:1.6;}
+  /* MAP */
+  .map-wrapper{flex:1;position:relative;display:flex;flex-direction:column;min-width:0;min-height:0;}
+  #map{flex:1;width:100%;min-height:0;}
 
-  /* MAP */
-  .map-wrapper{flex:1;position:relative;display:flex;flex-direction:column;min-width:0;min-height:0;}
-  #map{flex:1;width:100%;min-height:0;}
+  /* PLAN OVERLAY */
+  #planOverlay{position:absolute;z-index:400;display:none;cursor:move;transform-origin:50% 50%;outline:2px dashed rgba(0,200,255,.6);outline-offset:0;}
+  #planOverlay.locked{cursor:default;outline:none;}
+  #planOverlay img{width:100%;height:100%;display:block;pointer-events:none;user-select:none;-webkit-user-drag:none;}
 
-  /* PLAN OVERLAY */
-  #planOverlay{position:absolute;z-index:400;display:none;cursor:move;transform-origin:50% 50%;outline:2px dashed rgba(0,200,255,.6);outline-offset:0;}
-  #planOverlay.locked{cursor:default;outline:none;}
-  #planOverlay img{width:100%;height:100%;display:block;pointer-events:none;user-select:none;-webkit-user-drag:none;}
+  /* HANDLES */
+  .rh{position:absolute;width:14px;height:14px;background:var(--accent);border:2.5px solid #fff;border-radius:50%;z-index:2;box-shadow:0 0 6px rgba(0,200,255,.6);}
+  .rh.nw{top:-7px;left:-7px;cursor:nw-resize;} .rh.ne{top:-7px;right:-7px;cursor:ne-resize;}
+  .rh.sw{bottom:-7px;left:-7px;cursor:sw-resize;} .rh.se{bottom:-7px;right:-7px;cursor:se-resize;}
+  .rh.n{top:-7px;left:50%;transform:translateX(-50%);cursor:n-resize;}
+  .rh.s{bottom:-7px;left:50%;transform:translateX(-50%);cursor:s-resize;}
+  .rh.e{right:-7px;top:50%;transform:translateY(-50%);cursor:e-resize;}
+  .rh.w{left:-7px;top:50%;transform:translateY(-50%);cursor:w-resize;}
+  .rh.rot{top:-38px;left:50%;transform:translateX(-50%);cursor:crosshair;background:var(--accent2);box-shadow:0 0 6px rgba(0,255,157,.7);width:16px;height:16px;}
+  .rot-line{position:absolute;top:-30px;left:50%;transform:translateX(-50%);width:2px;height:24px;background:rgba(0,255,157,.4);pointer-events:none;}
+  #planOverlay.locked .rh,#planOverlay.locked .rot-line{display:none;}
 
-  /* HANDLES */
-  .rh{position:absolute;width:14px;height:14px;background:var(--accent);border:2.5px solid #fff;border-radius:50%;z-index:2;box-shadow:0 0 6px rgba(0,200,255,.6);}
-  .rh.nw{top:-7px;left:-7px;cursor:nw-resize;} .rh.ne{top:-7px;right:-7px;cursor:ne-resize;}
-  .rh.sw{bottom:-7px;left:-7px;cursor:sw-resize;} .rh.se{bottom:-7px;right:-7px;cursor:se-resize;}
-  .rh.n{top:-7px;left:50%;transform:translateX(-50%);cursor:n-resize;}
-  .rh.s{bottom:-7px;left:50%;transform:translateX(-50%);cursor:s-resize;}
-  .rh.e{right:-7px;top:50%;transform:translateY(-50%);cursor:e-resize;}
-  .rh.w{left:-7px;top:50%;transform:translateY(-50%);cursor:w-resize;}
-  .rh.rot{top:-38px;left:50%;transform:translateX(-50%);cursor:crosshair;background:var(--accent2);box-shadow:0 0 6px rgba(0,255,157,.7);width:16px;height:16px;}
-  .rot-line{position:absolute;top:-30px;left:50%;transform:translateX(-50%);width:2px;height:24px;background:rgba(0,255,157,.4);pointer-events:none;}
-  #planOverlay.locked .rh,#planOverlay.locked .rot-line{display:none;}
+  /* LOCK BUTTON */
+  #lockBtn{position:absolute;bottom:22px;right:22px;z-index:1000;padding:10px 20px;border-radius:6px;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:15px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;display:none;transition:all .2s;backdrop-filter:blur(8px);}
+  #lockBtn.unlocked{background:rgba(0,200,255,.12);border:1.5px solid var(--accent);color:var(--accent);}
+  #lockBtn.unlocked:hover{background:rgba(0,200,255,.22);}
+  #lockBtn.locked{background:rgba(0,255,157,.12);border:1.5px solid var(--accent2);color:var(--accent2);}
+  #lockBtn.locked:hover{background:rgba(0,255,157,.22);}
 
-  /* LOCK BUTTON */
-  #lockBtn{position:absolute;bottom:22px;right:22px;z-index:1000;padding:10px 20px;border-radius:6px;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:15px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;display:none;transition:all .2s;backdrop-filter:blur(8px);}
-  #lockBtn.unlocked{background:rgba(0,200,255,.12);border:1.5px solid var(--accent);color:var(--accent);}
-  #lockBtn.unlocked:hover{background:rgba(0,200,255,.22);}
-  #lockBtn.locked{background:rgba(0,255,157,.12);border:1.5px solid var(--accent2);color:var(--accent2);}
-  #lockBtn.locked:hover{background:rgba(0,255,157,.22);}
+  /* ROTATION INDICATOR */
+  #rotIndicator{position:absolute;top:14px;right:14px;z-index:1000;display:none;background:rgba(7,21,42,.88);border:1px solid var(--border);border-radius:4px;padding:5px 10px;font-family:'Space Mono',monospace;font-size:11px;color:var(--accent2);pointer-events:none;backdrop-filter:blur(4px);}
 
-  /* ROTATION INDICATOR */
-  #rotIndicator{position:absolute;top:14px;right:14px;z-index:1000;display:none;background:rgba(7,21,42,.88);border:1px solid var(--border);border-radius:4px;padding:5px 10px;font-family:'Space Mono',monospace;font-size:11px;color:var(--accent2);pointer-events:none;backdrop-filter:blur(4px);}
+  /* EMPTY STATE */
+  #emptyState{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(4,13,26,.7);z-index:500;pointer-events:none;backdrop-filter:blur(2px);}
+  #emptyState.hidden{display:none;}
+  .empty-icon{font-size:48px;margin-bottom:16px;opacity:.4;}
+  .empty-title{font-family:'Rajdhani',sans-serif;font-size:22px;font-weight:700;letter-spacing:2px;color:var(--muted);margin-bottom:8px;}
+  .empty-sub{font-size:13px;color:var(--muted);opacity:.7;text-align:center;}
 
-  /* COORDS */
-  .coords-bar{position:absolute;bottom:0;right:0;background:rgba(4,13,26,.88);border-top:1px solid var(--border);border-left:1px solid var(--border);padding:4px 12px;font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);z-index:1000;pointer-events:none;}
-  .coords-bar span{color:var(--accent2);}
+  /* COORDS */
+  .coords-bar{position:absolute;bottom:0;right:0;background:rgba(4,13,26,.88);border-top:1px solid var(--border);border-left:1px solid var(--border);padding:4px 12px;font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);z-index:1000;pointer-events:none;}
+  .coords-bar span{color:var(--accent2);}
 
-  /* LEAFLET */
-  .leaflet-control-zoom{border:1px solid var(--border)!important;border-radius:4px!important;overflow:hidden;}
-  .leaflet-control-zoom a{background:var(--panel)!important;color:var(--accent)!important;border-color:var(--border)!important;}
-  .leaflet-control-zoom a:hover{background:var(--border)!important;}
-  .leaflet-control-attribution{background:rgba(4,13,26,.85)!important;color:var(--muted)!important;font-size:9px!important;}
-  .leaflet-control-attribution a{color:var(--accent)!important;}
+  /* LEAFLET */
+  .leaflet-control-zoom{border:1px solid var(--border)!important;border-radius:4px!important;overflow:hidden;}
+  .leaflet-control-zoom a{background:var(--panel)!important;color:var(--accent)!important;border-color:var(--border)!important;}
+  .leaflet-control-zoom a:hover{background:var(--border)!important;}
+  .leaflet-control-attribution{background:rgba(4,13,26,.85)!important;color:var(--muted)!important;font-size:9px!important;}
+  .leaflet-control-attribution a{color:var(--accent)!important;}
 </style>
 </head>
 <body>
 
 <header>
-  <div class="logo">
-    <div class="logo-icon">⬡</div>
-    <div>
-      <div class="logo-title">Dholera <span>SIR</span></div>
-      <div class="logo-sub">Smart City Master Plan</div>
-    </div>
-  </div>
-  <div class="header-right">
-    <div class="pulse-dot"></div>
-    <div class="tag">Gujarat · India</div>
-  </div>
+  <div class="logo">
+    <div class="logo-icon">⬡</div>
+    <div>
+      <div class="logo-title">Dholera <span>SIR</span></div>
+      <div class="logo-sub">Smart City Master Plan</div>
+    </div>
+  </div>
+  <div class="header-right">
+    <div class="pulse-dot"></div>
+    <div class="tag">Gujarat · India</div>
+  </div>
 </header>
 
 <div class="main">
-  <aside class="sidebar">
+  <aside class="sidebar">
 
-    <!-- BASE MAP -->
-    <div class="s-section">
-      <div class="s-title">Base Map</div>
-      <div class="basemap-grid">
-        <button class="bm-btn active" onclick="switchBase('osm',this)">Street</button>
-        <button class="bm-btn" onclick="switchBase('satellite',this)">Satellite</button>
-        <button class="bm-btn" onclick="switchBase('topo',this)">Topo</button>
-        <button class="bm-btn" onclick="switchBase('dark',this)">Dark</button>
-      </div>
-    </div>
+    <!-- BASE MAP -->
+    <div class="s-section">
+      <div class="s-title">Base Map</div>
+      <div class="basemap-grid">
+        <button class="bm-btn active" onclick="switchBase('osm',this)">Street</button>
+        <button class="bm-btn" onclick="switchBase('satellite',this)">Satellite</button>
+        <button class="bm-btn" onclick="switchBase('topo',this)">Topo</button>
+        <button class="bm-btn" onclick="switchBase('dark',this)">Dark</button>
+      </div>
+    </div>
 
-    <!-- PLAN IMAGE -->
-    <div class="s-section">
-      <div class="s-title">Plan Image</div>
-      <div class="img-preview" id="imgPreview">
-        <img id="previewImg" src="" alt="preview">
-        <div class="img-preview-label" id="previewLabel">dholera-plan.png</div>
-      </div>
-      <div class="status-badge loading" id="statusBadge">
-        <div class="status-dot"></div>
-        <span id="statusText">Loading from GitHub…</span>
-      </div>
-      <!-- shown only if GitHub load fails -->
-      <div class="upload-zone" id="uploadZone" style="display:none;">
-        <input type="file" accept="image/*" id="fileInput" onchange="handleFile(this.files[0])">
-        <div class="upload-icon">📂</div>
-        <div class="upload-title">Load from device</div>
-        <div class="upload-sub">Use if image failed to load above</div>
-      </div>
-    </div>
+    <!-- PLAN IMAGE -->
+    <div class="s-section">
+      <div class="s-title">Plan Image</div>
+      <div class="img-preview" id="imgPreview">
+        <img id="previewImg" src="" alt="preview">
+        <div class="img-preview-label" id="previewLabel"></div>
+        <button class="remove-btn" onclick="removeImage()">✕</button>
+      </div>
+      <div class="upload-zone" id="uploadZone">
+        <input type="file" accept="image/*" id="fileInput" onchange="handleFile(this.files[0])">
+        <div class="upload-icon">🗺️</div>
+        <div class="upload-title">Upload Plan Image</div>
+        <div class="upload-sub">Click or drag & drop<br>PNG · JPG · WebP</div>
+      </div>
+    </div>
 
-    <!-- OVERLAY CONTROLS -->
-    <div class="s-section" id="overlayControls" style="display:none">
-      <div class="s-title">Overlay</div>
-      <div class="ctrl-row">
-        <span class="ctrl-label">Show on Map</span>
-        <div class="toggle-switch on" id="overlayToggle" onclick="togglePlan()"></div>
-      </div>
-      <div class="slider-label">Opacity <span id="opacityVal">80%</span></div>
-      <input type="range" min="0" max="100" value="80" id="opacitySlider" oninput="updateOpacity(this.value)">
-    </div>
+    <!-- OVERLAY CONTROLS -->
+    <div class="s-section" id="overlayControls" style="display:none">
+      <div class="s-title">Overlay</div>
+      <div class="ctrl-row">
+        <span class="ctrl-label">Show on Map</span>
+        <div class="toggle-switch on" id="overlayToggle" onclick="togglePlan()"></div>
+      </div>
+      <div class="slider-label">Opacity <span id="opacityVal">80%</span></div>
+      <input type="range" min="0" max="100" value="80" id="opacitySlider" oninput="updateOpacity(this.value)">
+    </div>
 
-    <!-- POSITION INFO -->
-    <div class="s-section" id="adjustInfo" style="display:none">
-      <div class="s-title">Current Position</div>
-      <div class="info-row"><span class="info-key">North</span><span class="info-val" id="infoN">—</span></div>
-      <div class="info-row"><span class="info-key">South</span><span class="info-val" id="infoS">—</span></div>
-      <div class="info-row"><span class="info-key">West</span><span class="info-val" id="infoW">—</span></div>
-      <div class="info-row"><span class="info-key">East</span><span class="info-val" id="infoE">—</span></div>
-      <div class="info-row"><span class="info-key">Rotation</span><span class="info-val" id="infoR">0°</span></div>
-      <button class="reset-btn" onclick="resetTransform()">↺ Reset Position</button>
-    </div>
+    <!-- POSITION INFO -->
+    <div class="s-section" id="adjustInfo" style="display:none">
+      <div class="s-title">Current Position</div>
+      <div class="info-row"><span class="info-key">North</span><span class="info-val" id="infoN">—</span></div>
+      <div class="info-row"><span class="info-key">South</span><span class="info-val" id="infoS">—</span></div>
+      <div class="info-row"><span class="info-key">West</span><span class="info-val" id="infoW">—</span></div>
+      <div class="info-row"><span class="info-key">East</span><span class="info-val" id="infoE">—</span></div>
+      <div class="info-row"><span class="info-key">Rotation</span><span class="info-val" id="infoR">0°</span></div>
+      <button class="reset-btn" onclick="resetTransform()">↺ Reset Position</button>
+    </div>
 
-    <!-- ABOUT -->
-    <div class="s-section">
-      <div class="s-title">About</div>
-      <p class="about-text">Dholera SIR is India's first greenfield smart city, planned across ~920 km² on the Delhi–Mumbai Industrial Corridor in Gujarat.</p>
-    </div>
+    <!-- ABOUT -->
+    <div class="s-section">
+      <div class="s-title">About</div>
+      <p class="about-text">Dholera SIR is India's first greenfield smart city, planned across ~920 km² on the Delhi–Mumbai Industrial Corridor in Gujarat.</p>
+    </div>
 
-  </aside>
+  </aside>
 
-  <div class="map-wrapper" id="mapWrapper">
-    <div id="map"></div>
-    <button id="lockBtn" class="unlocked" onclick="toggleLock()">🔓 Lock</button>
-    <div id="rotIndicator">↻ 0°</div>
-    <div class="coords-bar" id="coords">Lat: — &nbsp; Lng: —</div>
-  </div>
+  <div class="map-wrapper" id="mapWrapper">
+    <div id="map"></div>
+    <div id="emptyState">
+      <div class="empty-icon">🗺️</div>
+      <div class="empty-title">Upload Your Plan</div>
+      <div class="empty-sub">Upload the Dholera Master Plan image<br>from the sidebar to overlay it on the map</div>
+    </div>
+    <button id="lockBtn" class="unlocked" onclick="toggleLock()">🔓 Lock</button>
+    <div id="rotIndicator">↻ 0°</div>
+    <div class="coords-bar" id="coords">Lat: — &nbsp; Lng: —</div>
+  </div>
 </div>
 
 <script>
-// ── HARDCODED IMAGE URL ───────────────────────────────────────────────────────
-const PLAN_IMAGE_URL = 'https://raw.githubusercontent.com/Smit-prajapati-2003/Dholera-Smart-City-Plan-Map/main/public/dholera-plan.png';
-
 // ── STATE ─────────────────────────────────────────────────────────────────────
 const S = {
-  loaded:false, locked:false, visible:true,
-  north:22.3634, south:21.9787, west:72.0092, east:72.3759,
-  rotation:1, opacity:0.80
+  loaded:false, locked:false, visible:true,
+  north:22.3634, south:21.9787, west:72.0092, east:72.3759,
+  rotation:1, opacity:0.80, imageUrl:null
 };
 
 // ── MAP ───────────────────────────────────────────────────────────────────────
@@ -235,225 +231,215 @@ const map = L.map('map', { center:[22.17, 72.19], zoom:11 });
 setTimeout(()=>map.invalidateSize(), 300);
 
 const baseLayers = {
-  osm:       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',maxZoom:19}),
-  satellite: L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{attribution:'© Esri',maxZoom:19}),
-  topo:      L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',{attribution:'© OpenTopoMap',maxZoom:17}),
-  dark:      L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{attribution:'© CARTO',maxZoom:19})
+  osm:       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',maxZoom:19}),
+  satellite: L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{attribution:'© Esri',maxZoom:19}),
+  topo:      L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',{attribution:'© OpenTopoMap',maxZoom:17}),
+  dark:      L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{attribution:'© CARTO',maxZoom:19})
 };
 baseLayers.osm.addTo(map);
 map.fitBounds([[S.south, S.west],[S.north, S.east]]);
 
 function switchBase(name, btn) {
-  document.querySelectorAll('.bm-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  Object.values(baseLayers).forEach(l=>map.removeLayer(l));
-  baseLayers[name].addTo(map);
+  document.querySelectorAll('.bm-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  Object.values(baseLayers).forEach(l=>map.removeLayer(l));
+  baseLayers[name].addTo(map);
 }
 
 // ── MOVE ABSOLUTE ELEMENTS INTO MAP CONTAINER ─────────────────────────────────
 const mc = map.getContainer();
 mc.style.position='relative'; mc.style.flex='1'; mc.style.minHeight='0';
-['lockBtn','rotIndicator','coords'].forEach(id=>mc.appendChild(document.getElementById(id)));
+['emptyState','lockBtn','rotIndicator','coords'].forEach(id=>mc.appendChild(document.getElementById(id)));
 
 // ── BUILD PLAN OVERLAY ────────────────────────────────────────────────────────
 const overlay = document.createElement('div');
 overlay.id = 'planOverlay';
 overlay.innerHTML = `
-  <div class="rot-line"></div>
-  <img id="overlayImg" draggable="false" crossorigin="anonymous">
-  <div class="rh rot" data-handle="rot"></div>
-  <div class="rh nw"  data-handle="nw"></div><div class="rh ne" data-handle="ne"></div>
-  <div class="rh sw"  data-handle="sw"></div><div class="rh se" data-handle="se"></div>
-  <div class="rh n"   data-handle="n"></div> <div class="rh s"  data-handle="s"></div>
-  <div class="rh e"   data-handle="e"></div> <div class="rh w"  data-handle="w"></div>
+  <div class="rot-line"></div>
+  <img id="overlayImg" draggable="false">
+  <div class="rh rot" data-handle="rot"></div>
+  <div class="rh nw"  data-handle="nw"></div><div class="rh ne" data-handle="ne"></div>
+  <div class="rh sw"  data-handle="sw"></div><div class="rh se" data-handle="se"></div>
+  <div class="rh n"   data-handle="n"></div> <div class="rh s"  data-handle="s"></div>
+  <div class="rh e"   data-handle="e"></div> <div class="rh w"  data-handle="w"></div>
 `;
 mc.appendChild(overlay);
 
 // ── UPDATE OVERLAY POSITION ───────────────────────────────────────────────────
 function updateOverlayPosition() {
-  if (!S.loaded) return;
-  const nw = map.latLngToContainerPoint([S.north, S.west]);
-  const se = map.latLngToContainerPoint([S.south, S.east]);
-  overlay.style.left    = nw.x + 'px';
-  overlay.style.top     = nw.y + 'px';
-  overlay.style.width   = Math.max(se.x - nw.x, 10) + 'px';
-  overlay.style.height  = Math.max(se.y - nw.y, 10) + 'px';
-  overlay.style.transform = `rotate(${S.rotation}deg)`;
-  overlay.style.opacity   = S.visible ? S.opacity : 0;
-  document.getElementById('infoN').textContent = S.north.toFixed(4);
-  document.getElementById('infoS').textContent = S.south.toFixed(4);
-  document.getElementById('infoW').textContent = S.west.toFixed(4);
-  document.getElementById('infoE').textContent = S.east.toFixed(4);
-  document.getElementById('infoR').textContent = Math.round(S.rotation) + '°';
-  document.getElementById('rotIndicator').textContent = '↻ ' + Math.round(S.rotation) + '°';
+  if (!S.loaded) return;
+  const nw = map.latLngToContainerPoint([S.north, S.west]);
+  const se = map.latLngToContainerPoint([S.south, S.east]);
+  overlay.style.left    = nw.x + 'px';
+  overlay.style.top     = nw.y + 'px';
+  overlay.style.width   = Math.max(se.x - nw.x, 10) + 'px';
+  overlay.style.height  = Math.max(se.y - nw.y, 10) + 'px';
+  overlay.style.transform = `rotate(${S.rotation}deg)`;
+  overlay.style.opacity   = S.visible ? S.opacity : 0;
+  document.getElementById('infoN').textContent = S.north.toFixed(4);
+  document.getElementById('infoS').textContent = S.south.toFixed(4);
+  document.getElementById('infoW').textContent = S.west.toFixed(4);
+  document.getElementById('infoE').textContent = S.east.toFixed(4);
+  document.getElementById('infoR').textContent = Math.round(S.rotation) + '°';
+  document.getElementById('rotIndicator').textContent = '↻ ' + Math.round(S.rotation) + '°';
 }
 map.on('zoom move zoomend moveend', updateOverlayPosition);
 
 // ── DRAG TO MOVE ──────────────────────────────────────────────────────────────
 overlay.addEventListener('mousedown', e => {
-  if (S.locked || e.target.dataset.handle) return;
-  e.preventDefault(); e.stopPropagation();
-  map.dragging.disable();
-  const rect = mc.getBoundingClientRect();
-  const [sN,sS,sW,sE] = [S.north, S.south, S.west, S.east];
-  const [sx, sy] = [e.clientX, e.clientY];
-  const move = e => {
-    const p0 = map.containerPointToLatLng([sx - rect.left, sy - rect.top]);
-    const p1 = map.containerPointToLatLng([e.clientX - rect.left, e.clientY - rect.top]);
-    S.north = sN + (p1.lat - p0.lat); S.south = sS + (p1.lat - p0.lat);
-    S.west  = sW + (p1.lng - p0.lng); S.east  = sE + (p1.lng - p0.lng);
-    updateOverlayPosition();
-  };
-  const up = () => { document.removeEventListener('mousemove', move); document.removeEventListener('mouseup', up); map.dragging.enable(); };
-  document.addEventListener('mousemove', move);
-  document.addEventListener('mouseup', up);
+  if (S.locked || e.target.dataset.handle) return;
+  e.preventDefault(); e.stopPropagation();
+  map.dragging.disable();
+  const rect = mc.getBoundingClientRect();
+  const [sN,sS,sW,sE] = [S.north, S.south, S.west, S.east];
+  const [sx, sy] = [e.clientX, e.clientY];
+  const move = e => {
+    const p0 = map.containerPointToLatLng([sx - rect.left, sy - rect.top]);
+    const p1 = map.containerPointToLatLng([e.clientX - rect.left, e.clientY - rect.top]);
+    S.north = sN + (p1.lat - p0.lat); S.south = sS + (p1.lat - p0.lat);
+    S.west  = sW + (p1.lng - p0.lng); S.east  = sE + (p1.lng - p0.lng);
+    updateOverlayPosition();
+  };
+  const up = () => { document.removeEventListener('mousemove', move); document.removeEventListener('mouseup', up); map.dragging.enable(); };
+  document.addEventListener('mousemove', move);
+  document.addEventListener('mouseup', up);
 });
 
 // ── RESIZE & ROTATE HANDLES ───────────────────────────────────────────────────
 overlay.querySelectorAll('.rh').forEach(h => {
-  h.addEventListener('mousedown', e => {
-    if (S.locked) return;
-    e.preventDefault(); e.stopPropagation();
-    map.dragging.disable();
-    const type = e.target.dataset.handle;
-    const rect = mc.getBoundingClientRect();
-    if (type === 'rot') {
-      const nw = map.latLngToContainerPoint([S.north, S.west]);
-      const se = map.latLngToContainerPoint([S.south, S.east]);
-      const cx = rect.left + (nw.x + se.x) / 2;
-      const cy = rect.top  + (nw.y + se.y) / 2;
-      const move = e => { S.rotation = Math.atan2(e.clientX - cx, -(e.clientY - cy)) * 180 / Math.PI; updateOverlayPosition(); };
-      const up = () => { document.removeEventListener('mousemove', move); document.removeEventListener('mouseup', up); map.dragging.enable(); };
-      document.addEventListener('mousemove', move);
-      document.addEventListener('mouseup', up);
-    } else {
-      const MIN = 0.004;
-      const anchors = {
-        nw:()=>({lat:S.south, lng:S.east}), ne:()=>({lat:S.south, lng:S.west}),
-        sw:()=>({lat:S.north, lng:S.east}), se:()=>({lat:S.north, lng:S.west}),
-        n:()=>({lat:S.south, lng:null}),    s:()=>({lat:S.north, lng:null}),
-        e:()=>({lat:null, lng:S.west}),     w:()=>({lat:null, lng:S.east})
-      };
-      const anchor = anchors[type]();
-      const move = e => {
-        const ll = map.containerPointToLatLng([e.clientX - rect.left, e.clientY - rect.top]);
-        if      (type==='nw'){S.north=Math.max(ll.lat,anchor.lat+MIN);S.west=Math.min(ll.lng,anchor.lng-MIN);S.south=anchor.lat;S.east=anchor.lng;}
-        else if (type==='ne'){S.north=Math.max(ll.lat,anchor.lat+MIN);S.east=Math.max(ll.lng,anchor.lng+MIN);S.south=anchor.lat;S.west=anchor.lng;}
-        else if (type==='sw'){S.south=Math.min(ll.lat,anchor.lat-MIN);S.west=Math.min(ll.lng,anchor.lng-MIN);S.north=anchor.lat;S.east=anchor.lng;}
-        else if (type==='se'){S.south=Math.min(ll.lat,anchor.lat-MIN);S.east=Math.max(ll.lng,anchor.lng+MIN);S.north=anchor.lat;S.west=anchor.lng;}
-        else if (type==='n') {S.north=Math.max(ll.lat,anchor.lat+MIN);S.south=anchor.lat;}
-        else if (type==='s') {S.south=Math.min(ll.lat,anchor.lat-MIN);S.north=anchor.lat;}
-        else if (type==='e') {S.east=Math.max(ll.lng,anchor.lng+MIN);S.west=anchor.lng;}
-        else if (type==='w') {S.west=Math.min(ll.lng,anchor.lng-MIN);S.east=anchor.lng;}
-        updateOverlayPosition();
-      };
-      const up = () => { document.removeEventListener('mousemove', move); document.removeEventListener('mouseup', up); map.dragging.enable(); };
-      document.addEventListener('mousemove', move);
-      document.addEventListener('mouseup', up);
-    }
-  });
+  h.addEventListener('mousedown', e => {
+    if (S.locked) return;
+    e.preventDefault(); e.stopPropagation();
+    map.dragging.disable();
+    const type = e.target.dataset.handle;
+    const rect = mc.getBoundingClientRect();
+
+    if (type === 'rot') {
+      const nw = map.latLngToContainerPoint([S.north, S.west]);
+      const se = map.latLngToContainerPoint([S.south, S.east]);
+      const cx = rect.left + (nw.x + se.x) / 2;
+      const cy = rect.top  + (nw.y + se.y) / 2;
+      const move = e => { S.rotation = Math.atan2(e.clientX - cx, -(e.clientY - cy)) * 180 / Math.PI; updateOverlayPosition(); };
+      const up = () => { document.removeEventListener('mousemove', move); document.removeEventListener('mouseup', up); map.dragging.enable(); };
+      document.addEventListener('mousemove', move);
+      document.addEventListener('mouseup', up);
+    } else {
+      const MIN = 0.004;
+      const anchors = {
+        nw:()=>({lat:S.south, lng:S.east}), ne:()=>({lat:S.south, lng:S.west}),
+        sw:()=>({lat:S.north, lng:S.east}), se:()=>({lat:S.north, lng:S.west}),
+        n:()=>({lat:S.south, lng:null}),    s:()=>({lat:S.north, lng:null}),
+        e:()=>({lat:null, lng:S.west}),     w:()=>({lat:null, lng:S.east})
+      };
+      const anchor = anchors[type]();
+      const move = e => {
+        const ll = map.containerPointToLatLng([e.clientX - rect.left, e.clientY - rect.top]);
+        if      (type==='nw'){S.north=Math.max(ll.lat,anchor.lat+MIN);S.west=Math.min(ll.lng,anchor.lng-MIN);S.south=anchor.lat;S.east=anchor.lng;}
+        else if (type==='ne'){S.north=Math.max(ll.lat,anchor.lat+MIN);S.east=Math.max(ll.lng,anchor.lng+MIN);S.south=anchor.lat;S.west=anchor.lng;}
+        else if (type==='sw'){S.south=Math.min(ll.lat,anchor.lat-MIN);S.west=Math.min(ll.lng,anchor.lng-MIN);S.north=anchor.lat;S.east=anchor.lng;}
+        else if (type==='se'){S.south=Math.min(ll.lat,anchor.lat-MIN);S.east=Math.max(ll.lng,anchor.lng+MIN);S.north=anchor.lat;S.west=anchor.lng;}
+        else if (type==='n') {S.north=Math.max(ll.lat,anchor.lat+MIN);S.south=anchor.lat;}
+        else if (type==='s') {S.south=Math.min(ll.lat,anchor.lat-MIN);S.north=anchor.lat;}
+        else if (type==='e') {S.east=Math.max(ll.lng,anchor.lng+MIN);S.west=anchor.lng;}
+        else if (type==='w') {S.west=Math.min(ll.lng,anchor.lng-MIN);S.east=anchor.lng;}
+        updateOverlayPosition();
+      };
+      const up = () => { document.removeEventListener('mousemove', move); document.removeEventListener('mouseup', up); map.dragging.enable(); };
+      document.addEventListener('mousemove', move);
+      document.addEventListener('mouseup', up);
+    }
+  });
 });
 
 // ── LOCK / UNLOCK ─────────────────────────────────────────────────────────────
 function toggleLock() {
-  S.locked = !S.locked;
-  overlay.classList.toggle('locked', S.locked);
-  overlay.style.cursor = S.locked ? 'default' : 'move';
-  const btn = document.getElementById('lockBtn');
-  btn.className = S.locked ? 'locked' : 'unlocked';
-  btn.textContent = S.locked ? '🔒 Locked' : '🔓 Lock';
+  S.locked = !S.locked;
+  overlay.classList.toggle('locked', S.locked);
+  overlay.style.cursor = S.locked ? 'default' : 'move';
+  const btn = document.getElementById('lockBtn');
+  btn.className = S.locked ? 'locked' : 'unlocked';
+  btn.textContent = S.locked ? '🔒 Locked' : '🔓 Lock';
 }
 
 // ── TOGGLE VISIBILITY ─────────────────────────────────────────────────────────
 function togglePlan() {
-  S.visible = !S.visible;
-  document.getElementById('overlayToggle').classList.toggle('on', S.visible);
-  updateOverlayPosition();
+  S.visible = !S.visible;
+  document.getElementById('overlayToggle').classList.toggle('on', S.visible);
+  updateOverlayPosition();
 }
 
 // ── OPACITY ───────────────────────────────────────────────────────────────────
 function updateOpacity(val) {
-  S.opacity = val / 100;
-  document.getElementById('opacityVal').textContent = val + '%';
-  updateOverlayPosition();
+  S.opacity = val / 100;
+  document.getElementById('opacityVal').textContent = val + '%';
+  updateOverlayPosition();
 }
 
 // ── RESET ─────────────────────────────────────────────────────────────────────
 function resetTransform() {
-  S.north=22.3634; S.south=21.9787; S.west=72.0092; S.east=72.3759; S.rotation=1;
-  map.fitBounds([[S.south, S.west],[S.north, S.east]]);
-  setTimeout(updateOverlayPosition, 200);
+  S.north=22.3634; S.south=21.9787; S.west=72.0092; S.east=72.3759; S.rotation=1;
+  map.fitBounds([[S.south, S.west],[S.north, S.east]]);
+  setTimeout(updateOverlayPosition, 200);
 }
 
-// ── ACTIVATE PLAN ON MAP ──────────────────────────────────────────────────────
-function activatePlan(url, name) {
-  S.loaded = true; S.locked = false; S.rotation = 1;
-  S.north=22.3634; S.south=21.9787; S.west=72.0092; S.east=72.3759;
-
-  document.getElementById('overlayImg').src = url;
-  document.getElementById('previewImg').src = url;
-  document.getElementById('previewLabel').textContent = name;
-  document.getElementById('imgPreview').style.display = 'block';
-  document.getElementById('overlayControls').style.display = 'block';
-  document.getElementById('adjustInfo').style.display = 'block';
-  overlay.style.display = 'block';
-  overlay.classList.remove('locked');
-
-  const lb = document.getElementById('lockBtn');
-  lb.style.display = 'block'; lb.className = 'unlocked'; lb.textContent = '🔓 Lock';
-  document.getElementById('rotIndicator').style.display = 'block';
-  document.getElementById('opacitySlider').value = 80;
-  document.getElementById('opacityVal').textContent = '80%';
-
-  map.fitBounds([[S.south, S.west],[S.north, S.east]]);
-  setTimeout(updateOverlayPosition, 150);
-}
-
-// ── AUTO-LOAD FROM GITHUB ─────────────────────────────────────────────────────
-function loadFromGitHub() {
-  const badge = document.getElementById('statusBadge');
-  const sText = document.getElementById('statusText');
-
-  const img = new Image();
-  img.crossOrigin = 'anonymous';
-
-  img.onload = () => {
-    badge.className = 'status-badge ok';
-    sText.textContent = 'Loaded · dholera-plan.png';
-    activatePlan(PLAN_IMAGE_URL, 'dholera-plan.png');
-  };
-
-  img.onerror = () => {
-    badge.className = 'status-badge err';
-    sText.textContent = 'Failed — use manual upload below';
-    document.getElementById('uploadZone').style.display = 'block';
-  };
-
-  // cache-bust so browsers always fetch the latest version
-  img.src = PLAN_IMAGE_URL + '?t=' + Date.now();
-}
-
-// ── FALLBACK: MANUAL FILE UPLOAD ──────────────────────────────────────────────
+// ── FILE UPLOAD ───────────────────────────────────────────────────────────────
 function handleFile(file) {
-  if (!file) return;
-  const r = new FileReader();
-  r.onload = e => {
-    const badge = document.getElementById('statusBadge');
-    badge.className = 'status-badge ok';
-    document.getElementById('statusText').textContent = 'Loaded · ' + file.name;
-    activatePlan(e.target.result, file.name);
-  };
-  r.readAsDataURL(file);
+  if (!file) return;
+  const r = new FileReader();
+  r.onload = e => loadPlanImage(e.target.result, file.name);
+  r.readAsDataURL(file);
 }
+
+function loadPlanImage(url, name) {
+  S.imageUrl = url; S.loaded = true; S.locked = false; S.rotation = 1;
+  S.north=22.3634; S.south=21.9787; S.west=72.0092; S.east=72.3759;
+  document.getElementById('overlayImg').src = url;
+  document.getElementById('previewImg').src = url;
+  document.getElementById('previewLabel').textContent = name || 'plan.png';
+  document.getElementById('imgPreview').style.display = 'block';
+  document.getElementById('uploadZone').style.display = 'none';
+  document.getElementById('overlayControls').style.display = 'block';
+  document.getElementById('adjustInfo').style.display = 'block';
+  overlay.style.display = 'block';
+  overlay.classList.remove('locked');
+  const lb = document.getElementById('lockBtn');
+  lb.style.display = 'block'; lb.className = 'unlocked'; lb.textContent = '🔓 Lock';
+  document.getElementById('rotIndicator').style.display = 'block';
+  document.getElementById('emptyState').classList.add('hidden');
+  document.getElementById('opacitySlider').value = 80;
+  document.getElementById('opacityVal').textContent = '80%';
+  map.fitBounds([[S.south, S.west],[S.north, S.east]]);
+  setTimeout(updateOverlayPosition, 150);
+}
+
+function removeImage() {
+  S.loaded = false; S.imageUrl = null;
+  overlay.style.display = 'none';
+  document.getElementById('lockBtn').style.display = 'none';
+  document.getElementById('rotIndicator').style.display = 'none';
+  document.getElementById('imgPreview').style.display = 'none';
+  document.getElementById('uploadZone').style.display = 'block';
+  document.getElementById('overlayControls').style.display = 'none';
+  document.getElementById('adjustInfo').style.display = 'none';
+  document.getElementById('fileInput').value = '';
+  document.getElementById('emptyState').classList.remove('hidden');
+}
+
+// ── DRAG & DROP UPLOAD ────────────────────────────────────────────────────────
+const uploadZone = document.getElementById('uploadZone');
+uploadZone.addEventListener('dragover', e => { e.preventDefault(); uploadZone.classList.add('drag-over'); });
+uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('drag-over'));
+uploadZone.addEventListener('drop', e => {
+  e.preventDefault(); uploadZone.classList.remove('drag-over');
+  const f = e.dataTransfer.files[0];
+  if (f && f.type.startsWith('image/')) handleFile(f);
+});
 
 // ── COORDS ────────────────────────────────────────────────────────────────────
 map.on('mousemove', e => {
-  document.getElementById('coords').innerHTML =
-    `Lat: <span>${e.latlng.lat.toFixed(5)}</span> &nbsp; Lng: <span>${e.latlng.lng.toFixed(5)}</span>`;
+  document.getElementById('coords').innerHTML =
+    `Lat: <span>${e.latlng.lat.toFixed(5)}</span> &nbsp; Lng: <span>${e.latlng.lng.toFixed(5)}</span>`;
 });
-
-// ── KICK OFF ──────────────────────────────────────────────────────────────────
-window.addEventListener('load', loadFromGitHub);
 </script>
 </body>
 </html>
