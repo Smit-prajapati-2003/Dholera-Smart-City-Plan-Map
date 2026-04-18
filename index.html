@@ -148,6 +148,7 @@
 <div class="main">
   <aside class="sidebar">
 
+    <!-- BASE MAP -->
     <div class="s-section">
       <div class="s-title">Base Map</div>
       <div class="basemap-grid">
@@ -158,6 +159,7 @@
       </div>
     </div>
 
+    <!-- PLAN IMAGE -->
     <div class="s-section">
       <div class="s-title">Plan Image</div>
       <div class="img-preview" id="imgPreview">
@@ -165,7 +167,7 @@
         <div class="img-preview-label" id="previewLabel"></div>
         <button class="remove-btn" onclick="removeImage()">✕</button>
       </div>
-      <div class="upload-zone" id="uploadZone">
+      <div class="upload-zone" id="uploadZone" style="display:none">
         <input type="file" accept="image/*" id="fileInput" onchange="handleFile(this.files[0])">
         <div class="upload-icon">🗺️</div>
         <div class="upload-title">Upload Plan Image</div>
@@ -173,6 +175,7 @@
       </div>
     </div>
 
+    <!-- OVERLAY CONTROLS -->
     <div class="s-section" id="overlayControls" style="display:none">
       <div class="s-title">Overlay</div>
       <div class="ctrl-row">
@@ -183,6 +186,7 @@
       <input type="range" min="0" max="100" value="80" id="opacitySlider" oninput="updateOpacity(this.value)">
     </div>
 
+    <!-- POSITION INFO -->
     <div class="s-section" id="adjustInfo" style="display:none">
       <div class="s-title">Current Position</div>
       <div class="info-row"><span class="info-key">North</span><span class="info-val" id="infoN">—</span></div>
@@ -193,6 +197,7 @@
       <button class="reset-btn" onclick="resetTransform()">↺ Reset Position</button>
     </div>
 
+    <!-- ABOUT -->
     <div class="s-section">
       <div class="s-title">About</div>
       <p class="about-text">Dholera SIR is India's first greenfield smart city, planned across ~920 km² on the Delhi–Mumbai Industrial Corridor in Gujarat.</p>
@@ -202,10 +207,10 @@
 
   <div class="map-wrapper" id="mapWrapper">
     <div id="map"></div>
-    <div id="emptyState">
+    <div id="emptyState" class="hidden">
       <div class="empty-icon">🗺️</div>
-      <div class="empty-title">Upload Your Plan</div>
-      <div class="empty-sub">Upload the Dholera Master Plan image<br>from the sidebar to overlay it on the map</div>
+      <div class="empty-title">Loading Plan…</div>
+      <div class="empty-sub">Fetching Dholera Master Plan image</div>
     </div>
     <button id="lockBtn" class="unlocked" onclick="toggleLock()">🔓 Lock</button>
     <div id="rotIndicator">↻ 0°</div>
@@ -214,6 +219,15 @@
 </div>
 
 <script>
+// ── CONFIG — CHANGE THESE TWO VALUES ─────────────────────────────────────────
+const GITHUB_USER = 'YOUR_USERNAME';   // e.g. 'rahul123'
+const GITHUB_REPO = 'YOUR_REPO';       // e.g. 'dholera-map'
+const GITHUB_BRANCH = 'main';          // 'main' or 'master'
+const PLAN_IMAGE_FILENAME = 'dholera-plan.png';
+
+const PLAN_IMAGE_URL =
+  `https://raw.githubusercontent.com/${GITHUB_USER}/${GITHUB_REPO}/${GITHUB_BRANCH}/${PLAN_IMAGE_FILENAME}`;
+
 // ── STATE ─────────────────────────────────────────────────────────────────────
 const S = {
   loaded:false, locked:false, visible:true,
@@ -251,7 +265,7 @@ const overlay = document.createElement('div');
 overlay.id = 'planOverlay';
 overlay.innerHTML = `
   <div class="rot-line"></div>
-  <img id="overlayImg" draggable="false">
+  <img id="overlayImg" draggable="false" crossorigin="anonymous">
   <div class="rh rot" data-handle="rot"></div>
   <div class="rh nw"  data-handle="nw"></div><div class="rh ne" data-handle="ne"></div>
   <div class="rh sw"  data-handle="sw"></div><div class="rh se" data-handle="se"></div>
@@ -377,20 +391,13 @@ function resetTransform() {
   setTimeout(updateOverlayPosition, 200);
 }
 
-// ── FILE UPLOAD ───────────────────────────────────────────────────────────────
-function handleFile(file) {
-  if (!file) return;
-  const r = new FileReader();
-  r.onload = e => loadPlanImage(e.target.result, file.name);
-  r.readAsDataURL(file);
-}
-
+// ── LOAD PLAN IMAGE ───────────────────────────────────────────────────────────
 function loadPlanImage(url, name) {
   S.imageUrl = url; S.loaded = true; S.locked = false; S.rotation = 1;
   S.north=22.3634; S.south=21.9787; S.west=72.0092; S.east=72.3759;
   document.getElementById('overlayImg').src = url;
   document.getElementById('previewImg').src = url;
-  document.getElementById('previewLabel').textContent = name || 'plan.png';
+  document.getElementById('previewLabel').textContent = name || 'dholera-plan.png';
   document.getElementById('imgPreview').style.display = 'block';
   document.getElementById('uploadZone').style.display = 'none';
   document.getElementById('overlayControls').style.display = 'block';
@@ -405,6 +412,14 @@ function loadPlanImage(url, name) {
   document.getElementById('opacityVal').textContent = '80%';
   map.fitBounds([[S.south, S.west],[S.north, S.east]]);
   setTimeout(updateOverlayPosition, 150);
+}
+
+// ── MANUAL FILE UPLOAD (fallback) ─────────────────────────────────────────────
+function handleFile(file) {
+  if (!file) return;
+  const r = new FileReader();
+  r.onload = e => loadPlanImage(e.target.result, file.name);
+  r.readAsDataURL(file);
 }
 
 function removeImage() {
@@ -436,15 +451,9 @@ map.on('mousemove', e => {
     `Lat: <span>${e.latlng.lat.toFixed(5)}</span> &nbsp; Lng: <span>${e.latlng.lng.toFixed(5)}</span>`;
 });
 
-// ── AUTO-LOAD DEFAULT IMAGE ───────────────────────────────────────────────────
-window.addEventListener('DOMContentLoaded', () => {
-  // Wait for the map to fully initialize first
-  map.whenReady(() => {
-    setTimeout(() => {
-      // Using './' ensures it looks in the exact same directory, helping Vercel/GitHub pages
-      loadPlanImage('./dholera-plan.png', 'Dholera Master Plan');
-    }, 500); // Slightly longer delay to ensure map tiles have rendered
-  });
+// ── AUTO-LOAD FROM GITHUB ON PAGE LOAD ───────────────────────────────────────
+window.addEventListener('load', () => {
+  loadPlanImage(PLAN_IMAGE_URL, PLAN_IMAGE_FILENAME);
 });
 </script>
 </body>
