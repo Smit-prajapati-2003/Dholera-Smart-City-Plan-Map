@@ -148,7 +148,6 @@
 <div class="main">
   <aside class="sidebar">
 
-    <!-- BASE MAP -->
     <div class="s-section">
       <div class="s-title">Base Map</div>
       <div class="basemap-grid">
@@ -159,7 +158,6 @@
       </div>
     </div>
 
-    <!-- PLAN IMAGE -->
     <div class="s-section">
       <div class="s-title">Plan Image</div>
       <div class="img-preview" id="imgPreview">
@@ -175,7 +173,6 @@
       </div>
     </div>
 
-    <!-- OVERLAY CONTROLS -->
     <div class="s-section" id="overlayControls" style="display:none">
       <div class="s-title">Overlay</div>
       <div class="ctrl-row">
@@ -186,7 +183,6 @@
       <input type="range" min="0" max="100" value="80" id="opacitySlider" oninput="updateOpacity(this.value)">
     </div>
 
-    <!-- POSITION INFO -->
     <div class="s-section" id="adjustInfo" style="display:none">
       <div class="s-title">Current Position</div>
       <div class="info-row"><span class="info-key">North</span><span class="info-val" id="infoN">—</span></div>
@@ -197,7 +193,6 @@
       <button class="reset-btn" onclick="resetTransform()">↺ Reset Position</button>
     </div>
 
-    <!-- ABOUT -->
     <div class="s-section">
       <div class="s-title">About</div>
       <p class="about-text">Dholera SIR is India's first greenfield smart city, planned across ~920 km² on the Delhi–Mumbai Industrial Corridor in Gujarat.</p>
@@ -440,6 +435,16 @@ map.on('mousemove', e => {
   document.getElementById('coords').innerHTML =
     `Lat: <span>${e.latlng.lat.toFixed(5)}</span> &nbsp; Lng: <span>${e.latlng.lng.toFixed(5)}</span>`;
 });
+
+// ── AUTO-LOAD DEFAULT IMAGE ───────────────────────────────────────────────────
+window.addEventListener('DOMContentLoaded', () => {
+  // Give the map a tiny fraction of a second to initialize its bounds
+  setTimeout(() => {
+    // Load the image directly from your GitHub repo folder
+    loadPlanImage('dholera-plan.png', 'dholera-plan.png');
+  }, 200);
+});
+
 </script>
 </body>
 </html>
