@@ -44,19 +44,28 @@
   .bm-btn{padding:8px 4px;background:transparent;border:1px solid var(--border);border-radius:4px;color:var(--muted);font-family:'Exo 2',sans-serif;font-size:11px;cursor:pointer;text-transform:uppercase;letter-spacing:.5px;transition:all .15s;}
   .bm-btn:hover,.bm-btn.active{border-color:var(--accent);color:var(--accent);background:rgba(0,200,255,.06);}
 
-  /* UPLOAD */
-  .upload-zone{border:2px dashed var(--border);border-radius:6px;padding:20px 12px;text-align:center;cursor:pointer;transition:all .2s;position:relative;background:rgba(0,200,255,.02);}
-  .upload-zone:hover,.upload-zone.drag-over{border-color:var(--accent);background:rgba(0,200,255,.06);}
-  .upload-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
-  .upload-icon{font-size:28px;margin-bottom:8px;}
-  .upload-title{font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:600;color:var(--text);letter-spacing:1px;}
-  .upload-sub{font-size:11px;color:var(--muted);margin-top:4px;}
-
   /* PREVIEW */
-  .img-preview{display:none;border-radius:4px;overflow:hidden;border:1px solid var(--border);margin-bottom:12px;position:relative;}
+  .img-preview{display:none;border-radius:4px;overflow:hidden;border:1px solid var(--border);margin-bottom:10px;position:relative;}
   .img-preview img{width:100%;height:80px;object-fit:cover;display:block;}
   .img-preview-label{position:absolute;bottom:0;left:0;right:0;background:rgba(4,13,26,.85);padding:4px 8px;font-size:10px;color:var(--accent2);font-family:'Space Mono',monospace;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-  .remove-btn{position:absolute;top:5px;right:5px;width:20px;height:20px;border-radius:3px;background:rgba(255,80,80,.8);border:none;color:#fff;font-size:12px;cursor:pointer;display:grid;place-items:center;}
+
+  /* STATUS BADGE */
+  .status-badge{display:flex;align-items:center;gap:7px;padding:8px 10px;border-radius:4px;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.5px;}
+  .status-badge.loading{background:rgba(0,200,255,.06);border:1px solid var(--border);color:var(--muted);}
+  .status-badge.ok{background:rgba(0,255,157,.06);border:1px solid rgba(0,255,157,.3);color:var(--accent2);}
+  .status-badge.err{background:rgba(255,80,80,.06);border:1px solid rgba(255,80,80,.3);color:#ff7070;}
+  .status-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
+  .status-badge.loading .status-dot{background:var(--muted);animation:pulse 1.2s infinite;}
+  .status-badge.ok .status-dot{background:var(--accent2);}
+  .status-badge.err .status-dot{background:#ff7070;}
+
+  /* UPLOAD (fallback) */
+  .upload-zone{border:2px dashed var(--border);border-radius:6px;padding:14px 12px;text-align:center;cursor:pointer;transition:all .2s;position:relative;background:rgba(0,200,255,.02);margin-top:10px;}
+  .upload-zone:hover,.upload-zone.drag-over{border-color:var(--accent);background:rgba(0,200,255,.06);}
+  .upload-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+  .upload-icon{font-size:20px;margin-bottom:5px;}
+  .upload-title{font-family:'Rajdhani',sans-serif;font-size:12px;font-weight:600;color:var(--muted);letter-spacing:1px;}
+  .upload-sub{font-size:10px;color:var(--muted);margin-top:2px;opacity:.6;}
 
   /* CONTROLS */
   .ctrl-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px;}
@@ -110,13 +119,6 @@
   /* ROTATION INDICATOR */
   #rotIndicator{position:absolute;top:14px;right:14px;z-index:1000;display:none;background:rgba(7,21,42,.88);border:1px solid var(--border);border-radius:4px;padding:5px 10px;font-family:'Space Mono',monospace;font-size:11px;color:var(--accent2);pointer-events:none;backdrop-filter:blur(4px);}
 
-  /* EMPTY STATE */
-  #emptyState{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(4,13,26,.7);z-index:500;pointer-events:none;backdrop-filter:blur(2px);}
-  #emptyState.hidden{display:none;}
-  .empty-icon{font-size:48px;margin-bottom:16px;opacity:.4;}
-  .empty-title{font-family:'Rajdhani',sans-serif;font-size:22px;font-weight:700;letter-spacing:2px;color:var(--muted);margin-bottom:8px;}
-  .empty-sub{font-size:13px;color:var(--muted);opacity:.7;text-align:center;}
-
   /* COORDS */
   .coords-bar{position:absolute;bottom:0;right:0;background:rgba(4,13,26,.88);border-top:1px solid var(--border);border-left:1px solid var(--border);padding:4px 12px;font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);z-index:1000;pointer-events:none;}
   .coords-bar span{color:var(--accent2);}
@@ -164,14 +166,18 @@
       <div class="s-title">Plan Image</div>
       <div class="img-preview" id="imgPreview">
         <img id="previewImg" src="" alt="preview">
-        <div class="img-preview-label" id="previewLabel"></div>
-        <button class="remove-btn" onclick="removeImage()">✕</button>
+        <div class="img-preview-label" id="previewLabel">dholera-plan.png</div>
       </div>
-      <div class="upload-zone" id="uploadZone" style="display:none">
+      <div class="status-badge loading" id="statusBadge">
+        <div class="status-dot"></div>
+        <span id="statusText">Loading from GitHub…</span>
+      </div>
+      <!-- shown only if GitHub load fails -->
+      <div class="upload-zone" id="uploadZone" style="display:none;">
         <input type="file" accept="image/*" id="fileInput" onchange="handleFile(this.files[0])">
-        <div class="upload-icon">🗺️</div>
-        <div class="upload-title">Upload Plan Image</div>
-        <div class="upload-sub">Click or drag & drop<br>PNG · JPG · WebP</div>
+        <div class="upload-icon">📂</div>
+        <div class="upload-title">Load from device</div>
+        <div class="upload-sub">Use if image failed to load above</div>
       </div>
     </div>
 
@@ -207,11 +213,6 @@
 
   <div class="map-wrapper" id="mapWrapper">
     <div id="map"></div>
-    <div id="emptyState" class="hidden">
-      <div class="empty-icon">🗺️</div>
-      <div class="empty-title">Loading Plan…</div>
-      <div class="empty-sub">Fetching Dholera Master Plan image</div>
-    </div>
     <button id="lockBtn" class="unlocked" onclick="toggleLock()">🔓 Lock</button>
     <div id="rotIndicator">↻ 0°</div>
     <div class="coords-bar" id="coords">Lat: — &nbsp; Lng: —</div>
@@ -219,20 +220,14 @@
 </div>
 
 <script>
-// ── CONFIG — CHANGE THESE TWO VALUES ─────────────────────────────────────────
-const GITHUB_USER = 'YOUR_USERNAME';   // e.g. 'rahul123'
-const GITHUB_REPO = 'YOUR_REPO';       // e.g. 'dholera-map'
-const GITHUB_BRANCH = 'main';          // 'main' or 'master'
-const PLAN_IMAGE_FILENAME = 'dholera-plan.png';
-
-const PLAN_IMAGE_URL =
-  `https://raw.githubusercontent.com/${GITHUB_USER}/${GITHUB_REPO}/${GITHUB_BRANCH}/${PLAN_IMAGE_FILENAME}`;
+// ── HARDCODED IMAGE URL ───────────────────────────────────────────────────────
+const PLAN_IMAGE_URL = 'https://raw.githubusercontent.com/Smit-prajapati-2003/Dholera-Smart-City-Plan-Map/main/public/dholera-plan.png';
 
 // ── STATE ─────────────────────────────────────────────────────────────────────
 const S = {
   loaded:false, locked:false, visible:true,
   north:22.3634, south:21.9787, west:72.0092, east:72.3759,
-  rotation:1, opacity:0.80, imageUrl:null
+  rotation:1, opacity:0.80
 };
 
 // ── MAP ───────────────────────────────────────────────────────────────────────
@@ -258,7 +253,7 @@ function switchBase(name, btn) {
 // ── MOVE ABSOLUTE ELEMENTS INTO MAP CONTAINER ─────────────────────────────────
 const mc = map.getContainer();
 mc.style.position='relative'; mc.style.flex='1'; mc.style.minHeight='0';
-['emptyState','lockBtn','rotIndicator','coords'].forEach(id=>mc.appendChild(document.getElementById(id)));
+['lockBtn','rotIndicator','coords'].forEach(id=>mc.appendChild(document.getElementById(id)));
 
 // ── BUILD PLAN OVERLAY ────────────────────────────────────────────────────────
 const overlay = document.createElement('div');
@@ -322,7 +317,6 @@ overlay.querySelectorAll('.rh').forEach(h => {
     map.dragging.disable();
     const type = e.target.dataset.handle;
     const rect = mc.getBoundingClientRect();
-
     if (type === 'rot') {
       const nw = map.latLngToContainerPoint([S.north, S.west]);
       const se = map.latLngToContainerPoint([S.south, S.east]);
@@ -391,59 +385,66 @@ function resetTransform() {
   setTimeout(updateOverlayPosition, 200);
 }
 
-// ── LOAD PLAN IMAGE ───────────────────────────────────────────────────────────
-function loadPlanImage(url, name) {
-  S.imageUrl = url; S.loaded = true; S.locked = false; S.rotation = 1;
+// ── ACTIVATE PLAN ON MAP ──────────────────────────────────────────────────────
+function activatePlan(url, name) {
+  S.loaded = true; S.locked = false; S.rotation = 1;
   S.north=22.3634; S.south=21.9787; S.west=72.0092; S.east=72.3759;
+
   document.getElementById('overlayImg').src = url;
   document.getElementById('previewImg').src = url;
-  document.getElementById('previewLabel').textContent = name || 'dholera-plan.png';
+  document.getElementById('previewLabel').textContent = name;
   document.getElementById('imgPreview').style.display = 'block';
-  document.getElementById('uploadZone').style.display = 'none';
   document.getElementById('overlayControls').style.display = 'block';
   document.getElementById('adjustInfo').style.display = 'block';
   overlay.style.display = 'block';
   overlay.classList.remove('locked');
+
   const lb = document.getElementById('lockBtn');
   lb.style.display = 'block'; lb.className = 'unlocked'; lb.textContent = '🔓 Lock';
   document.getElementById('rotIndicator').style.display = 'block';
-  document.getElementById('emptyState').classList.add('hidden');
   document.getElementById('opacitySlider').value = 80;
   document.getElementById('opacityVal').textContent = '80%';
+
   map.fitBounds([[S.south, S.west],[S.north, S.east]]);
   setTimeout(updateOverlayPosition, 150);
 }
 
-// ── MANUAL FILE UPLOAD (fallback) ─────────────────────────────────────────────
+// ── AUTO-LOAD FROM GITHUB ─────────────────────────────────────────────────────
+function loadFromGitHub() {
+  const badge = document.getElementById('statusBadge');
+  const sText = document.getElementById('statusText');
+
+  const img = new Image();
+  img.crossOrigin = 'anonymous';
+
+  img.onload = () => {
+    badge.className = 'status-badge ok';
+    sText.textContent = 'Loaded · dholera-plan.png';
+    activatePlan(PLAN_IMAGE_URL, 'dholera-plan.png');
+  };
+
+  img.onerror = () => {
+    badge.className = 'status-badge err';
+    sText.textContent = 'Failed — use manual upload below';
+    document.getElementById('uploadZone').style.display = 'block';
+  };
+
+  // cache-bust so browsers always fetch the latest version
+  img.src = PLAN_IMAGE_URL + '?t=' + Date.now();
+}
+
+// ── FALLBACK: MANUAL FILE UPLOAD ──────────────────────────────────────────────
 function handleFile(file) {
   if (!file) return;
   const r = new FileReader();
-  r.onload = e => loadPlanImage(e.target.result, file.name);
+  r.onload = e => {
+    const badge = document.getElementById('statusBadge');
+    badge.className = 'status-badge ok';
+    document.getElementById('statusText').textContent = 'Loaded · ' + file.name;
+    activatePlan(e.target.result, file.name);
+  };
   r.readAsDataURL(file);
 }
-
-function removeImage() {
-  S.loaded = false; S.imageUrl = null;
-  overlay.style.display = 'none';
-  document.getElementById('lockBtn').style.display = 'none';
-  document.getElementById('rotIndicator').style.display = 'none';
-  document.getElementById('imgPreview').style.display = 'none';
-  document.getElementById('uploadZone').style.display = 'block';
-  document.getElementById('overlayControls').style.display = 'none';
-  document.getElementById('adjustInfo').style.display = 'none';
-  document.getElementById('fileInput').value = '';
-  document.getElementById('emptyState').classList.remove('hidden');
-}
-
-// ── DRAG & DROP UPLOAD ────────────────────────────────────────────────────────
-const uploadZone = document.getElementById('uploadZone');
-uploadZone.addEventListener('dragover', e => { e.preventDefault(); uploadZone.classList.add('drag-over'); });
-uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('drag-over'));
-uploadZone.addEventListener('drop', e => {
-  e.preventDefault(); uploadZone.classList.remove('drag-over');
-  const f = e.dataTransfer.files[0];
-  if (f && f.type.startsWith('image/')) handleFile(f);
-});
 
 // ── COORDS ────────────────────────────────────────────────────────────────────
 map.on('mousemove', e => {
@@ -451,10 +452,8 @@ map.on('mousemove', e => {
     `Lat: <span>${e.latlng.lat.toFixed(5)}</span> &nbsp; Lng: <span>${e.latlng.lng.toFixed(5)}</span>`;
 });
 
-// ── AUTO-LOAD FROM GITHUB ON PAGE LOAD ───────────────────────────────────────
-window.addEventListener('load', () => {
-  loadPlanImage(PLAN_IMAGE_URL, PLAN_IMAGE_FILENAME);
-});
+// ── KICK OFF ──────────────────────────────────────────────────────────────────
+window.addEventListener('load', loadFromGitHub);
 </script>
 </body>
 </html>
